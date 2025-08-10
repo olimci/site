@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WASM App</title>
+</head>
+<body>
+    <script src="wasm_exec.js"></script>
+    <script>
+        // Polyfill for browsers that do not support instantiateStreaming
+        if (!WebAssembly.instantiateStreaming) {
+            WebAssembly.instantiateStreaming = async (resp, importObject) => {
+                const source = await (await resp).arrayBuffer();
+                return await WebAssembly.instantiate(source, importObject);
+            };
+        }
+
+        // Get the path to the wasm file from the query parameter
+        const params = new URLSearchParams(window.location.search);
+        const wasmPath = params.get('path');
+
+        if (!wasmPath) {
+            document.body.innerHTML = "<p>Error: No Wasm path provided.</p>";
+            throw new Error("No Wasm path provided.");
+        }
+
+        const go = new Go();
+        WebAssembly.instantiateStreaming(fetch(wasmPath), go.importObject).then(result => {
+            go.run(result.instance);
+        }).catch(err => {
+            document.body.innerHTML = `<p>Error loading Wasm: ${err.message}</p>`;
+            console.error(err);
+        });
+    </script>
+</body>
+</html>

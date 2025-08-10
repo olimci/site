@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description" content="oli's site">
+    <meta name="keywords" content="Oliver McInnes, Oli McInnes, Oli, Oliver, McInnes, programming, physics, personal blog, cv">
+    <meta name="author" content="Oliver McInnes">
+
+    <link rel="alternate" type="application/rss+xml" title="oli's site rss" href="https://oli.mcinnes.cc/rss.xml">
+
+    <meta property="og:title" content="oli.mcinnes.cc">
+    <meta property="og:description" content="Oli's Site">
+    <meta property="og:image" content="https://oli.mcinnes.cc/favicon.png"> <!-- optional if you want a preview image -->
+    <meta property="og:url" content="https://oli.mcinnes.cc">
+    <meta property="og:type" content="website">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="oli.mcinnes.cc">
+    <meta name="twitter:description" content="Oli's Site">
+    <meta name="twitter:image" content="https://oli.mcinnes.cc/favicon.png">
+
+    <title>oli.mcinnes.cc</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="icon" href="/favicon.png" type="image/png" />
+</head>
+<body>
+<div class="content">
+    <div class="ascii">
+        {{ .Content }}
+    </div>
+
+    <!-- 🌸 VN BOX HERE -->
+    <div id="vn-box">
+        <div id="vn-text"></div>
+    </div>
+
+    <div class="section blue">
+        <strong>DIRECTORY</strong><br />
+        <a href="/cv">cv</a>
+        <a href="/bio">bio</a>
+        <a href="mailto:oli@mcinnes.cc">email</a>
+        <a href="https://github.com/olimci">github</a>
+        <a href="https://www.instagram.com/mcinnesoliver/profilecard/?igsh=MW5saGlmemYxMGs5Yg==">instagram</a<
+    </div>
+
+    <div class="section green">
+        <strong>POSTS</strong><br />
+        {{range $post := index .PageMap "/posts"}}
+            <a href="{{ $post.Path }}">{{ $post.Title }}</a>
+        {{end}}
+    </div>
+
+    <div class="section gold">
+        <strong>REPOS</strong><br />
+        {{range $repo := .Data.repos}}
+            <a href="github.com/olimci/{{ $repo }}">{{ $repo }}</a>
+        {{end}}
+    </div>
+</div>
+
+<div class="footer">
+    &copy; Oliver McInnes; 2025
+</div>
+
+<script>
+    const lines = [
+        "Hey! I'm Oli ^_^",
+        "I'm a 2nd year physics student at Durham University.",
+        "I'm into machine learning, statistical physics, and network protocols.",
+        "When I’m not studying or coding, I’m usually climbing, snowboarding, or trying to understand something random.",
+        "This is my site - I hope you like it!",
+        "Feel free to check out some posts below, or email me if you want to chat about anything!",
+        "Thanks for stopping by! ^_^"
+    ];
+
+    let index = 0;
+    let textElement = document.getElementById("vn-text");
+    let box = document.getElementById("vn-box");
+    let typing = false;
+
+    function typeLine(line, i = 0) {
+        typing = true;
+        if (i <= line.length) {
+            textElement.innerText = line.slice(0, i);
+            setTimeout(() => typeLine(line, i + 1), 20);
+        } else {
+            typing = false;
+        }
+    }
+
+    function showNext() {
+        if (typing) return;
+        if (index < lines.length) {
+            typeLine(lines[index]);
+            index++;
+        } else {
+            box.classList.add("outro");
+            setTimeout(() => box.style.display = "none", 500);
+        }
+    }
+
+    window.addEventListener("load", () => {
+        setTimeout(() => {
+            box.classList.add("visible");
+            showNext();
+        }, 100);
+    });
+
+    box.addEventListener("click", showNext);
+</script>
+
+</body>
+</html>

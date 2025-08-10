@@ -1,0 +1,10 @@
+# Ignore JetBrains IDE project files
+.idea/
+
+# Ignore OS-generated files
+.DS_Store
+
+*~
+
+# shizuka build output
+dist/

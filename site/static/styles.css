@@ -1,0 +1,162 @@
+/* your existing styles here... */
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    background: #fff;
+    font-family: monospace;
+    color: #111;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+pre {
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    max-width: 100%;
+}
+
+.content {
+    flex: 1;
+    width: 100%;
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 1rem;
+}
+
+.ascii {
+    font-size: 14px;
+    line-height: 1.1;
+    white-space: pre;
+    text-align: center;
+}
+
+.section {
+    border: 2px solid;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.section.blue {
+    background: linear-gradient(to bottom, #b6e0ff, #e0f5ff);
+    border-color: #88a;
+}
+
+.section.green {
+    background: linear-gradient(to bottom, #eeffdd, #f7ffe9);
+    border-color: #8a8;
+}
+
+.section.purple {
+    background: linear-gradient(to bottom, #f6f0ff, #f9f4ff);
+    border-color: #a88acc;
+}
+
+.section.pink {
+    background: linear-gradient(to bottom, #ffe6f0, #fff0f6);
+    border-color: #cc88aa;
+}
+
+.section.gold {
+    background: linear-gradient(to bottom, #fff9e0, #fffcea);
+    border-color: #d0b878;
+}
+
+.section a {
+    margin-right: 1rem;
+    color: #06c;
+    text-decoration: underline;
+}
+
+h1 {
+    font-size: 1.25rem;
+    margin: 1rem 0 0.5rem;
+}
+
+.footer {
+    font-size: 0.8rem;
+    text-align: center;
+    color: #666;
+    padding: 1rem;
+}
+
+article {
+    line-height: 1.6;
+    font-size: 14px;
+}
+
+article h2 {
+    font-size: 1.2rem;
+    margin-top: 1.5rem;
+}
+
+article p {
+    margin-bottom: 1rem;
+}
+
+article code {
+    background: #eef;
+    padding: 0 0.2rem;
+    border-radius: 3px;
+}
+
+article pre {
+    background: #eef;
+    padding: 1rem;
+    overflow-x: auto;
+    border-left: 4px solid #88a;
+    margin-bottom: 1rem;
+}
+
+.section.blue a {
+    color: #06c;
+    text-decoration: underline;
+}
+
+/* 🌟 VN box styling */
+
+#vn-box {
+    border: 2px solid #a88acc;
+    background: linear-gradient(to bottom, #f6f0ff, #f9f4ff);
+    padding: 1rem;
+    margin-bottom: 1rem;
+    cursor: pointer;
+    overflow: hidden;
+    transform: scaleY(0.05);
+    opacity: 0;
+    transition:
+            transform 0.15s ease-out,
+            opacity 0.125s ease-out;
+    transform-origin: center;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+#vn-box.visible {
+    transform: scaleY(1);
+    opacity: 1;
+}
+
+#vn-box.outro {
+    transform: scaleY(0.03);
+    opacity: 0;
+    transition:
+            transform 0.15s ease-in,
+            opacity 0.125s ease-in 0.05s;
+}
+
+#vn-text::after {
+    content: " _";
+    animation: blink 1s step-start infinite;
+}
+
+@keyframes blink {
+    50% {
+        opacity: 0;
+    }
+}

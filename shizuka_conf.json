@@ -1,0 +1,11 @@
+{
+  "src": "site",
+  "dst": "dist",
+  "port": "8080",
+  "use_sitemap": true,
+  "use_rss": true,
+  "base_url": "https://oli.mcinnes.cc",
+  "site_title": "oli's site",
+  "site_description": "Personal website of Oli McInnes",
+  "site_lang": "en-gb"
+}
