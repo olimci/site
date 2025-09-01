@@ -24,6 +24,8 @@
     <title>oli.mcinnes.cc</title>
     <link rel="stylesheet" href="/styles.css" />
     <link rel="icon" href="/favicon.png" type="image/png" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 </head>
 <body>
 <div class="content">
@@ -31,17 +33,16 @@
         {{ .Content }}
     </div>
 
-    <div id="vn-box">
-        <div id="vn-text"></div>
+    <div class="links-inline">
+        <a href="/cv"><i class="fa-regular fa-file"></i>  cv</a>
+        <a href="/bio"><i class="fa-regular fa-user"></i>  bio</a>
+        <a href="mailto:oli@mcinnes.cc"><i class="fa-regular fa-envelope"></i>  email</a>
+        <a href="https://github.com/olimci"><i class="fa-brands fa-github"></i>  github</a>
+        <a href="https://www.instagram.com/mcinnesoliver/profilecard/?igsh=MW5saGlmemYxMGs5Yg=="><i class="fa-brands fa-instagram"></i>  instagram</a>
     </div>
 
-    <div class="section blue">
-        <strong>DIRECTORY</strong><br />
-        <a href="/cv">cv</a>
-        <a href="/bio">bio</a>
-        <a href="mailto:oli@mcinnes.cc">email</a>
-        <a href="https://github.com/olimci">github</a>
-        <a href="https://www.instagram.com/mcinnesoliver/profilecard/?igsh=MW5saGlmemYxMGs5Yg==">instagram</a>
+    <div id="vn-box">
+        <div id="vn-text"></div>
     </div>
 
     <div class="section green">
@@ -65,13 +66,13 @@
 
 <script>
     const lines = [
-        "Hey! I'm Oli ^_^",
-        "I'm a 2nd year physics student at Durham University.",
-        "I'm into machine learning, statistical physics, and network protocols.",
-        "When I’m not studying or coding, I’m usually climbing, snowboarding, or trying to understand something random.",
-        "This is my site - I hope you like it!",
-        "Feel free to check out some posts below, or email me if you want to chat about anything!",
-        "Thanks for stopping by! ^_^"
+        "hey! i'm oli ^_^",
+        "i'm a 2nd year physics student studying at durham university.",
+        "i'm into machine learning, statistical physics, and network protocols.",
+        "when I’m not studying or coding, I’m usually mountain biking, climbing, or trying to teach myself japanese.",
+        "this is my personal site - i hope you like it!",
+        "feel free to check out some posts below, or send email me if you want to chat.",
+        "thanks for stopping by!"
     ];
 
     let index = 0;

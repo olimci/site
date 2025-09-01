@@ -34,6 +34,40 @@ pre {
     line-height: 1.1;
     white-space: pre;
     text-align: center;
+    height: 150px;
+}
+
+.links-inline {
+    text-align: center;
+    margin: 1rem 0rem 2rem;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.links-inline a {
+    margin: 0 0.8rem;
+    margin-top: 0.5rem;
+    color: #111;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    transition: color 0.2s ease;
+}
+
+.links-inline a i {
+    font-size: 14px;
+    opacity: 0.85;
+    transition: opacity 0.2s ease;
+}
+
+.links-inline a:hover {
+    color: #06c;
+    text-decoration: underline;
+}
+
+.links-inline a:hover i {
+    opacity: 1;
 }
 
 .section {
