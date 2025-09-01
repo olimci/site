@@ -1,5 +1,5 @@
 ---
-title: "RLI – Optical Rotation"
+title: "2nd year RLI"
 description: "research-led coursework on optical rotation"
 date: "2025-03-28"
 template: "post.tmpl"
@@ -13,6 +13,6 @@ sitemap_priority: "0.6"
 rss_include: true
 ---
 
-This is my research-led-investigation project on optical rotation of chiral molecules, from 2nd year. it scored 63%.
+this is my research-led-investigation project on optical rotation of chiral molecules, from 2nd year. it scored 63%.
 
 [see the full pdf](/RLI.pdf)

@@ -102,14 +102,13 @@ article p {
 article code {
     background: #eef;
     padding: 0 0.2rem;
-    border-radius: 3px;
 }
 
 article pre {
     background: #eef;
     padding: 1rem;
     overflow-x: auto;
-    border-left: 4px solid #88a;
+    border-left: 2px solid #88a;
     margin-bottom: 1rem;
 }
 
@@ -117,8 +116,6 @@ article pre {
     color: #06c;
     text-decoration: underline;
 }
-
-/* 🌟 VN box styling */
 
 #vn-box {
     border: 2px solid #a88acc;
