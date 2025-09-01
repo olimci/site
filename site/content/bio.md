@@ -13,12 +13,12 @@ sitemap_priority: "0.8"
 rss_include: false
 ---
 
-# Hey I'm Oli!
+# hey, i'm oli!
 
-I’m a Physics undergrad at Durham University, with a mild obsession for machine learning, statistical mechanics, and weird network protocols that probably shouldn’t work but somehow do.
+i'm a physics undergrad at durham university, with a deep interest in machine learning, statistical mechanics, and using network protocols in unintended ways. 
 
-I spend a lot of my time building random tools, frameworks, and experiments — sometimes for uni, sometimes for fun, and sometimes just because I had an idea at 3am and needed to see it through.
+i spend a lot of time building random tools, frameworks, or small experiments, sometimes for work, sometimes for uni, and sometimes just for fun.
 
-Outside of code and coursework, I’m into climbing, snowboarding, and trying to deeply understand things that don’t really need to be understood. I’m also learning Japanese (very slowly) and maintain an ongoing love/hate relationship with LaTeX.
+outside of coding, i'm a bit of a adrenaline junkie:  i spend a lot of my free time mountain biking climbing or snowboarding. i also into photography, and i'm working on getting my japanese to a conversational level.
 
-This site is my digital playground — part blog, part devlog, part brain-dump. Feel free to poke around, or feel free to email me if you want to chat about anything.
+check out my [projects](https://github.com/olimci) or [say hi](mailto:oli@mcinnes.cc).

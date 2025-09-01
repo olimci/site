@@ -16,69 +16,72 @@ rss_include: true
 # Oliver McInnes
 
 **GitHub**: [github.com/olimci](https://github.com/olimci)  
-**Email**: [oli.mcinnes.cc](mailto:oli@mcinnes.cc)
+**Email**: [oli@mcinnes.cc](mailto:oli@mcinnes.cc)
 
 ---
 
 ## Education
 
 **Durham University, UK**  
-_MPhys in Physics (entering year 3 of 4)_
+_MPhys in Physics (year 3 of 4)_
 - Achieved First-Class marks in both Year 1 and Year 2.
 
 **Bexhill College, Bexhill**  
 _A-Levels_
-- Mathematics (A*), Physics (A*), Further Mathematics (A), Computer Science (A)
+- Mathematics: A*, 
+- Physics: A*,
+- Further Mathematics: A,
+- Computer Science: A
 
 ---
 
 ## Work Experience
 
 **Technology Box**  
-*Python Developer · Summer 2022–2024*
-- Developed and deployed a Python-based billing automation tool for Google Workspace (in active use).
-- Wrote high-performance Pandas scripts to streamline financial reporting from large datasets.
-- Built an internal dashboard to manage customer/product data, reducing manual entry errors.
-- Created an AI-powered assistant for automating internal documentation updates.
+*Python Developer · Summer 2022–2025*  
+- Designed and deployed a Python-based automation and alerting framework for billing and data management, replacing manual processes now in active daily use.  
+- Improved reliability and efficiency of internal workflows, reducing turnaround time on routine tasks.  
 
 **Napster**  
-*Cryptocurrency Developer Intern · Summer 2020*
-- Designed and tested EVM smart contracts, gaining hands-on experience with DeFi protocols.
+*Cryptocurrency Developer Intern · Summer 2020*  
+- Developed and tested EVM-compatible smart contracts for DeFi protocols.  
+- Gained hands-on experience with Solidity and the Ethereum toolchain. 
 
 ---
 
 ## Personal Projects
 
-**Go Machine Learning Framework**
-- Custom ML framework in Go, supporting CNNs and various layer types.
-- Features an autograd library and maths expression parser for custom activations.
+**Go Machine Learning Framework** [[Post]](/posts/autograd) · [[GitHub]](https://github.com/olimci/autograd)  
+- Built an autograd and machine learning library in pure Go.  
+- Implemented tensors, convolution layers, and optimizers; trained an MNIST model to 96% accuracy.  
+- Compiled to WebAssembly for an inference demos.  
 
-**Minimalist Static Site Generator**
-- Features a lightweight CLI for straightforward project setup and customisation.
-- Includes a live preview with hot reloading.
-- Source available [here](https://github.com/olimci/ssg)
+**Custom Static Site Generator** [[GitHub](https://github.com/olimci/ssg)]  
+- Implemented a lightweight CLI tool supporting live preview with hot reloading.  
+- Added configuration for automatic deployments and flexible project setup.  
 
-**n-Dimensional Cube Visualizer** [[Demo]](/posts/shape-rotation)
-- Go-based interactive visualiser for exploring rotating hypercubes.
-- 
+**Relativistic Asteroids Clone** [[Post]](/posts/relativistic-asteroids)  
+- Created an arcade-style asteroids game using a modified Verlet solver for special relativity.  
+- Simulated relativistic collisions and time dilation at near-c velocities.  
 
-**Relativistic Asteroids Clone** [[Demo]](/posts/relativistic-asteroids)
-- Arcade-style asteroids clone using modified Verlet solver for special relativity.
-- Includes relativistic collision approximation at near-c velocities.
+**n-Dimensional Cube Visualizer** [[Post]](/posts/shape-rotation)  
+- Developed an interactive Go visualizer for exploring high-dimensional shape rotations.  
 
-**AI-Powered Email Summariser Discord Bot**
-- Uses LLMs to summarise university emails and post concise updates to Discord on a daily/weekly schedule.
+**AI-Powered Email Summariser Bot**  
+- Built a Discord bot using LLMs to parse and summarise university emails.  
+- Automated daily/weekly digest posts for rapid information access. 
+
 ---
 
-## Other Skills
+## Skills
 
-- **Languages**: Go, Python, SQL, Javascript
-- **Tools**: Linux, Docker, Cloudflare, Azure, Tailscale
-- **Human Languages**: Beginner Japanese
-- **Miscellaneous**:
-    - I can type LaTeX fast enough to keep up with lectures
-    - Solved a Rubik’s cube in 44 seconds (once)
-    - Climbed a 7a route (once)
+- **Languages**: Go, Python, SQL, JavaScript  
+- **Frameworks/Libraries**: PyTorch, Apple MLX 
+- **Tools**: Linux, Nix, Docker, PostgreSQL  
+- **Other**:  
+  - Intermediate Japanese  
+  - Fast LaTeX typing for live mathematical note-taking  
+  - Solved a Rubik’s cube in 44 seconds 
 
 ---
 
