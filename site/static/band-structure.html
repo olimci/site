@@ -19,6 +19,16 @@
             background: rgba(0,0,0,0.6); color: white; font: 12px/1.3 system-ui, sans-serif;
             border-radius: 4px; pointer-events: none;
         }
+
+        /* Legend UI */
+        #legend {
+            position: absolute; top: 12px; right: 12px;
+            padding: 8px; border-radius: 6px;
+            background: rgba(0,0,0,0.6); color: #fff;
+            font: 12px system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+            pointer-events: none;
+        }
+        #legend canvas { display: block; }
     </style>
 </head>
 <body>
@@ -34,7 +44,7 @@
         </label>
         <label title="Normalize by band min/max or the global min/max across stored bands">
             Norm:
-            <label><input type="radio" name="norm" value="band" checked /> per‑band</label>
+            <label><input type="radio" name="norm" value="band" checked /> per-band</label>
             <label><input type="radio" name="norm" value="global" /> global</label>
         </label>
         <button id="reload">Load</button>
@@ -126,9 +136,7 @@
           out vec4 outColor;
 
           vec3 colormap(float t) {
-            // simple blue -> cyan -> yellow -> red
             t = clamp(t, 0.0, 1.0);
-
             if (t < 0.5) {
                 return vec3(0.0, 0.0, 2.0*(0.5-t));
             } else {
@@ -137,15 +145,14 @@
           }
 
           void main() {
-            vec3 tc = (u_worldToTex * vec4(vWorldPos, 1.0)).xyz;   // world -> texture [0,1]^3
-            // clip outside the volume bounds
+            vec3 tc = (u_worldToTex * vec4(vWorldPos, 1.0)).xyz;
             if (any(lessThan(tc, vec3(0.0))) || any(greaterThan(tc, vec3(1.0)))) discard;
 
             float inBZ = texture(u_mask, tc).r;
             if (inBZ < 0.5) discard;
 
             float e = texture(u_volume, tc).r;
-            float t = (e - u_emin) * u_invRange; // normalize
+            float t = (e - u_emin) * u_invRange;
             vec3 rgb = colormap(t);
             outColor = vec4(rgb, u_opacity);
           }`
@@ -153,7 +160,6 @@
 
     const plane = new THREE.Mesh(new THREE.PlaneGeometry(2, 2, 1, 1), sliceMaterial);
     plane.position.set(0, 0, 0);
-
 
     const volumeGroup = new THREE.Group();
     volumeGroup.position.set(0, 0, 0);
@@ -262,6 +268,8 @@
         const invRange = 1.0 / Math.max(1e-12, emax - emin);
         sliceMaterial.uniforms.u_emin.value = emin;
         sliceMaterial.uniforms.u_invRange.value = invRange;
+
+        updateLegend();
     }
 
     function toIndex3D(x, y, z, nx, ny, nz) { return x + nx * (y + ny * z); }
@@ -461,6 +469,106 @@
         orientPlaneToCamera();
         controls.update();
         renderer.render(scene, camera);
+    }
+
+    function ensureLegend() {
+        let legend = document.getElementById('legend');
+        if (!legend) {
+            legend = document.createElement('div');
+            legend.id = 'legend';
+            const canvas = document.createElement('canvas');
+            canvas.id = 'legendCanvas';
+            canvas.width = 100;
+            canvas.height = 260;
+            legend.appendChild(canvas);
+            container.appendChild(legend);
+        }
+        return /** @type {HTMLCanvasElement} */(document.getElementById('legendCanvas'));
+    }
+
+    function jsColormap(t) {
+        t = Math.max(0, Math.min(1, t));
+        if (t < 0.5) {
+            const b = Math.round(255 * (2.0 * (0.5 - t)));
+            return [0, 0, b];
+        } else {
+            const r = Math.round(255 * (2.0 * (t - 0.5)));
+            return [r, 0, 0];
+        }
+    }
+
+    function fmtEV(x) {
+        const ax = Math.abs(x);
+        if (ax >= 100) return x.toFixed(0);
+        if (ax >= 10)  return x.toFixed(1);
+        if (ax >= 1)   return x.toFixed(2);
+        return x.toFixed(3);
+    }
+
+    function updateLegend() {
+        const canvas = ensureLegend();
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+
+        const W = canvas.width, H = canvas.height;
+        ctx.clearRect(0, 0, W, H);
+
+        const padTop = 10, padBot = 12, padLeft = 8, gap = 8;
+        const barW = 22;
+        const barX = padLeft;
+        const y0 = padTop;
+        const y1 = H - padBot;
+        const labelX = barX + barW + gap;
+
+        const [gMin, gMax] = state.globalMinMax;
+        const [cMin, cMax] = (state.normMode === 'band')
+            ? state.bandMinMax[state.currentBand]
+            : state.globalMinMax;
+
+        const gRange = Math.max(1e-12, gMax - gMin);
+        const cRange = Math.max(1e-12, cMax - cMin);
+
+        function yForE(E) {
+            const t = (E - gMin) / gRange;
+            return y1 - t * (y1 - y0);
+        }
+
+        ctx.fillStyle = 'rgba(255,255,255,0.12)';
+        ctx.fillRect(barX, y0, barW, y1 - y0);
+
+        const yy0 = Math.round(Math.max(y0, Math.min(y1, yForE(cMax))));
+        const yy1 = Math.round(Math.max(y0, Math.min(y1, yForE(cMin))));
+        for (let y = yy0; y <= yy1; y++) {
+            const tGlob = (y1 - y) / (y1 - y0);
+            const E = gMin + tGlob * gRange;
+            const tCol = (E - cMin) / cRange;
+            const [r, g, b] = jsColormap(tCol);
+            ctx.fillStyle = `rgb(${r},${g},${b})`;
+            ctx.fillRect(barX, y, barW, 1);
+        }
+
+        ctx.strokeStyle = 'rgba(255,255,255,0.6)';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(barX + 0.5, y0 + 0.5, barW, y1 - y0);
+
+        ctx.font = '12px system-ui, -apple-system, Segoe UI, Roboto, sans-serif';
+        ctx.textBaseline = 'middle';
+        ctx.fillStyle = '#fff';
+
+        function tick(y, text, strong=false) {
+            ctx.strokeStyle = strong ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.5)';
+            ctx.beginPath();
+            ctx.moveTo(barX + barW + 2, Math.round(y) + 0.5);
+            ctx.lineTo(barX + barW + 8, Math.round(y) + 0.5);
+            ctx.stroke();
+            ctx.fillText(text, labelX, y);
+        }
+
+        tick(yForE(gMax), `${fmtEV(gMax)} eV`);
+        tick(yForE(gMin), `${fmtEV(gMin)} eV`);
+
+        tick(yForE(cMax), `${fmtEV(cMax)} eV`, true);
+        tick(yForE(cMin), `${fmtEV(cMin)} eV`, true);
     }
 
     async function boot() {
