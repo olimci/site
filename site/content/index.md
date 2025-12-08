@@ -3,7 +3,7 @@ title: "Shizuka"
 date: "2024-12-07"
 template: index.tmpl
 data:
-  repos: ['autograd', 'ssg', 'arp', 'chat', 'autograd-mnist', 'nix-conf']
+  repos: ['autograd', 'ssg', 'arp', 'chat', 'autograd-mnist', 'nix-conf', 'AoC-2025']
 ---
 ```
          ___ _               _ __     
