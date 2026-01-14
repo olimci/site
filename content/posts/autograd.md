@@ -1,17 +1,23 @@
----
-title: "go autograd"
-description: "research-led coursework on optical rotation"
-date: "2025-09-01"
-template: "post.tmpl"
-meta_description: "Pure Go Autograd Library"
-meta_keywords: "Oliver McInnes, Oli McInnes, Autograd, Golang, Machine Learning"
++++
+title = "go autograd"
+description = "research-led coursework on optical rotation"
+date = 2025-09-01T00:00:00Z
+template = "post"
+sections = "posts"
+slug = "posts/autograd"
 
-sitemap_include: true
-sitemap_change_freq: "never"
-sitemap_priority: "0.6"
+[params]
+meta_description = "Pure Go Autograd Library"
+meta_keywords = "Oliver McInnes, Oli McInnes, Autograd, Golang, Machine Learning"
 
-rss_include: true
----
+[sitemap]
+include = true
+changefreq = "never"
+priority = 0.6
+
+[rss]
+include = true
++++
 
 for [this project](https://github.com/olimci/autograd) i set myself the challenge of writing a complete autograd / machine learning library from scratch in go.
 

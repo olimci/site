@@ -1,17 +1,23 @@
----
-title: "bio"
-description: "about me"
-date: "2025-06-27"
-template: "post.tmpl"
-meta_description: "Informal bio of Oli McInnes"
-meta_keywords: "Oliver McInnes, Oli McInnes, biography, about me, physics student, Durham, personal"
++++
+title = "bio"
+description = "about me"
+date = 2025-06-27T00:00:00Z
+template = "post"
+sections = "pages"
+slug = "bio"
 
-sitemap_include: true
-sitemap_change_freq: "yearly"
-sitemap_priority: "0.8"
+[params]
+meta_description = "Informal bio of Oli McInnes"
+meta_keywords = "Oliver McInnes, Oli McInnes, biography, about me, physics student, Durham, personal"
 
-rss_include: false
----
+[sitemap]
+include = true
+changefreq = "yearly"
+priority = 0.8
+
+[rss]
+include = false
++++
 
 # hey, i'm oli!
 

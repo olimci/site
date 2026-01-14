@@ -4,22 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta name="description" content="oli's site">
+    <meta name="description" content="{{ .Site.Description }}">
     <meta name="keywords" content="Oliver McInnes, Oli McInnes, Oli, Oliver, McInnes, programming, physics, personal blog, cv">
     <meta name="author" content="Oliver McInnes">
 
-    <link rel="alternate" type="application/rss+xml" title="oli's site rss" href="https://oli.mcinnes.cc/rss.xml">
+    <link rel="alternate" type="application/rss+xml" title="oli's site rss" href="{{ .Site.URL }}/rss.xml">
 
-    <meta property="og:title" content="oli.mcinnes.cc">
-    <meta property="og:description" content="Oli's Site">
-    <meta property="og:image" content="https://oli.mcinnes.cc/favicon.png"> <!-- optional if you want a preview image -->
-    <meta property="og:url" content="https://oli.mcinnes.cc">
+    <meta property="og:title" content="{{ .Site.Title }}">
+    <meta property="og:description" content="{{ .Site.Description }}">
+    <meta property="og:image" content="{{ .Site.URL }}/favicon.png"> <!-- optional if you want a preview image -->
+    <meta property="og:url" content="{{ .Site.URL }}">
     <meta property="og:type" content="website">
 
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="oli.mcinnes.cc">
-    <meta name="twitter:description" content="Oli's Site">
-    <meta name="twitter:image" content="https://oli.mcinnes.cc/favicon.png">
+    <meta name="twitter:title" content="{{ .Site.Title }}">
+    <meta name="twitter:description" content="{{ .Site.Description }}">
+    <meta name="twitter:image" content="{{ .Site.URL }}/favicon.png">
 
     <title>oli.mcinnes.cc</title>
     <link rel="stylesheet" href="/styles.css" />
@@ -29,8 +29,8 @@
 </head>
 <body>
 <div class="content">
-    <div class="ascii">
-        {{ .Content }}
+    <div class="ascii-wrap">
+        <pre class="ascii">{{ .Page.Body }}</pre>
     </div>
 
     <div class="links-inline">
@@ -47,21 +47,22 @@
 
     <div class="section green">
         <strong>POSTS</strong><br />
-        {{range $post := index .PageMap "/posts"}}
-            <a href="{{ $post.Path }}">{{ $post.Title }}</a>
-        {{end}}
+        {{ $posts := where "Section" "posts" .Site.Collections.Latest }}
+        {{ range $post := $posts }}
+            <a href="/{{ $post.Slug }}/">{{ $post.Title }}</a>
+        {{ end }}
     </div>
 
     <div class="section gold">
         <strong>REPOS</strong><br />
-        {{range $repo := .Data.repos}}
+        {{range $repo := index .Page.Params "repos"}}
             <a href="https://github.com/olimci/{{ $repo }}">{{ $repo }}</a>
         {{end}}
     </div>
 </div>
 
 <div class="footer">
-    &copy; Oliver McInnes; 2025
+    &copy; Oliver McInnes; 2026
 </div>
 
 <script>

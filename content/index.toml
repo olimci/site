@@ -1,0 +1,27 @@
+title = "Shizuka"
+date = 2024-12-07T00:00:00Z
+template = "index"
+
+body = '''
+         ___ _               _ __
+  ____  / (_| )_____   _____(_) /____
+ / __ \/ / /|// ___/  / ___/ / __/ _ \
+/ /_/ / / /  (__  )  (__  ) / /_/  __/
+\____/_/_/  /____/  /____/_/\__/\___/
+'''
+
+[sitemap]
+include = true
+changefreq = "weekly"
+priority = 1.0
+
+[params]
+repos = [
+  "autograd",
+  "shizuka",
+  "arp",
+  "chat",
+  "autograd-mnist",
+  "nix-conf",
+  "AoC-2025",
+]

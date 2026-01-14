@@ -4,33 +4,33 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <meta name="description" content="{{ .MetaDescription }}">
-    <meta name="keywords" content="{{ .MetaKeywords }}">
-    <meta name="author" content="net">
+    <meta name="description" content="{{ with (index .Page.Params "meta_description") }}{{ . }}{{ else }}{{ $.Page.Description }}{{ end }}">
+    <meta name="keywords" content="{{ with (index .Page.Params "meta_keywords") }}{{ . }}{{ end }}">
+    <meta name="author" content="Oliver McInnes">
 
     <meta property="og:title" content="oli.mcinnes.cc">
     <meta property="og:description" content="Oli's Site">
-    <meta property="og:image" content="https://oli.mcinnes.cc/favicon.png">
+    <meta property="og:image" content="https://oli.mcinnes.cc/favicon.png"> <!-- optional if you want a preview image -->
     <meta property="og:url" content="https://oli.mcinnes.cc">
     <meta property="og:type" content="website">
 
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="oli.mcinnes.cc">
-    <meta name="twitter:description" content="{{ .MetaDescription }}">
+    <meta name="twitter:description" content="{{ with (index .Page.Params "meta_description") }}{{ . }}{{ else }}{{ $.Page.Description }}{{ end }}">
     <meta name="twitter:image" content="https://oli.mcinnes.cc/favicon.png">
 
-    <title>{{ .Title }}</title>
+    <title>{{ .Page.Title }}</title>
     <link rel="stylesheet" href="/styles.css" />
     <link rel="icon" href="/favicon.png" type="image/png" />
 </head>
 <body>
 <div class="content">
     <div class="section blue">
-        <strong>{{ .Title }}</strong><br />
+        <strong>{{ .Page.Title }}</strong><br />
     </div>
 
     <article>
-        {{ .Content }}
+        {{ .Page.Body }}
     </article>
 
     <div class="section blue">
@@ -39,7 +39,7 @@
 </div>
 
 <div class="footer">
-    &copy; Oliver McInnes; 2025
+    &copy; Oliver McInnes; 2026
 </div>
 </body>
 </html>

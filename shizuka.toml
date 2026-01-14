@@ -1,0 +1,33 @@
+shizuka.version = "0.1.0"
+
+[site]
+title = "oli's site"
+description = "Personal website of Oli McInnes"
+url = "https://oli.mcinnes.cc"
+
+[build]
+output = "dist"
+minify = true
+
+[build.steps.static]
+source = "static"
+destination = "."
+
+[build.steps.content]
+template_glob = "templates/*.tmpl"
+source = "content"
+destination = "."
+
+[build.steps.redirects]
+shorten = "/q"
+output = "_redirects"
+
+[build.steps.rss]
+output = "rss.xml"
+sections = ["posts", "pages"]
+limit = 50
+include_drafts = false
+
+[build.steps.sitemap]
+output = "sitemap.xml"
+include_drafts = false
