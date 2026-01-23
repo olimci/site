@@ -21,6 +21,6 @@ include = true
 
 # band structure
 
-this is a silicon band structure visualisation. the underlying band data was calculated with python, and it’s rendered with three.js.
+this is a silicon band structure visualisation. the underlying band data was calculated with python, and it’s rendered with three.js. it scored 75%.
 
-you can view it [here](/band-structure.html).
+you can view it [here](/band-structure.html) and see the poster pdf [here](/pdfs/comp_poster.pdf)

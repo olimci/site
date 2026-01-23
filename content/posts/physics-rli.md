@@ -21,4 +21,4 @@ include = true
 
 this is my research-led-investigation project on optical rotation of chiral molecules, from 2nd year. it scored 63%.
 
-[see the full pdf](/RLI.pdf)
+[see the full pdf](/pdfs/RLI.pdf)
