@@ -160,6 +160,10 @@
                 background: var(--slider-thumb);
                 border: 2px solid #111;
             }
+            #bandCount {
+                font-size: 12px;
+                color: var(--muted);
+            }
             #bandValue {
                 min-width: 2ch;
                 color: var(--text);
@@ -214,6 +218,43 @@
                 z-index: 3;
             }
 
+            #bandLegends {
+                position: absolute;
+                inset: 0;
+                pointer-events: none;
+                z-index: 2;
+            }
+            .band-legend {
+                position: absolute;
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                padding: 4px;
+                background: rgba(10, 12, 16, 0.7);
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                font:
+                    10px "IBM Plex Mono",
+                    "SFMono-Regular",
+                    Menlo,
+                    Monaco,
+                    Consolas,
+                    "Liberation Mono",
+                    "Courier New",
+                    monospace;
+                color: var(--text);
+                white-space: nowrap;
+            }
+            .band-legend canvas {
+                display: block;
+            }
+            .band-legend .labels {
+                display: flex;
+                flex-direction: column;
+                gap: 2px;
+                line-height: 1.1;
+                color: var(--muted);
+            }
+
             /* Legend UI */
             #legend {
                 position: absolute;
@@ -244,7 +285,7 @@
         <div id="app">
             <aside id="panel" class="panel">
                 <div class="panel-header">
-                    <div class="panel-title">Silicon Band Structure</div>
+                    <div class="panel-title">Band Structure</div>
                     <button
                         id="togglePanel"
                         class="ghost"
@@ -254,7 +295,23 @@
                     </button>
                 </div>
                 <div class="panel-content">
-                    <label>
+                    <div class="control-row">
+                        <span class="control-label">View:</span>
+                        <label>
+                            <input
+                                type="radio"
+                                name="view"
+                                value="single"
+                                checked
+                            />
+                            Single
+                        </label>
+                        <label>
+                            <input type="radio" name="view" value="multi" />
+                            All
+                        </label>
+                    </div>
+                    <label id="bandControl">
                         Band:
                         <input
                             id="band"
@@ -265,6 +322,10 @@
                         />
                         <span id="bandValue">0</span>
                     </label>
+                    <div class="control-row" id="bandCountRow">
+                        <span class="control-label">Bands:</span>
+                        <span id="bandCount">--</span>
+                    </div>
                     <label
                         title="Normalize by band min/max or the global min/max across stored bands"
                     >
@@ -319,7 +380,7 @@
             import { ConvexGeometry } from "three/examples/jsm/geometries/ConvexGeometry.js";
             import * as zarr from "https://cdn.jsdelivr.net/npm/zarrita@0.5.0/+esm";
 
-            const DEFAULT_ZARR_URL = "data/fcc_bz_bands.zarr";
+            const DEFAULT_ZARR_URL = "../data/fcc_bz_bands.zarr";
             const state = {
                 zarrUrl: DEFAULT_ZARR_URL,
                 bandMinMax: [],
@@ -336,12 +397,16 @@
                 maskView: null,
                 currentBand: 0,
                 normMode: "band",
+                viewMode: "single",
                 autoRotate: true,
                 ready: false,
             };
 
             const bandSel = document.getElementById("band");
             const bandValue = document.getElementById("bandValue");
+            const bandControl = document.getElementById("bandControl");
+            const bandCountRow = document.getElementById("bandCountRow");
+            const bandCount = document.getElementById("bandCount");
             const panel = document.getElementById("panel");
             const togglePanelBtn = document.getElementById("togglePanel");
             const togglePanelFloating = document.getElementById(
@@ -349,6 +414,9 @@
             );
             const autoRotateInput = document.getElementById("autoRotate");
             const resetRotationBtn = document.getElementById("resetRotation");
+            let bandLegendsContainer = null;
+            const bandLegends = [];
+            const viewInputs = document.querySelectorAll('input[name="view"]');
             document.querySelectorAll('input[name="norm"]').forEach((r) =>
                 r.addEventListener("change", (e) => {
                     state.normMode = e.target.value;
@@ -371,7 +439,19 @@
             autoRotateInput.addEventListener("change", (e) => {
                 state.autoRotate = e.target.checked;
             });
-
+            bandSel.addEventListener("input", () => {
+                setBandFromUI();
+            });
+            bandSel.addEventListener("change", () => {
+                setBandFromUI();
+            });
+            viewInputs.forEach((input) => {
+                input.addEventListener("change", (e) => {
+                    if (e.target && e.target.checked) {
+                        setViewMode(e.target.value);
+                    }
+                });
+            });
             const container = document.getElementById("canvas");
             const renderer = new THREE.WebGLRenderer({ antialias: true });
             renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
@@ -396,30 +476,32 @@
             );
             controls.setGizmosVisible(false);
             controls.enablePan = false;
+            controls.enableRotate = false;
             controls.radiusFactor = 1.2;
 
-            const sliceMaterial = new THREE.ShaderMaterial({
-                glslVersion: THREE.GLSL3,
-                uniforms: {
-                    u_worldToTex: { value: new THREE.Matrix4() },
-                    u_volume: { value: null },
-                    u_mask: { value: null },
-                    u_emin: { value: 0.0 },
-                    u_invRange: { value: 1.0 },
-                    u_opacity: { value: 1.0 },
-                },
-                transparent: false,
-                depthWrite: true,
-                depthTest: true,
-                side: THREE.DoubleSide,
-                vertexShader: /* glsl */ `
+            function createSliceMaterial() {
+                return new THREE.ShaderMaterial({
+                    glslVersion: THREE.GLSL3,
+                    uniforms: {
+                        u_worldToTex: { value: new THREE.Matrix4() },
+                        u_volume: { value: null },
+                        u_mask: { value: null },
+                        u_emin: { value: 0.0 },
+                        u_invRange: { value: 1.0 },
+                        u_opacity: { value: 1.0 },
+                    },
+                    transparent: false,
+                    depthWrite: true,
+                    depthTest: true,
+                    side: THREE.DoubleSide,
+                    vertexShader: /* glsl */ `
           varying vec3 vWorldPos;
           void main() {
             vec4 worldPos = modelMatrix * vec4(position, 1.0);
             vWorldPos = worldPos.xyz;
             gl_Position = projectionMatrix * viewMatrix * worldPos;
           }`,
-                fragmentShader: /* glsl */ `
+                    fragmentShader: /* glsl */ `
           precision highp float;
           precision highp sampler3D;
           in vec3 vWorldPos;
@@ -452,39 +534,27 @@
             vec3 rgb = colormap(t);
             outColor = vec4(rgb, u_opacity);
           }`,
-            });
+                });
+            }
 
-            const plane = new THREE.Mesh(
-                new THREE.PlaneGeometry(2, 2, 1, 1),
-                sliceMaterial,
-            );
-            plane.position.set(0, 0, 0);
-
-            const volumeGroup = new THREE.Group();
-            volumeGroup.position.set(0, 0, 0);
-            volumeGroup.scale.set(1, 1, 1);
-
-            scene.add(volumeGroup);
-            scene.add(plane);
+            const planeGeometry = new THREE.PlaneGeometry(2, 2, 1, 1);
+            const bandPlanes = [];
+            const bandGroups = [];
+            const bandMaterials = [];
+            setViewMode(state.viewMode);
 
             const autoRotateAxis = new THREE.Vector3(0, 1, 0);
             const autoRotateSpeed = 0.12;
             const clock = new THREE.Clock();
+            const rotationQuat = new THREE.Quaternion();
+            const tempQuat = new THREE.Quaternion();
+            const xAxis = new THREE.Vector3(1, 0, 0);
+            const yAxis = new THREE.Vector3(0, 1, 0);
 
             resetRotationBtn.addEventListener("click", () => {
-                volumeGroup.rotation.set(0, 0, 0);
-                updateWorldToTex();
+                rotationQuat.identity();
+                applyRotationToBands();
             });
-
-            const cubeEdges = new THREE.LineSegments(
-                new THREE.EdgesGeometry(new THREE.BoxGeometry(2, 2, 2)),
-                new THREE.LineBasicMaterial({
-                    color: 0xffffff,
-                    transparent: false,
-                    opacity: 1.0,
-                }),
-            );
-            volumeGroup.add(cubeEdges);
 
             let dragging = false,
                 lastX = 0,
@@ -503,15 +573,27 @@
                 const dy = (e.clientY - lastY) / 200;
                 lastX = e.clientX;
                 lastY = e.clientY;
-                volumeGroup.rotateOnWorldAxis(new THREE.Vector3(0, 1, 0), dx);
-                volumeGroup.rotateOnWorldAxis(new THREE.Vector3(1, 0, 0), dy);
-                updateWorldToTex();
+                tempQuat.setFromAxisAngle(yAxis, dx);
+                rotationQuat.premultiply(tempQuat);
+                tempQuat.setFromAxisAngle(xAxis, dy);
+                rotationQuat.premultiply(tempQuat);
+                applyRotationToBands();
             });
+
+            function applyRotationToBands() {
+                for (const group of bandGroups) {
+                    group.quaternion.copy(rotationQuat);
+                    group.updateMatrixWorld(true);
+                }
+                updateWorldToTex();
+            }
 
             window.addEventListener("resize", () => {
                 renderer.setSize(container.clientWidth, container.clientHeight);
                 camera.aspect = container.clientWidth / container.clientHeight;
                 camera.updateProjectionMatrix();
+                fitCameraToView();
+                updateBandLegendPositions();
             });
 
             function msg(text) {
@@ -536,9 +618,9 @@
                 return ok;
             }
 
-            function computeWorldToTex() {
+            function computeWorldToTex(group) {
                 const worldToVolume = new THREE.Matrix4()
-                    .copy(volumeGroup.matrixWorld)
+                    .copy(group.matrixWorld)
                     .invert();
 
                 const kMin = state.kMin,
@@ -600,32 +682,32 @@
 
             function updateWorldToTex() {
                 if (!state.ready) return;
-                sliceMaterial.uniforms.u_worldToTex.value.copy(
-                    computeWorldToTex(),
-                );
+                for (let i = 0; i < bandMaterials.length; i++) {
+                    bandMaterials[i].uniforms.u_worldToTex.value.copy(
+                        computeWorldToTex(bandGroups[i]),
+                    );
+                }
             }
 
             function setPlaneSizeToCube() {
-                plane.scale.set(2, 2, 1);
-
-                const rx = state.kMax.x - state.kMin.x;
-                const ry = state.kMax.y - state.kMin.y;
-                const rz = state.kMax.z - state.kMin.z;
-                const maxr = Math.max(rx, ry, rz);
-                cubeEdges.scale.set(rx / maxr, ry / maxr, rz / maxr);
+                for (const plane of bandPlanes) {
+                    plane.scale.set(2, 2, 1);
+                }
             }
 
             function updateEnergyRange() {
-                const b = state.currentBand;
-                const [emin, emax] =
-                    state.normMode === "band"
-                        ? state.bandMinMax[b]
-                        : state.globalMinMax;
-                const invRange = 1.0 / Math.max(1e-12, emax - emin);
-                sliceMaterial.uniforms.u_emin.value = emin;
-                sliceMaterial.uniforms.u_invRange.value = invRange;
+                for (let i = 0; i < bandMaterials.length; i++) {
+                    const [emin, emax] =
+                        state.normMode === "band"
+                            ? state.bandMinMax[i]
+                            : state.globalMinMax;
+                    const invRange = 1.0 / Math.max(1e-12, emax - emin);
+                    bandMaterials[i].uniforms.u_emin.value = emin;
+                    bandMaterials[i].uniforms.u_invRange.value = invRange;
+                }
 
                 updateLegend();
+                updateBandLegendVisibility();
             }
 
             function toIndex3D(x, y, z, nx, ny, nz) {
@@ -635,7 +717,7 @@
                 return ((b * nx + x) * ny + y) * nz + z;
             }
 
-            function uploadBandTo3DTexture(band) {
+            function createBandTexture(band) {
                 const { nx, ny, nz, energiesView } = state;
                 const E = energiesView.data;
                 const texData = new Float32Array(nx * ny * nz);
@@ -669,10 +751,10 @@
                 tex.wrapS = tex.wrapT = tex.wrapR = THREE.ClampToEdgeWrapping;
                 tex.unpackAlignment = 1;
                 tex.needsUpdate = true;
-                sliceMaterial.uniforms.u_volume.value = tex;
+                return tex;
             }
 
-            function uploadMaskTo3DTexture() {
+            function createMaskTexture() {
                 const { nx, ny, nz, maskView } = state;
                 const M = maskView.data;
                 const texData = new Float32Array(nx * ny * nz);
@@ -692,24 +774,243 @@
                 tex.wrapS = tex.wrapT = tex.wrapR = THREE.ClampToEdgeWrapping;
                 tex.unpackAlignment = 1;
                 tex.needsUpdate = true;
-                sliceMaterial.uniforms.u_mask.value = tex;
+                return tex;
+            }
+
+            function ensureBandLegendsContainer() {
+                if (!bandLegendsContainer) {
+                    bandLegendsContainer = document.createElement("div");
+                    bandLegendsContainer.id = "bandLegends";
+                    container.appendChild(bandLegendsContainer);
+                }
+                return bandLegendsContainer;
+            }
+
+            function clearBandLegends() {
+                if (bandLegendsContainer) {
+                    bandLegendsContainer.innerHTML = "";
+                }
+                bandLegends.length = 0;
+            }
+
+            function buildBandLegends() {
+                const legendContainer = ensureBandLegendsContainer();
+                clearBandLegends();
+                for (let i = 0; i < state.bandsStored; i++) {
+                    const legend = document.createElement("div");
+                    legend.className = "band-legend";
+
+                    const canvas = document.createElement("canvas");
+                    canvas.width = 12;
+                    canvas.height = 32;
+                    legend.appendChild(canvas);
+
+                    const labels = document.createElement("div");
+                    labels.className = "labels";
+                    const maxLabel = document.createElement("span");
+                    const minLabel = document.createElement("span");
+                    labels.appendChild(maxLabel);
+                    labels.appendChild(minLabel);
+                    legend.appendChild(labels);
+
+                    legendContainer.appendChild(legend);
+
+                    const [emin, emax] = state.bandMinMax[i];
+                    maxLabel.textContent = `${fmtEV(emax)} eV`;
+                    minLabel.textContent = `${fmtEV(emin)} eV`;
+                    drawBandLegend(canvas, emin, emax);
+
+                    bandLegends.push({
+                        el: legend,
+                        canvas,
+                        maxLabel,
+                        minLabel,
+                        emin,
+                        emax,
+                    });
+                }
+                updateBandLegendVisibility();
+            }
+
+            function updateBandLegendVisibility() {
+                if (!bandLegendsContainer) return;
+                const show =
+                    state.normMode === "band" && state.viewMode === "multi";
+                bandLegendsContainer.style.display = show ? "block" : "none";
+            }
+
+            const legendCenter = new THREE.Vector3();
+            const legendRight = new THREE.Vector3();
+            const legendUp = new THREE.Vector3();
+            const cameraRight = new THREE.Vector3();
+            const cameraUp = new THREE.Vector3();
+
+            function updateBandLegendPositions() {
+                if (
+                    !bandLegendsContainer ||
+                    state.normMode !== "band" ||
+                    state.viewMode !== "multi" ||
+                    bandLegends.length === 0
+                )
+                    return;
+
+                const width = container.clientWidth;
+                const height = container.clientHeight;
+                const halfSize = 1;
+                const offset = 8;
+
+                cameraRight.set(1, 0, 0).applyQuaternion(camera.quaternion);
+                cameraUp.set(0, 1, 0).applyQuaternion(camera.quaternion);
+
+                for (let i = 0; i < bandLegends.length; i++) {
+                    const legend = bandLegends[i];
+                    const center = bandGroups[i].position;
+
+                    legendCenter.copy(center).project(camera);
+                    const cx = (legendCenter.x * 0.5 + 0.5) * width;
+                    const cy = (-legendCenter.y * 0.5 + 0.5) * height;
+
+                    legendRight
+                        .copy(center)
+                        .addScaledVector(cameraRight, halfSize)
+                        .project(camera);
+                    const rx = (legendRight.x * 0.5 + 0.5) * width;
+
+                    legendUp
+                        .copy(center)
+                        .addScaledVector(cameraUp, halfSize)
+                        .project(camera);
+                    const uy = (-legendUp.y * 0.5 + 0.5) * height;
+
+                    const halfWidthPx = Math.abs(rx - cx);
+                    const halfHeightPx = Math.abs(uy - cy);
+                    const legendHeight = legend.el.offsetHeight || 0;
+                    const x = cx + halfWidthPx + offset;
+                    const y = cy - Math.max(halfHeightPx, legendHeight / 2);
+                    legend.el.style.transform = `translate(${Math.round(
+                        x,
+                    )}px, ${Math.round(y)}px)`;
+                }
+            }
+
+            function clearBands() {
+                for (const plane of bandPlanes) {
+                    scene.remove(plane);
+                }
+                for (const group of bandGroups) {
+                    scene.remove(group);
+                }
+                bandPlanes.length = 0;
+                bandGroups.length = 0;
+                bandMaterials.length = 0;
+                clearBandLegends();
+            }
+
+            function buildBands(maskTexture) {
+                clearBands();
+                for (let i = 0; i < state.bandsStored; i++) {
+                    const material = createSliceMaterial();
+                    material.uniforms.u_mask.value = maskTexture;
+                    const plane = new THREE.Mesh(planeGeometry, material);
+                    const group = new THREE.Group();
+                    group.scale.set(1, 1, 1);
+
+                    addBZWireframe(group);
+
+                    bandMaterials.push(material);
+                    bandPlanes.push(plane);
+                    bandGroups.push(group);
+                    scene.add(group);
+                    scene.add(plane);
+                }
             }
 
             function setBandFromUI() {
                 state.currentBand = parseInt(bandSel.value, 10);
                 bandValue.textContent = String(state.currentBand);
-                uploadBandTo3DTexture(state.currentBand);
-                updateEnergyRange();
+                updateBandVisibility();
+                layoutBands();
+                fitCameraToView();
+                updateLegend();
+                updateBandLegendPositions();
+                updateWorldToTex();
             }
 
-            function fillBandSelector() {
-                bandSel.min = "0";
-                bandSel.max = String(Math.max(0, state.bandsStored - 1));
-                bandSel.step = "1";
-                bandSel.value = "0";
-                bandValue.textContent = "0";
-                bandSel.oninput = setBandFromUI;
-                bandSel.onchange = setBandFromUI;
+            function updateBandVisibility() {
+                const single = state.viewMode === "single";
+                for (let i = 0; i < bandGroups.length; i++) {
+                    const visible = single ? i === state.currentBand : true;
+                    bandGroups[i].visible = visible;
+                    bandPlanes[i].visible = visible;
+                }
+            }
+
+            function setViewMode(mode) {
+                state.viewMode = mode;
+                bandControl.hidden = false;
+                bandCountRow.hidden = mode !== "multi";
+                bandSel.disabled = mode !== "single";
+                bandControl.style.opacity = mode === "single" ? "1" : "0.4";
+                bandControl.style.pointerEvents =
+                    mode === "single" ? "auto" : "none";
+                updateBandVisibility();
+                layoutBands();
+                fitCameraToView();
+                updateBandLegendVisibility();
+                updateLegend();
+                updateBandLegendPositions();
+                updateWorldToTex();
+            }
+
+            function layoutBands() {
+                const count = state.bandsStored;
+                if (count === 0) return;
+                if (state.viewMode === "single") {
+                    const i = Math.min(
+                        Math.max(state.currentBand, 0),
+                        count - 1,
+                    );
+                    bandGroups[i].position.set(0, 0, 0);
+                    bandPlanes[i].position.set(0, 0, 0);
+                    bandGroups[i].updateMatrixWorld(true);
+                    return;
+                }
+                const cols = Math.min(4, count);
+                const rows = Math.ceil(count / cols);
+                const spacing = 2.6;
+                const offsetX = -((cols - 1) * spacing) / 2;
+                const offsetY = ((rows - 1) * spacing) / 2;
+
+                for (let i = 0; i < count; i++) {
+                    const col = i % cols;
+                    const row = Math.floor(i / cols);
+                    const x = offsetX + col * spacing;
+                    const y = offsetY - row * spacing;
+                    bandGroups[i].position.set(x, y, 0);
+                    bandPlanes[i].position.set(x, y, 0);
+                    bandGroups[i].updateMatrixWorld(true);
+                }
+            }
+
+            function fitCameraToView() {
+                const count = state.bandsStored;
+                if (count === 0) return;
+                let halfWidth = 1;
+                let halfHeight = 1;
+                if (state.viewMode === "multi") {
+                    const cols = Math.min(4, count);
+                    const rows = Math.ceil(count / cols);
+                    const spacing = 2.6;
+                    halfWidth = ((cols - 1) * spacing) / 2 + 1;
+                    halfHeight = ((rows - 1) * spacing) / 2 + 1;
+                }
+                const vFov = THREE.MathUtils.degToRad(camera.fov);
+                const hFov = 2 * Math.atan(Math.tan(vFov / 2) * camera.aspect);
+                const distForHeight = halfHeight / Math.tan(vFov / 2);
+                const distForWidth = halfWidth / Math.tan(hFov / 2);
+                const dist = Math.max(distForHeight, distForWidth) + 1.5;
+                camera.position.set(0, 0, dist);
+                camera.updateProjectionMatrix();
             }
 
             async function loadZarr(zarrUrl) {
@@ -769,25 +1070,50 @@
                 state.energiesView = await zarr.get(energiesArr);
                 state.maskView = await zarr.get(maskArr);
 
-                fillBandSelector();
+                bandCount.textContent = `All (${state.bandsStored})`;
+                bandSel.min = "0";
+                bandSel.max = String(Math.max(0, state.bandsStored - 1));
+                bandSel.step = "1";
                 state.currentBand = 0;
                 bandSel.value = "0";
                 bandValue.textContent = "0";
 
-                uploadMaskTo3DTexture();
-                uploadBandTo3DTexture(0);
+                const maskTexture = createMaskTexture();
+                buildBands(maskTexture);
+                buildBandLegends();
+
+                for (let i = 0; i < state.bandsStored; i++) {
+                    const tex = createBandTexture(i);
+                    bandMaterials[i].uniforms.u_volume.value = tex;
+                }
+
                 updateEnergyRange();
                 setPlaneSizeToCube();
-                buildBZWireframe();
+                applyRotationToBands();
+                setViewMode(state.viewMode);
                 state.ready = true;
+                updateBandLegendPositions();
                 updateWorldToTex();
 
                 clearMsg();
             }
 
-            function buildBZWireframe() {
-                if (cubeEdges && cubeEdges.parent)
-                    cubeEdges.parent.remove(cubeEdges);
+            let bzGeom = null;
+            let bzEdgesGeom = null;
+            const bzWireMaterial = new THREE.LineBasicMaterial({
+                color: 0xffffff,
+                opacity: 1.0,
+                transparent: true,
+            });
+            const bzMeshMaterial = new THREE.MeshBasicMaterial({
+                color: 0xffffff,
+                opacity: 0.0,
+                transparent: true,
+                depthWrite: false,
+            });
+
+            function ensureBZGeometry() {
+                if (bzGeom && bzEdgesGeom) return;
 
                 const eps = 1e-6;
 
@@ -868,46 +1194,43 @@
                     }
                 }
 
-                const geom = new ConvexGeometry(pts);
-                const wire = new THREE.LineSegments(
-                    new THREE.EdgesGeometry(geom),
-                    new THREE.LineBasicMaterial({
-                        color: 0xffffff,
-                        opacity: 1.0,
-                        transparent: true,
-                    }),
-                );
-                wire.name = "bzWire";
-                volumeGroup.add(wire);
-
-                const mesh = new THREE.Mesh(
-                    geom,
-                    new THREE.MeshBasicMaterial({
-                        color: 0xffffff,
-                        opacity: 0.0,
-                        transparent: true,
-                        depthWrite: false,
-                    }),
-                );
-                mesh.name = "bzMesh";
-                volumeGroup.add(mesh);
+                bzGeom = new ConvexGeometry(pts);
+                bzEdgesGeom = new THREE.EdgesGeometry(bzGeom);
             }
 
-            function orientPlaneToCamera() {
-                plane.quaternion.copy(camera.quaternion);
+            function addBZWireframe(group) {
+                ensureBZGeometry();
+                const wire = new THREE.LineSegments(
+                    bzEdgesGeom,
+                    bzWireMaterial,
+                );
+                wire.name = "bzWire";
+                group.add(wire);
+
+                const mesh = new THREE.Mesh(bzGeom, bzMeshMaterial);
+                mesh.name = "bzMesh";
+                group.add(mesh);
+            }
+
+            function orientPlanesToCamera() {
+                for (const plane of bandPlanes) {
+                    plane.quaternion.copy(camera.quaternion);
+                }
             }
 
             function animate() {
                 requestAnimationFrame(animate);
                 const delta = clock.getDelta();
                 if (state.autoRotate && state.ready && !dragging) {
-                    volumeGroup.rotateOnWorldAxis(
+                    tempQuat.setFromAxisAngle(
                         autoRotateAxis,
                         delta * autoRotateSpeed,
                     );
-                    updateWorldToTex();
+                    rotationQuat.premultiply(tempQuat);
+                    applyRotationToBands();
                 }
-                orientPlaneToCamera();
+                orientPlanesToCamera();
+                updateBandLegendPositions();
                 controls.update();
                 renderer.render(scene, camera);
             }
@@ -948,8 +1271,109 @@
                 return x.toFixed(3);
             }
 
+            function drawBandLegend(canvas, emin, emax) {
+                const ctx = canvas.getContext("2d");
+                if (!ctx) return;
+                const W = canvas.width;
+                const H = canvas.height;
+                ctx.clearRect(0, 0, W, H);
+                const range = Math.max(1e-12, emax - emin);
+                for (let y = 0; y < H; y++) {
+                    const t = 1 - y / (H - 1);
+                    const E = emin + t * range;
+                    const tCol = (E - emin) / range;
+                    const [r, g, b] = jsColormap(tCol);
+                    ctx.fillStyle = `rgb(${r},${g},${b})`;
+                    ctx.fillRect(0, y, W, 1);
+                }
+                ctx.strokeStyle = "rgba(255,255,255,0.4)";
+                ctx.lineWidth = 1;
+                ctx.strokeRect(0.5, 0.5, W - 1, H - 1);
+            }
+
             function updateLegend() {
+                const legend = document.getElementById("legend");
+                if (state.bandMinMax.length === 0) {
+                    if (legend) legend.style.display = "none";
+                    return;
+                }
+                if (state.viewMode === "multi") {
+                    if (state.normMode !== "global") {
+                        if (legend) legend.style.display = "none";
+                        return;
+                    }
+                    const canvas = ensureLegend();
+                    if (legend) legend.style.display = "block";
+                    const ctx = canvas.getContext("2d");
+                    if (!ctx) return;
+
+                    const W = canvas.width,
+                        H = canvas.height;
+                    ctx.clearRect(0, 0, W, H);
+
+                    const padTop = 10,
+                        padBot = 12,
+                        padLeft = 8,
+                        gap = 8;
+                    const barW = 22;
+                    const barX = padLeft;
+                    const y0 = padTop;
+                    const y1 = H - padBot;
+                    const labelX = barX + barW + gap;
+
+                    const [gMin, gMax] = state.globalMinMax;
+                    const gRange = Math.max(1e-12, gMax - gMin);
+
+                    function yForE(E) {
+                        const t = (E - gMin) / gRange;
+                        return y1 - t * (y1 - y0);
+                    }
+
+                    ctx.fillStyle = "rgba(255,255,255,0.12)";
+                    ctx.fillRect(barX, y0, barW, y1 - y0);
+
+                    const yy0 = Math.round(
+                        Math.max(y0, Math.min(y1, yForE(gMax))),
+                    );
+                    const yy1 = Math.round(
+                        Math.max(y0, Math.min(y1, yForE(gMin))),
+                    );
+                    for (let y = yy0; y <= yy1; y++) {
+                        const tGlob = (y1 - y) / (y1 - y0);
+                        const E = gMin + tGlob * gRange;
+                        const tCol = (E - gMin) / gRange;
+                        const [r, g, b] = jsColormap(tCol);
+                        ctx.fillStyle = `rgb(${r},${g},${b})`;
+                        ctx.fillRect(barX, y, barW, 1);
+                    }
+
+                    ctx.strokeStyle = "rgba(255,255,255,0.6)";
+                    ctx.lineWidth = 1;
+                    ctx.strokeRect(barX + 0.5, y0 + 0.5, barW, y1 - y0);
+
+                    ctx.font =
+                        "12px system-ui, -apple-system, Segoe UI, Roboto, sans-serif";
+                    ctx.textBaseline = "middle";
+                    ctx.fillStyle = "#fff";
+
+                    function tick(y, text, strong = false) {
+                        ctx.strokeStyle = strong
+                            ? "rgba(255,255,255,0.9)"
+                            : "rgba(255,255,255,0.5)";
+                        ctx.beginPath();
+                        ctx.moveTo(barX + barW + 2, Math.round(y) + 0.5);
+                        ctx.lineTo(barX + barW + 8, Math.round(y) + 0.5);
+                        ctx.stroke();
+                        ctx.fillText(text, labelX, y);
+                    }
+
+                    tick(yForE(gMax), `${fmtEV(gMax)} eV`);
+                    tick(yForE(gMin), `${fmtEV(gMin)} eV`);
+                    return;
+                }
+
                 const canvas = ensureLegend();
+                if (legend) legend.style.display = "block";
                 const ctx = canvas.getContext("2d");
                 if (!ctx) return;
 
@@ -1017,7 +1441,6 @@
 
                 tick(yForE(gMax), `${fmtEV(gMax)} eV`);
                 tick(yForE(gMin), `${fmtEV(gMin)} eV`);
-
                 tick(yForE(cMax), `${fmtEV(cMax)} eV`, true);
                 tick(yForE(cMin), `${fmtEV(cMin)} eV`, true);
             }
@@ -1025,7 +1448,7 @@
             async function boot() {
                 if (!checkWebGL2()) return;
                 state.ready = false;
-                volumeGroup.rotation.set(0, 0, 0);
+                rotationQuat.identity();
                 await loadZarr(state.zarrUrl);
             }
 
