@@ -2,45 +2,196 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <title>BZ slice viewer</title>
+        <title>Silicon Band Structure</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <style>
+            :root {
+                color-scheme: dark;
+                --bg: #0b0d10;
+                --bg-accent: #121521;
+                --panel: rgba(16, 18, 23, 0.92);
+                --panel-border: #2b3040;
+                --text: #e7e8ee;
+                --muted: #9aa0b3;
+                --accent-blue: #0000ff;
+                --accent-red: #ff0000;
+                --slider-track: #c4c8d2;
+                --slider-thumb: #f2f4f8;
+                --shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+            }
             html,
             body {
                 height: 100%;
                 margin: 0;
             }
-            #app {
-                position: absolute;
-                inset: 0;
-                display: grid;
-                grid-template-rows: auto 1fr;
+            body {
+                background: var(--bg);
+                color: var(--text);
+                font-family:
+                    "IBM Plex Mono", "SFMono-Regular", Menlo, Monaco, Consolas,
+                    "Liberation Mono", "Courier New", monospace;
             }
-            header {
-                padding: 10px 12px;
-                background: #111;
-                color: #eee;
+            #app {
+                position: relative;
+                width: 100%;
+                height: 100%;
+                overflow: hidden;
+            }
+            .panel {
+                position: absolute;
+                top: 16px;
+                left: 16px;
+                bottom: 16px;
+                width: 250px;
+                max-width: calc(100% - 32px);
+                background: var(--panel);
+                border: 1px solid var(--panel-border);
+                border-radius: 0;
+                padding: 12px 12px 16px;
                 display: flex;
+                flex-direction: column;
                 gap: 12px;
+                box-shadow: var(--shadow);
+                backdrop-filter: blur(10px);
+                transition:
+                    width 0.2s ease,
+                    padding 0.2s ease;
+                z-index: 2;
+            }
+            .panel.collapsed {
+                display: none;
+            }
+            .panel-header {
+                display: flex;
                 align-items: center;
+                justify-content: space-between;
+                gap: 8px;
+            }
+            .panel-toggle-floating {
+                position: absolute;
+                top: 16px;
+                left: 16px;
+                z-index: 3;
+                display: none;
+            }
+            .panel-toggle-floating.show {
+                display: inline-flex;
+            }
+            .panel-content {
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+            }
+            .panel-content > .control-row {
+                display: flex;
                 flex-wrap: wrap;
+                align-items: center;
+                gap: 8px;
+            }
+            .panel-title {
+                font-size: 14px;
+                letter-spacing: 0.06em;
+                text-transform: uppercase;
+                color: var(--muted);
+            }
+            .panel.collapsed .panel-title {
+                display: none;
+            }
+            .panel.collapsed .panel-content {
+                display: none;
             }
             label {
-                font:
-                    14px system-ui,
-                    sans-serif;
+                font-size: 13px;
+                color: var(--text);
                 display: inline-flex;
                 align-items: center;
                 gap: 6px;
             }
+            .panel-content > label {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+            .panel-content label label {
+                font-size: 12px;
+                color: var(--muted);
+            }
             select,
             input[type="radio"] {
-                font:
-                    14px system-ui,
-                    sans-serif;
+                font-size: 13px;
+                color: var(--text);
+            }
+            input[type="radio"] {
+                accent-color: var(--accent-blue);
+            }
+            input[type="checkbox"] {
+                accent-color: var(--accent-red);
+            }
+            input[type="range"] {
+                -webkit-appearance: none;
+                appearance: none;
+                width: 160px;
+                background: transparent;
+            }
+            input[type="range"]::-webkit-slider-runnable-track {
+                height: 4px;
+                border-radius: 0;
+                background: var(--slider-track);
+            }
+            input[type="range"]::-webkit-slider-thumb {
+                -webkit-appearance: none;
+                width: 14px;
+                height: 14px;
+                border-radius: 0;
+                background: var(--slider-thumb);
+                border: 2px solid #111;
+                margin-top: -5px;
+                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+            }
+            input[type="range"]::-moz-range-track {
+                height: 4px;
+                border-radius: 0;
+                background: var(--slider-track);
+            }
+            input[type="range"]::-moz-range-thumb {
+                width: 14px;
+                height: 14px;
+                border-radius: 0;
+                background: var(--slider-thumb);
+                border: 2px solid #111;
+            }
+            #bandValue {
+                min-width: 2ch;
+                color: var(--text);
+            }
+            .control-label {
+                font-size: 13px;
+                color: var(--text);
+            }
+            button {
+                font-size: 12px;
+                color: var(--text);
+                background: rgba(255, 255, 255, 0.06);
+                border: 1px solid var(--panel-border);
+                border-radius: 0;
+                padding: 6px 10px;
+                cursor: pointer;
+                transition:
+                    background 0.15s ease,
+                    border-color 0.15s ease,
+                    transform 0.15s ease;
+            }
+            button:hover {
+                border-color: rgba(255, 255, 255, 0.3);
+                background: rgba(255, 255, 255, 0.12);
+                transform: translateY(-1px);
+            }
+            button.ghost {
+                background: transparent;
             }
             #canvas {
-                position: relative;
+                position: absolute;
+                inset: 0;
             }
             #msg {
                 position: absolute;
@@ -50,26 +201,38 @@
                 background: rgba(0, 0, 0, 0.6);
                 color: white;
                 font:
-                    12px/1.3 system-ui,
-                    sans-serif;
-                border-radius: 4px;
+                    12px/1.3 "IBM Plex Mono",
+                    "SFMono-Regular",
+                    Menlo,
+                    Monaco,
+                    Consolas,
+                    "Liberation Mono",
+                    "Courier New",
+                    monospace;
+                border-radius: 0;
                 pointer-events: none;
+                z-index: 3;
             }
 
+            /* Legend UI */
             #legend {
                 position: absolute;
                 top: 12px;
                 right: 12px;
                 padding: 8px;
-                border-radius: 6px;
-                background: rgba(0, 0, 0, 0.6);
-                color: #fff;
+                border-radius: 0;
+                background: rgba(10, 12, 16, 0.7);
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                color: var(--text);
                 font:
-                    12px system-ui,
-                    -apple-system,
-                    Segoe UI,
-                    Roboto,
-                    sans-serif;
+                    12px "IBM Plex Mono",
+                    "SFMono-Regular",
+                    Menlo,
+                    Monaco,
+                    Consolas,
+                    "Liberation Mono",
+                    "Courier New",
+                    monospace;
                 pointer-events: none;
             }
             #legend canvas {
@@ -79,37 +242,68 @@
     </head>
     <body>
         <div id="app">
-            <header>
-                <label>
-                    Zarr URL:
-                    <input
-                        id="zarrUrl"
-                        size="40"
-                        value="data/fcc_bz_bands.zarr"
-                    />
-                </label>
-                <label>
-                    Band:
-                    <select id="band"></select>
-                </label>
-                <label
-                    title="Normalize by band min/max or the global min/max across stored bands"
-                >
-                    Norm:
-                    <label
-                        ><input type="radio" name="norm" value="band" checked />
-                        per-band</label
+            <aside id="panel" class="panel">
+                <div class="panel-header">
+                    <div class="panel-title">Silicon Band Structure</div>
+                    <button
+                        id="togglePanel"
+                        class="ghost"
+                        title="Collapse controls"
                     >
+                        <<
+                    </button>
+                </div>
+                <div class="panel-content">
+                    <label>
+                        Band:
+                        <input
+                            id="band"
+                            type="range"
+                            min="0"
+                            max="0"
+                            value="0"
+                        />
+                        <span id="bandValue">0</span>
+                    </label>
                     <label
-                        ><input type="radio" name="norm" value="global" />
-                        global</label
+                        title="Normalize by band min/max or the global min/max across stored bands"
                     >
-                </label>
-                <button id="reload">Load</button>
-            </header>
+                        Norm:
+                        <label
+                            ><input
+                                type="radio"
+                                name="norm"
+                                value="band"
+                                checked
+                            />
+                            per-band</label
+                        >
+                        <label
+                            ><input type="radio" name="norm" value="global" />
+                            global</label
+                        >
+                    </label>
+                    <div class="control-row" title="Slowly rotate the volume">
+                        <span class="control-label">Rotation:</span>
+                        <label>
+                            <input type="checkbox" id="autoRotate" checked />
+                            Auto
+                        </label>
+                        <button id="resetRotation">Reset</button>
+                    </div>
+                </div>
+            </aside>
+            <button
+                id="togglePanelFloating"
+                class="panel-toggle-floating"
+                title="Open controls"
+            >
+                >>
+            </button>
             <div id="canvas"></div>
         </div>
 
+        <!-- add in <head> -->
         <script type="importmap">
             {
                 "imports": {
@@ -125,8 +319,9 @@
             import { ConvexGeometry } from "three/examples/jsm/geometries/ConvexGeometry.js";
             import * as zarr from "https://cdn.jsdelivr.net/npm/zarrita@0.5.0/+esm";
 
+            const DEFAULT_ZARR_URL = "data/fcc_bz_bands.zarr";
             const state = {
-                zarrUrl: document.getElementById("zarrUrl").value,
+                zarrUrl: DEFAULT_ZARR_URL,
                 bandMinMax: [],
                 globalMinMax: [0, 1],
                 bandsStored: 0,
@@ -141,20 +336,41 @@
                 maskView: null,
                 currentBand: 0,
                 normMode: "band",
+                autoRotate: true,
+                ready: false,
             };
 
             const bandSel = document.getElementById("band");
-            const reloadBtn = document.getElementById("reload");
+            const bandValue = document.getElementById("bandValue");
+            const panel = document.getElementById("panel");
+            const togglePanelBtn = document.getElementById("togglePanel");
+            const togglePanelFloating = document.getElementById(
+                "togglePanelFloating",
+            );
+            const autoRotateInput = document.getElementById("autoRotate");
+            const resetRotationBtn = document.getElementById("resetRotation");
             document.querySelectorAll('input[name="norm"]').forEach((r) =>
                 r.addEventListener("change", (e) => {
                     state.normMode = e.target.value;
                     updateEnergyRange();
                 }),
             );
-            reloadBtn.onclick = () => {
-                state.zarrUrl = document.getElementById("zarrUrl").value;
-                boot();
-            };
+            function setPanelCollapsed(collapsed) {
+                panel.classList.toggle("collapsed", collapsed);
+                togglePanelFloating.classList.toggle("show", collapsed);
+            }
+
+            togglePanelBtn.addEventListener("click", () => {
+                setPanelCollapsed(true);
+            });
+            togglePanelFloating.addEventListener("click", () => {
+                setPanelCollapsed(false);
+            });
+            setPanelCollapsed(false);
+            state.autoRotate = autoRotateInput.checked;
+            autoRotateInput.addEventListener("change", (e) => {
+                state.autoRotate = e.target.checked;
+            });
 
             const container = document.getElementById("canvas");
             const renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -250,6 +466,15 @@
 
             scene.add(volumeGroup);
             scene.add(plane);
+
+            const autoRotateAxis = new THREE.Vector3(0, 1, 0);
+            const autoRotateSpeed = 0.12;
+            const clock = new THREE.Clock();
+
+            resetRotationBtn.addEventListener("click", () => {
+                volumeGroup.rotation.set(0, 0, 0);
+                updateWorldToTex();
+            });
 
             const cubeEdges = new THREE.LineSegments(
                 new THREE.EdgesGeometry(new THREE.BoxGeometry(2, 2, 2)),
@@ -374,6 +599,7 @@
             }
 
             function updateWorldToTex() {
+                if (!state.ready) return;
                 sliceMaterial.uniforms.u_worldToTex.value.copy(
                     computeWorldToTex(),
                 );
@@ -469,19 +695,21 @@
                 sliceMaterial.uniforms.u_mask.value = tex;
             }
 
+            function setBandFromUI() {
+                state.currentBand = parseInt(bandSel.value, 10);
+                bandValue.textContent = String(state.currentBand);
+                uploadBandTo3DTexture(state.currentBand);
+                updateEnergyRange();
+            }
+
             function fillBandSelector() {
-                bandSel.innerHTML = "";
-                for (let i = 0; i < state.bandsStored; i++) {
-                    const opt = document.createElement("option");
-                    opt.value = String(i);
-                    opt.textContent = `Band ${i}`;
-                    bandSel.appendChild(opt);
-                }
-                bandSel.onchange = () => {
-                    state.currentBand = parseInt(bandSel.value, 10);
-                    uploadBandTo3DTexture(state.currentBand);
-                    updateEnergyRange();
-                };
+                bandSel.min = "0";
+                bandSel.max = String(Math.max(0, state.bandsStored - 1));
+                bandSel.step = "1";
+                bandSel.value = "0";
+                bandValue.textContent = "0";
+                bandSel.oninput = setBandFromUI;
+                bandSel.onchange = setBandFromUI;
             }
 
             async function loadZarr(zarrUrl) {
@@ -544,12 +772,14 @@
                 fillBandSelector();
                 state.currentBand = 0;
                 bandSel.value = "0";
+                bandValue.textContent = "0";
 
                 uploadMaskTo3DTexture();
                 uploadBandTo3DTexture(0);
                 updateEnergyRange();
                 setPlaneSizeToCube();
                 buildBZWireframe();
+                state.ready = true;
                 updateWorldToTex();
 
                 clearMsg();
@@ -669,6 +899,14 @@
 
             function animate() {
                 requestAnimationFrame(animate);
+                const delta = clock.getDelta();
+                if (state.autoRotate && state.ready && !dragging) {
+                    volumeGroup.rotateOnWorldAxis(
+                        autoRotateAxis,
+                        delta * autoRotateSpeed,
+                    );
+                    updateWorldToTex();
+                }
                 orientPlaneToCamera();
                 controls.update();
                 renderer.render(scene, camera);
@@ -786,6 +1024,7 @@
 
             async function boot() {
                 if (!checkWebGL2()) return;
+                state.ready = false;
                 volumeGroup.rotation.set(0, 0, 0);
                 await loadZarr(state.zarrUrl);
             }
