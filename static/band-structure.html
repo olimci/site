@@ -31,6 +31,9 @@
                     "IBM Plex Mono", "SFMono-Regular", Menlo, Monaco, Consolas,
                     "Liberation Mono", "Courier New", monospace;
             }
+            [hidden] {
+                display: none !important;
+            }
             #app {
                 position: relative;
                 width: 100%;
@@ -352,6 +355,12 @@
                         </label>
                         <button id="resetRotation">Reset</button>
                     </div>
+                    <div class="control-row" id="funModeRow" hidden>
+                        <span class="control-label">Fun:</span>
+                        <label>
+                            <input type="checkbox" id="funMode" />
+                        </label>
+                    </div>
                 </div>
             </aside>
             <button
@@ -399,6 +408,7 @@
                 normMode: "band",
                 viewMode: "single",
                 autoRotate: true,
+                funMode: false,
                 ready: false,
             };
 
@@ -414,6 +424,8 @@
             );
             const autoRotateInput = document.getElementById("autoRotate");
             const resetRotationBtn = document.getElementById("resetRotation");
+            const funModeRow = document.getElementById("funModeRow");
+            const funModeInput = document.getElementById("funMode");
             let bandLegendsContainer = null;
             const bandLegends = [];
             const viewInputs = document.querySelectorAll('input[name="view"]');
@@ -438,6 +450,12 @@
             state.autoRotate = autoRotateInput.checked;
             autoRotateInput.addEventListener("change", (e) => {
                 state.autoRotate = e.target.checked;
+            });
+            if (funModeRow) funModeRow.hidden = true;
+            if (funModeInput) funModeInput.checked = false;
+            funModeInput.addEventListener("change", (e) => {
+                state.funMode = e.target.checked;
+                updateFunUniforms();
             });
             bandSel.addEventListener("input", () => {
                 setBandFromUI();
@@ -489,6 +507,8 @@
                         u_emin: { value: 0.0 },
                         u_invRange: { value: 1.0 },
                         u_opacity: { value: 1.0 },
+                        u_funMode: { value: state.funMode ? 1.0 : 0.0 },
+                        u_colorPhase: { value: 0.0 },
                     },
                     transparent: false,
                     depthWrite: true,
@@ -511,6 +531,8 @@
           uniform float u_emin;
           uniform float u_invRange;
           uniform float u_opacity;
+          uniform float u_funMode;
+          uniform float u_colorPhase;
           out vec4 outColor;
 
           vec3 colormap(float t) {
@@ -522,6 +544,19 @@
             }
           }
 
+          vec3 hsv2rgb(vec3 c) {
+            vec3 rgb = clamp(
+              abs(mod(c.x * 6.0 + vec3(0.0, 4.0, 2.0), 6.0) - 3.0) - 1.0,
+              0.0,
+              1.0
+            );
+            return c.z * mix(vec3(1.0), rgb, c.y);
+          }
+
+          vec3 rainbow(float t) {
+            return hsv2rgb(vec3(fract(t + u_colorPhase), 1.0, 1.0));
+          }
+
           void main() {
             vec3 tc = (u_worldToTex * vec4(vWorldPos, 1.0)).xyz;
             if (any(lessThan(tc, vec3(0.0))) || any(greaterThan(tc, vec3(1.0)))) discard;
@@ -531,7 +566,7 @@
 
             float e = texture(u_volume, tc).r;
             float t = (e - u_emin) * u_invRange;
-            vec3 rgb = colormap(t);
+            vec3 rgb = mix(colormap(t), rainbow(t), u_funMode);
             outColor = vec4(rgb, u_opacity);
           }`,
                 });
@@ -550,35 +585,116 @@
             const tempQuat = new THREE.Quaternion();
             const xAxis = new THREE.Vector3(1, 0, 0);
             const yAxis = new THREE.Vector3(0, 1, 0);
+            const dragScale = 1 / 200;
+            const inertia = { x: 0, y: 0 };
+            const inertiaDamping = 6;
+            const inertiaEpsilon = 0.001;
+            const velocityBlend = 0.25;
+            const funColorSpeed = 0.15;
+            let funColorPhase = 0;
 
             resetRotationBtn.addEventListener("click", () => {
                 rotationQuat.identity();
+                inertia.x = 0;
+                inertia.y = 0;
                 applyRotationToBands();
             });
 
             let dragging = false,
                 lastX = 0,
-                lastY = 0;
+                lastY = 0,
+                lastTime = 0;
             renderer.domElement.addEventListener("pointerdown", (e) => {
                 dragging = true;
                 lastX = e.clientX;
                 lastY = e.clientY;
+                lastTime = e.timeStamp;
+                inertia.x = 0;
+                inertia.y = 0;
             });
             renderer.domElement.addEventListener("pointerup", () => {
                 dragging = false;
+                lastTime = 0;
             });
             renderer.domElement.addEventListener("pointermove", (e) => {
                 if (!dragging) return;
-                const dx = (e.clientX - lastX) / 200;
-                const dy = (e.clientY - lastY) / 200;
+                const now = e.timeStamp;
+                const dt = Math.max(0.001, (now - lastTime) / 1000);
+                const dx = (e.clientX - lastX) * dragScale;
+                const dy = (e.clientY - lastY) * dragScale;
                 lastX = e.clientX;
                 lastY = e.clientY;
+                lastTime = now;
                 tempQuat.setFromAxisAngle(yAxis, dx);
                 rotationQuat.premultiply(tempQuat);
                 tempQuat.setFromAxisAngle(xAxis, dy);
                 rotationQuat.premultiply(tempQuat);
+                const vx = dy / dt;
+                const vy = dx / dt;
+                inertia.x =
+                    inertia.x * (1 - velocityBlend) + vx * velocityBlend;
+                inertia.y =
+                    inertia.y * (1 - velocityBlend) + vy * velocityBlend;
                 applyRotationToBands();
             });
+
+            const konami = [
+                "ArrowUp",
+                "ArrowUp",
+                "ArrowDown",
+                "ArrowDown",
+                "ArrowLeft",
+                "ArrowRight",
+                "ArrowLeft",
+                "ArrowRight",
+                "b",
+                "a",
+            ];
+            let konamiIndex = 0;
+            let funUnlocked = false;
+
+            function unlockFunMode() {
+                if (funUnlocked) return;
+                funUnlocked = true;
+                if (funModeRow) funModeRow.hidden = false;
+                console.info("Konami code unlocked fun mode.");
+            }
+
+            window.addEventListener("keydown", (e) => {
+                const target = e.target;
+                if (
+                    target &&
+                    (target.tagName === "INPUT" ||
+                        target.tagName === "TEXTAREA" ||
+                        target.isContentEditable)
+                ) {
+                    return;
+                }
+                const key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+                const expected = konami[konamiIndex];
+                if (key === expected) {
+                    konamiIndex += 1;
+                    if (konamiIndex === konami.length) {
+                        unlockFunMode();
+                        konamiIndex = 0;
+                    }
+                } else {
+                    konamiIndex = key === konami[0] ? 1 : 0;
+                }
+            });
+
+            function updateFunUniforms() {
+                const funValue = state.funMode ? 1.0 : 0.0;
+                for (const material of bandMaterials) {
+                    material.uniforms.u_funMode.value = funValue;
+                }
+                if (!state.funMode) {
+                    funColorPhase = 0;
+                    for (const material of bandMaterials) {
+                        material.uniforms.u_colorPhase.value = funColorPhase;
+                    }
+                }
+            }
 
             function applyRotationToBands() {
                 for (const group of bandGroups) {
@@ -1221,12 +1337,39 @@
             function animate() {
                 requestAnimationFrame(animate);
                 const delta = clock.getDelta();
+                let rotationUpdated = false;
+                if (state.funMode) {
+                    funColorPhase = (funColorPhase + delta * funColorSpeed) % 1;
+                    for (const material of bandMaterials) {
+                        material.uniforms.u_colorPhase.value = funColorPhase;
+                    }
+                }
                 if (state.autoRotate && state.ready && !dragging) {
                     tempQuat.setFromAxisAngle(
                         autoRotateAxis,
                         delta * autoRotateSpeed,
                     );
                     rotationQuat.premultiply(tempQuat);
+                    rotationUpdated = true;
+                }
+                if (!dragging) {
+                    const damping = state.funMode ? 0 : inertiaDamping;
+                    const speed = Math.hypot(inertia.x, inertia.y);
+                    if (speed > inertiaEpsilon) {
+                        const decay = Math.exp(-damping * delta);
+                        inertia.x *= decay;
+                        inertia.y *= decay;
+                        tempQuat.setFromAxisAngle(yAxis, inertia.y * delta);
+                        rotationQuat.premultiply(tempQuat);
+                        tempQuat.setFromAxisAngle(xAxis, inertia.x * delta);
+                        rotationQuat.premultiply(tempQuat);
+                        rotationUpdated = true;
+                    } else {
+                        inertia.x = 0;
+                        inertia.y = 0;
+                    }
+                }
+                if (rotationUpdated) {
                     applyRotationToBands();
                 }
                 orientPlanesToCamera();
@@ -1449,6 +1592,7 @@
                 if (!checkWebGL2()) return;
                 state.ready = false;
                 rotationQuat.identity();
+                updateFunUniforms();
                 await loadZarr(state.zarrUrl);
             }
 
