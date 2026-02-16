@@ -19,6 +19,7 @@ priority = 1.0
 repos = [
   "autograd",
   "shizuka",
+  "tohru",
   "arp",
   "chat",
   "autograd-mnist",
