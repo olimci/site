@@ -4,7 +4,7 @@ template = "index"
 
 body = '''
          ___ _               _ __
-  ____  / (_| )_____   _____(_) /____
+____  / (_| )_____   _____(_) /____
  / __ \/ / /|// ___/  / ___/ / __/ _ \
 / /_/ / / /  (__  )  (__  ) / /_/  __/
 \____/_/_/  /____/  /____/_/\__/\___/
@@ -16,13 +16,37 @@ changefreq = "weekly"
 priority = 1.0
 
 [params]
-repos = [
-  "autograd",
-  "shizuka",
-  "tohru",
-  "arp",
-  "chat",
-  "autograd-mnist",
-  "nix-conf",
-  "AoC-2025",
+vn_lines = [
+  "hey! i'm oli ^_^",
+  "i'm a 3rd year physics student studying at durham university.",
+  "i'm into machine learning, statistical physics, and network protocols.",
+  "when I'm not studying or coding, I'm usually mountain biking, climbing, or trying to teach myself japanese.",
+  "this is my personal site - i hope you like it!",
+  "feel free to check out some posts below, or send email me if you want to chat.",
+  "thanks for stopping by!",
 ]
+
+[[params.repos]]
+name = "autograd"
+url = "https://github.com/olimci/autograd"
+description = "go autograd and machine learning library"
+
+[[params.repos]]
+name = "shizuka"
+url = "https://github.com/olimci/shizuka"
+description = "custom static site generator"
+
+[[params.repos]]
+name = "tohru"
+url = "https://github.com/olimci/tohru"
+description = "go dotfiles manager"
+
+[[params.repos]]
+name = "frsh"
+url = "https://github.com/olimci/frsh"
+description = "ephemeral reverse shells"
+
+[[params.repos]]
+name = "autograd-mnist"
+url = "https://github.com/olimci/autograd-mnist"
+description = "mnist training code built on top of autograd"

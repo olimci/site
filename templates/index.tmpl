@@ -57,7 +57,7 @@
     <div class="section gold">
         <strong>REPOS</strong><br />
         {{range $repo := index .Page.Params "repos"}}
-            <a href="https://github.com/olimci/{{ $repo }}">{{ $repo }}</a>
+            <a href="{{ index $repo "url" }}" title="{{ index $repo "description" }}">{{ index $repo "name" }}</a>
         {{end}}
     </div>
 </div>
@@ -68,13 +68,9 @@
 
 <script>
     const lines = [
-        "hey! i'm oli ^_^",
-        "i'm a 3rd year physics student studying at durham university.",
-        "i'm into machine learning, statistical physics, and network protocols.",
-        "when I’m not studying or coding, I’m usually mountain biking, climbing, or trying to teach myself japanese.",
-        "this is my personal site - i hope you like it!",
-        "feel free to check out some posts below, or send email me if you want to chat.",
-        "thanks for stopping by!"
+        {{- range $line := index .Page.Params "vn_lines" }}
+        {{ printf "%q" $line }},
+        {{- end }}
     ];
 
     let index = 0;

@@ -16,7 +16,7 @@ changefreq = "yearly"
 priority = 0.9
 
 [rss]
-include = true
+include = false
 +++
 
 # Oliver McInnes
@@ -67,6 +67,14 @@ _A-Levels_
 - Included a dev tool with live preview, and a scaffolding tool which supports remote template sources.
 - Added configuration for automatic deployments and flexible project setup.  
 
+**Tool for Ephemeral Reverse Shells** [[GitHub]](https://github.com/olimci/frsh)  
+- Built a small Python CLI for creating ephemeral reverse shells through a temporary fast-reverse-proxy gateway.  
+- Designed it for quick access to machines behind NAT or firewalls without keeping long-lived SSH config around.  
+
+**Dotfiles Manager** [[GitHub]](https://github.com/olimci/tohru)  
+- Built a Go CLI for managing personal computer configuration
+- Added backup and restore handling for conflicting files.
+
 **Relativistic Asteroids Clone** [[Post]](/posts/relativistic-asteroids)  
 - Created an arcade-style asteroids game using a modified Verlet solver for special relativity.  
 - Simulated relativistic collisions and time dilation at near-c velocities.  
@@ -81,10 +89,6 @@ _A-Levels_
 - **Languages**: Go, Python, SQL, JavaScript  
 - **Frameworks/Libraries**: PyTorch, Apple MLX 
 - **Tools**: Linux, Nix, Docker, PostgreSQL  
-- **Other**:  
-  - Intermediate Japanese  
-  - Fast LaTeX typing for live mathematical note-taking  
-  - Solved a Rubik’s cube in 44 seconds 
 
 ---
 
