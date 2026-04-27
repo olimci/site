@@ -1,33 +1,79 @@
-shizuka.version = "0.1.0"
+version = "0.1.0"
 
 [site]
 title = "oli's site"
 description = "Personal website of Oli McInnes"
 url = "https://oli.mcinnes.cc"
 
+[[site.params.side_links]]
+label = "cv"
+url = "/cv"
+
+[site.params.side_links.icon_morph]
+from = "h00,h11,h02,h12,v00,v01,v10,v21,d10a"
+to = "h00,h10,h02,h12,v00,v01,v20,v21,d10a"
+duration_ms = 250
+fade_ms = 72
+outline_width = 0
+decorative = true
+
+[[site.params.side_links]]
+label = "bio"
+url = "/bio"
+
+[site.params.side_links.icon_morph]
+from = "h00,h10,h02,h12,v00,v01,v20,v21,d10a,d10b,d01a,d01b"
+to = "h00,h10,h02,h12,v00,v01,v20,v21,d00a,d00b,d11a,d11b"
+duration_ms = 250
+fade_ms = 72
+outline_width = 0
+decorative = true
+
+[[site.params.side_links]]
+label = "email"
+url = "mailto:oli@mcinnes.cc"
+
+[site.params.side_links.icon_morph]
+from = "h00,h10,h01,h11,v00,v01,v20,d01b"
+to = "h00,h10,h01,h11,v00,v20,v21,d11a"
+duration_ms = 250
+fade_ms = 72
+outline_width = 0
+decorative = true
+
+[[site.params.side_links]]
+label = "github"
+url = "https://github.com/olimci"
+
+[site.params.side_links.icon_morph]
+from = "h12,d00a,d01b"
+to = "d00a,d10a,d01b,d11b"
+duration_ms = 250
+fade_ms = 72
+outline_width = 0
+decorative = true
+
 [build]
-output = "dist"
 minify = true
 
-[build.steps.static]
-source = "static"
-destination = "."
+[content.defaults]
+template = "post"
+section = "page"
 
-[build.steps.content]
-template_glob = "templates/*.tmpl"
-source = "content"
-destination = "."
+[content.markdown]
+wikilinks = true
+goldmark = { extensions = ["gfm", "table", "strikethrough", "tasklist", "deflist", "footnotes", "typographer"], parser = {auto_heading_id=true, attribute = true}, renderer = {hardbreaks = true} }
 
-[build.steps.redirects]
-shorten = "/q"
-output = "_redirects"
+[content.git]
+enabled = true
+backfill = true
 
-[build.steps.rss]
+[rss]
 output = "rss.xml"
-sections = ["posts", "pages"]
+sections = ["posts"]
 limit = 50
 include_drafts = false
 
-[build.steps.sitemap]
+[sitemap]
 output = "sitemap.xml"
 include_drafts = false

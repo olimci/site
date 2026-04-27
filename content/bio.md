@@ -1,14 +1,9 @@
 +++
 title = "bio"
 description = "about me"
-date = 2025-06-27T00:00:00Z
 template = "post"
-sections = "pages"
+section = "pages"
 slug = "bio"
-
-[params]
-meta_description = "Informal bio of Oli McInnes"
-meta_keywords = "Oliver McInnes, Oli McInnes, biography, about me, physics student, Durham, personal"
 
 [sitemap]
 include = true
@@ -18,8 +13,6 @@ priority = 0.8
 [rss]
 include = false
 +++
-
-# hey, i'm oli!
 
 i'm a physics undergrad at durham university, with a deep interest in machine learning, statistical mechanics, and using network protocols in unintended ways. 
 

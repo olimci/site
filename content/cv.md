@@ -1,14 +1,9 @@
 +++
 title = "cv"
 description = "my cv"
-date = 2025-06-27T00:00:00Z
 template = "post"
-sections = "pages"
+section = "pages"
 slug = "cv"
-
-[params]
-meta_description = "CV of Oli McInnes"
-meta_keywords = "Oliver McInnes, Oli McInnes, cv, resume, physics, programming, machine learning, Durham"
 
 [sitemap]
 include = true
@@ -19,8 +14,7 @@ priority = 0.9
 include = false
 +++
 
-# Oliver McInnes
-
+**Oliver McInnes**  
 **GitHub**: [github.com/olimci](https://github.com/olimci)  
 **Email**: [oli@mcinnes.cc](mailto:oli@mcinnes.cc)
 

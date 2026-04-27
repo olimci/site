@@ -1,0 +1,140 @@
+{{ define "tags" }}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {{ $pageDescription := or .Page.Description .Site.Description }}
+    {{ $pageURL := or .Page.Canon (printf "%s/%s/" .Site.URL .Page.Slug) }}
+    {{ $pageTitle := printf "%s | %s" .Page.Title .Site.Title }}
+    {{ if .Page.Group }}
+        {{ $pageTitle = printf "%v | tags | %s" .Page.Group.Value .Site.Title }}
+        {{ $pageDescription = printf "posts tagged %v" .Page.Group.Value }}
+    {{ end }}
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta name="description" content="{{ $pageDescription }}">
+    <meta name="author" content="Oliver McInnes">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="{{ $pageURL }}">
+
+    <meta property="og:title" content="{{ $pageTitle }}">
+    <meta property="og:description" content="{{ $pageDescription }}">
+    <meta property="og:image" content="{{ .Site.URL }}/favicon.png">
+    <meta property="og:url" content="{{ $pageURL }}">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="{{ .Site.Title }}">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="{{ $pageTitle }}">
+    <meta name="twitter:description" content="{{ $pageDescription }}">
+    <meta name="twitter:image" content="{{ .Site.URL }}/favicon.png">
+
+    <title>{{ $pageTitle }}</title>
+    <link rel="stylesheet" href="/styles.css" />
+    {{ template "seven_seg_icon_assets" . }}
+    <link rel="icon" href="/favicon.png" type="image/png" />
+</head>
+<body>
+{{ $sideLinks := index .Site.Params "side_links" }}
+{{ $summary := index .Page.Queries "summary" }}
+{{ $grouped := index .Page.Queries "tagged" }}
+{{ $posts := $grouped | asPages }}
+<main class="w-shell page-layout">
+    <aside class="w-column page-rail">
+        <a class="identity-home" href="/" aria-label="home">
+            <h1 class="identity-title">
+                <span class="identity-line">oli.</span>
+                <span class="identity-line">mcinnes</span>
+                <span class="identity-line identity-line-right">.cc</span>
+            </h1>
+        </a>
+
+        <nav class="w-linklist sidebar-links" aria-label="site">
+            {{ range $link := $sideLinks }}
+                {{ $iconMorph := or (index $link "icon_morph") (index $link "iconMorph") }}
+                <a class="sidebar-link" href="{{ index $link "url" }}">
+                    {{ if $iconMorph }}{{ template "seven_seg_icon" $iconMorph }}{{ end }}
+                    <span class="sidebar-link-label">{{ index $link "label" }}</span>
+                </a>
+            {{ end }}
+        </nav>
+    </aside>
+
+    <section class="page-main">
+        <header class="page-header">
+            {{ if .Page.Group }}
+                <div class="section-head tag-page-head">
+                    <div class="w-label">tag:</div>
+                    <a class="section-link" href="/tags/">[all tags]</a>
+                </div>
+                <h1 class="w-title medium">#{{ .Page.Group.Value }}</h1>
+            {{ else }}
+                <h1 class="w-title medium">{{ .Page.Title }}</h1>
+                <p class="archive-note">collections built from the post tags.</p>
+            {{ end }}
+        </header>
+
+        {{ if .Page.Group }}
+            <section class="post-list post-list-states">
+                {{ range $post := $posts }}
+                    {{ if or $.Site.Meta.IsDev (not $post.Draft) }}
+                        {{ $postIconMorph := or (index $post.Params "index_icon_morph") (index $post.Params "_index_icon_morph") }}
+                        <article class="w-panel post-card{{ if $post.Featured }} is-featured{{ end }}{{ if $post.Draft }} is-draft{{ end }}">
+                            <a class="post-card-mark post-card-primary-link" href="{{ $post.Canon }}" aria-label="{{ $post.Title }}">
+                                {{ if $postIconMorph }}{{ template "seven_seg_icon" $postIconMorph }}{{ end }}
+                            </a>
+                            <div class="post-card-content">
+                                <div class="post-card-meta-row">
+                                    <div class="post-card-meta">{{ datefmt "2006-01-02" $post.PubDate }}</div>
+                                    {{ if $post.Featured }}
+                                        <div class="post-card-flags">
+                                            <span class="post-card-state featured">featured</span>
+                                            {{ if $post.Draft }}<span class="post-card-state draft">draft</span>{{ end }}
+                                        </div>
+                                    {{ else if $post.Draft }}
+                                        <div class="post-card-flags">
+                                            <span class="post-card-state draft">draft</span>
+                                        </div>
+                                    {{ end }}
+                                    {{ if $post.Tags }}
+                                        <div class="post-card-tags">
+                                            {{ range $tag := $post.Tags }}
+                                                <a class="post-card-state post-card-tag post-card-tag-link" href="/tags/{{ $tag }}/">{{ $tag }}</a>
+                                            {{ end }}
+                                        </div>
+                                    {{ end }}
+                                </div>
+                                <h2 class="post-card-title"><a class="post-card-primary-link" href="{{ $post.Canon }}">{{ $post.Title }}</a></h2>
+                                {{ if $post.Description }}
+                                    <p class="post-card-desc">{{ $post.Description }}</p>
+                                {{ end }}
+                            </div>
+                        </article>
+                    {{ end }}
+                {{ end }}
+            </section>
+
+            {{ with .Page.Pagination }}
+                {{ if gt .TotalPages 1 }}
+                    <nav class="pagination-nav" aria-label="pagination">
+                        {{ if .HasPrev }}<a class="pagination-link" href="{{ .PrevURL }}/">[prev]</a>{{ else }}<span class="pagination-link is-disabled">[prev]</span>{{ end }}
+                        <span class="pagination-current">{{ printf "%02d" .PageNumber }} / {{ printf "%02d" .TotalPages }}</span>
+                        {{ if .HasNext }}<a class="pagination-link" href="{{ .NextURL }}/">[next]</a>{{ else }}<span class="pagination-link is-disabled">[next]</span>{{ end }}
+                    </nav>
+                {{ end }}
+            {{ end }}
+        {{ else }}
+            <section class="tag-grid">
+                {{ range $row := $summary.Rows }}
+                    <a class="w-panel tag-tile" href="/tags/{{ index $row "tag" }}/">
+                        <div class="tag-tile-name">#{{ index $row "tag" }}</div>
+                        <div class="tag-tile-meta">{{ index $row "post_count" }} posts</div>
+                    </a>
+                {{ end }}
+            </section>
+        {{ end }}
+    </section>
+</main>
+</body>
+</html>
+{{ end }}

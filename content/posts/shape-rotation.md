@@ -1,14 +1,17 @@
 +++
 title = "shape rotator"
 description = "n-dimensional cube visualiser"
-date = 2024-12-01T00:00:00Z
+tags = ["programming", "visualisation"]
 template = "post"
-sections = "posts"
-slug = "posts/shape-rotation"
+section = "posts"
+slug = "shape-rotation"
 
-[params]
-meta_description = "A Go-based tool for rotating n-dimensional hypercubes, by Oli McInnes."
-meta_keywords = "Oliver McInnes, Oli McInnes, shape rotator, hypercube, visualisation, Go, geometry, project, math"
+[params.index_icon_morph]
+from = "h01,h11,v10,v11,d00b,d10a,d01a,d11b"
+to = "h01,h11,v00,d10a,d11b"
+duration_ms = 250
+fade_ms = 0
+decorative = true
 
 [sitemap]
 include = true
@@ -19,11 +22,7 @@ priority = 0.7
 include = true
 +++
 
-# hypercube rotator
-
 this project was originally developed as part of my oxford application. it’s a visualiser for n-dimensional hypercubes (tesseracts and beyond), allowing interactive rotation and projection into lower dimensions.
 
 the demo is available [here](/wasm/run.html?path=cube.wasm).  
 it’s written in go using ebitengine, gonum, and wasm.
-
-i also built a variant of this tool designed for use in live visual performance (VJing); i may publish that version separately in future.

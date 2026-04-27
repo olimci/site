@@ -1,14 +1,17 @@
 +++
 title = "2nd year RLI"
 description = "research-led coursework on optical rotation"
-date = 2025-03-28T00:00:00Z
+tags = ["physics", "writing"]
 template = "post"
-sections = "posts"
-slug = "posts/physics-rli"
+section = "posts"
+slug = "physics-rli"
 
-[params]
-meta_description = "Oli McInnes’ research-led investigation into optical rotation in sugars."
-meta_keywords = "Oliver McInnes, Oli McInnes, RLI, optical rotation, sucrose, physics coursework, Durham, polarimetry"
+[params.index_icon_morph]
+from = "v00,v01,v20,v21,d00b,d10a,d01a,d11b"
+to = "h01,h11,v00,d10a,d11b"
+duration_ms = 250
+fade_ms = 0
+decorative = true
 
 [sitemap]
 include = true

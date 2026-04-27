@@ -1,14 +1,18 @@
 +++
 title = "relativistic asteroids"
 description = "arcade physics game with special relativity"
-date = 2025-02-11T00:00:00Z
+featured = true
+tags = ["physics", "programming"]
 template = "post"
-sections = "posts"
-slug = "posts/relativistic-asteroids"
+section = "posts"
+slug = "relativistic-asteroids"
 
-[params]
-meta_description = "A relativistic twist on the classic asteroids game, by Oli McInnes."
-meta_keywords = "Oliver McInnes, Oli McInnes, asteroids, physics, game, special relativity, relativity, simulation, project"
+[params.index_icon_morph]
+from = "h00,h10,h02,h12,d00a,d10b,d01b,d11a"
+to = "h01,h11,v00,d10a,d11b"
+duration_ms = 250
+fade_ms = 0
+decorative = true
 
 [sitemap]
 include = true
@@ -18,8 +22,6 @@ priority = 0.7
 [rss]
 include = true
 +++
-
-# relativistic asteroids
 
 this is a small project i originally developed while preparing my oxford application. it combines a simplified relativistic physics engine with a clone of the classic arcade game *asteroids*, implemented in go using ebitengine and compiled to wasm.
 

@@ -1,0 +1,308 @@
+{{ define "seven_seg_icon_assets" }}
+<style>
+.seven-seg-icon {
+    --seven-seg-size: 100%;
+    --seven-seg-color: var(--seven-seg-color-default, #ffffff);
+    --seven-seg-outline: var(--seven-seg-outline-default, rgba(255, 255, 255, 0.34));
+    --seven-seg-outline-width: 1.1;
+    --seven-seg-fade-ms: 72ms;
+    display: inline-block;
+    width: var(--seven-seg-size);
+    max-width: 100%;
+    color: var(--seven-seg-color);
+    line-height: 0;
+    vertical-align: middle;
+    transition: color 140ms linear;
+}
+
+.seven-seg-icon svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+}
+
+.seven-seg-icon__segment-fill,
+.seven-seg-icon__segment-outline {
+    transition: opacity var(--seven-seg-fade-ms) linear, stroke 140ms linear;
+}
+
+.seven-seg-icon__segment-fill {
+    opacity: 0;
+}
+
+.seven-seg-icon__segment-outline {
+    opacity: 1;
+    stroke: var(--seven-seg-outline);
+    stroke-width: var(--seven-seg-outline-width);
+    vector-effect: non-scaling-stroke;
+}
+
+.seven-seg-icon__segment.is-active .seven-seg-icon__segment-fill {
+    opacity: 1;
+}
+
+.seven-seg-icon__segment.is-active .seven-seg-icon__segment-outline {
+    opacity: 0;
+}
+
+.seven-seg-icon[data-disabled-mode="omit"] .seven-seg-icon__segment-outline {
+    display: none;
+}
+
+</style>
+<script>
+(() => {
+    if (window.SevenSegMorphIcon) {
+        window.SevenSegMorphIcon.init(document);
+        return;
+    }
+
+    const SEGMENT_POINTS = {
+        h00: [[17, 16], [22, 11], [58, 11], [63, 16], [58, 21], [22, 21]],
+        h10: [[65, 16], [70, 11], [106, 11], [111, 16], [106, 21], [70, 21]],
+        h01: [[17, 64], [22, 59], [58, 59], [63, 64], [58, 69], [22, 69]],
+        h11: [[65, 64], [70, 59], [106, 59], [111, 64], [106, 69], [70, 69]],
+        h02: [[17, 112], [22, 107], [58, 107], [63, 112], [58, 117], [22, 117]],
+        h12: [[65, 112], [70, 107], [106, 107], [111, 112], [106, 117], [70, 117]],
+        v00: [[16, 17], [21, 22], [21, 58], [16, 63], [11, 58], [11, 22]],
+        v01: [[16, 65], [21, 70], [21, 106], [16, 111], [11, 106], [11, 70]],
+        v10: [[64, 17], [69, 22], [69, 58], [64, 63], [59, 58], [59, 22]],
+        v11: [[64, 65], [69, 70], [69, 106], [64, 111], [59, 106], [59, 70]],
+        v20: [[112, 17], [117, 22], [117, 58], [112, 63], [107, 58], [107, 22]],
+        v21: [[112, 65], [117, 70], [117, 106], [112, 111], [107, 106], [107, 70]],
+        d00a: [[23, 23], [23, 30.071067811865476], [49.928932188134524, 57], [57, 57], [57, 49.928932188134524], [30.071067811865476, 23]],
+        d00b: [[23, 57], [30.071067811865476, 57], [57, 30.071067811865476], [57, 23], [49.928932188134524, 23], [23, 49.928932188134524]],
+        d10a: [[71, 23], [71, 30.071067811865476], [97.92893218813452, 57], [105, 57], [105, 49.928932188134524], [78.07106781186548, 23]],
+        d10b: [[71, 57], [78.07106781186548, 57], [105, 30.071067811865476], [105, 23], [97.92893218813452, 23], [71, 49.928932188134524]],
+        d01a: [[23, 71], [23, 78.07106781186548], [49.928932188134524, 105], [57, 105], [57, 97.92893218813452], [30.071067811865476, 71]],
+        d01b: [[23, 105], [30.071067811865476, 105], [57, 78.07106781186548], [57, 71], [49.928932188134524, 71], [23, 97.92893218813452]],
+        d11a: [[71, 71], [71, 78.07106781186548], [97.92893218813452, 105], [105, 105], [105, 97.92893218813452], [78.07106781186548, 71]],
+        d11b: [[71, 105], [78.07106781186548, 105], [105, 78.07106781186548], [105, 71], [97.92893218813452, 71], [71, 97.92893218813452]]
+    };
+
+    const SEGMENT_NAMES = Object.keys(SEGMENT_POINTS);
+    const VALID_SEGMENTS = new Set(SEGMENT_NAMES);
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    function pointsToString(points) {
+        return points.map(([x, y]) => `${x},${y}`).join(" ");
+    }
+
+    function uniqueSegments(names) {
+        const out = [];
+        const seen = new Set();
+        for (const name of names) {
+            if (!VALID_SEGMENTS.has(name) || seen.has(name)) {
+                continue;
+            }
+            seen.add(name);
+            out.push(name);
+        }
+        return out;
+    }
+
+    function resolveSegments(spec) {
+        if (!spec) {
+            return [];
+        }
+        const trimmed = String(spec).trim();
+        if (!trimmed || trimmed === "empty") {
+            return [];
+        }
+        return uniqueSegments(trimmed.split(",").map((item) => item.trim()).filter(Boolean));
+    }
+
+    function clamp(value, min, max) {
+        return Math.min(max, Math.max(min, value));
+    }
+
+    function shuffle(items) {
+        const copy = [...items];
+        for (let i = copy.length - 1; i > 0; i -= 1) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [copy[i], copy[j]] = [copy[j], copy[i]];
+        }
+        return copy;
+    }
+
+    function scheduleDiff(names, durationMs, fadeMs) {
+        const shuffled = shuffle(names);
+        const availableMs = Math.max(durationMs - fadeMs, 0);
+        if (shuffled.length === 0) {
+            return [];
+        }
+        if (availableMs === 0) {
+            return shuffled.map((name) => ({ name, at: 0 }));
+        }
+
+        const stride = availableMs / (shuffled.length + 1);
+        const jitterRange = stride * 0.45;
+        return shuffled
+            .map((name, index) => {
+                const base = stride * (index + 1);
+                const jitter = (Math.random() * 2 - 1) * jitterRange;
+                return {
+                    name,
+                    at: Math.round(clamp(base + jitter, 0, availableMs)),
+                };
+            })
+            .sort((a, b) => a.at - b.at);
+    }
+
+    class SevenSegMorphIcon {
+        constructor(el) {
+            this.el = el;
+            this.from = new Set(resolveSegments(el.dataset.from));
+            this.to = new Set(resolveSegments(el.dataset.to || el.dataset.from));
+            this.durationMs = Math.max(parseInt(el.dataset.durationMs || "420", 10) || 420, 0);
+            this.fadeMs = Math.max(parseInt(el.dataset.fadeMs || "72", 10) || 72, 0);
+            this.outlineWidth = Number.parseFloat(el.dataset.outlineWidth || "1.1");
+            this.active = new Set(this.from);
+            this.segmentEls = new Map();
+            this.timeouts = [];
+            this.runId = 0;
+            this.trigger = el.closest("a, button, [data-seven-seg-trigger]") || el;
+            this.applyCssVars();
+            this.build();
+            this.renderAll();
+            this.bind();
+        }
+
+        applyCssVars() {
+            this.el.style.setProperty("--seven-seg-size", this.el.dataset.size || "100%");
+            this.el.style.setProperty("--seven-seg-outline-width", Number.isFinite(this.outlineWidth) ? String(this.outlineWidth) : "1.1");
+            this.el.style.setProperty("--seven-seg-fade-ms", `${this.fadeMs}ms`);
+            this.el.dataset.disabledMode = Number.isFinite(this.outlineWidth) && this.outlineWidth <= 0 ? "omit" : "outline";
+        }
+
+        build() {
+            const svgNS = "http://www.w3.org/2000/svg";
+            const svg = document.createElementNS(svgNS, "svg");
+            svg.setAttribute("viewBox", "0 0 128 128");
+            svg.setAttribute("aria-hidden", "true");
+
+            for (const name of SEGMENT_NAMES) {
+                const group = document.createElementNS(svgNS, "g");
+                group.classList.add("seven-seg-icon__segment");
+                group.dataset.segment = name;
+
+                const outline = document.createElementNS(svgNS, "polygon");
+                outline.classList.add("seven-seg-icon__segment-outline");
+                outline.setAttribute("points", pointsToString(SEGMENT_POINTS[name]));
+                outline.setAttribute("fill", "none");
+
+                const fill = document.createElementNS(svgNS, "polygon");
+                fill.classList.add("seven-seg-icon__segment-fill");
+                fill.setAttribute("points", pointsToString(SEGMENT_POINTS[name]));
+                fill.setAttribute("fill", "currentColor");
+
+                group.append(outline, fill);
+                svg.append(group);
+                this.segmentEls.set(name, group);
+            }
+
+            this.el.textContent = "";
+            this.el.append(svg);
+            this.el.dataset.sevenSegReady = "true";
+        }
+
+        bind() {
+            this.trigger.addEventListener("pointerenter", () => this.morphTo(this.to));
+            this.trigger.addEventListener("pointerleave", () => this.morphTo(this.from));
+            this.trigger.addEventListener("focusin", () => this.morphTo(this.to));
+            this.trigger.addEventListener("focusout", () => this.morphTo(this.from));
+        }
+
+        clearTimers() {
+            for (const timeout of this.timeouts) {
+                window.clearTimeout(timeout);
+            }
+            this.timeouts = [];
+        }
+
+        renderSegment(name) {
+            const segment = this.segmentEls.get(name);
+            if (segment) {
+                segment.classList.toggle("is-active", this.active.has(name));
+            }
+        }
+
+        renderAll() {
+            for (const name of SEGMENT_NAMES) {
+                this.renderSegment(name);
+            }
+        }
+
+        morphTo(target) {
+            const diff = SEGMENT_NAMES.filter((name) => this.active.has(name) !== target.has(name));
+            this.clearTimers();
+            this.runId += 1;
+            const localRunId = this.runId;
+
+            if (prefersReducedMotion.matches || diff.length === 0 || this.durationMs === 0) {
+                this.active = new Set(target);
+                this.renderAll();
+                return;
+            }
+
+            const schedule = scheduleDiff(diff, this.durationMs, this.fadeMs);
+            for (const step of schedule) {
+                const timeout = window.setTimeout(() => {
+                    if (this.runId !== localRunId) {
+                        return;
+                    }
+                    if (target.has(step.name)) {
+                        this.active.add(step.name);
+                    } else {
+                        this.active.delete(step.name);
+                    }
+                    this.renderSegment(step.name);
+                }, step.at);
+                this.timeouts.push(timeout);
+            }
+        }
+    }
+
+    function init(root = document) {
+        const nodes = root.querySelectorAll("[data-seven-seg-morph]");
+        for (const node of nodes) {
+            if (node.__sevenSegMorphIcon) {
+                continue;
+            }
+            node.__sevenSegMorphIcon = new SevenSegMorphIcon(node);
+        }
+    }
+
+    window.SevenSegMorphIcon = { init };
+
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", () => init(document), { once: true });
+    } else {
+        init(document);
+    }
+})();
+</script>
+{{ end }}
+
+{{ define "seven_seg_icon" }}
+{{ $from := or (index . "from") "empty" }}
+{{ $to := or (index . "to") $from }}
+{{ $duration := or (index . "duration_ms") 420 }}
+{{ $fade := or (index . "fade_ms") 72 }}
+{{ $size := or (index . "size") "100%" }}
+{{ $outlineWidth := index . "outline_width" }}
+{{ if eq $outlineWidth nil }}{{ $outlineWidth = 0.5 }}{{ end }}
+{{ $decorative := index . "decorative" }}
+<span
+    class="seven-seg-icon"
+    data-seven-seg-morph
+    data-from="{{ $from }}"
+    data-to="{{ $to }}"
+    data-duration-ms="{{ $duration }}"
+    data-fade-ms="{{ $fade }}"
+    data-size="{{ $size }}"
+    data-outline-width="{{ $outlineWidth }}"
+    {{ if $decorative }}aria-hidden="true"{{ else }}role="img" aria-label="icon" tabindex="0"{{ end }}
+></span>
+{{ end }}

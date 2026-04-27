@@ -7,17 +7,15 @@
         <style>
             :root {
                 color-scheme: dark;
-                --bg: #0b0d10;
-                --bg-accent: #121521;
-                --panel: rgba(16, 18, 23, 0.92);
-                --panel-border: #2b3040;
-                --text: #e7e8ee;
-                --muted: #9aa0b3;
-                --accent-blue: #0000ff;
-                --accent-red: #ff0000;
-                --slider-track: #c4c8d2;
-                --slider-thumb: #f2f4f8;
-                --shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+                --bg: #000000;
+                --panel: #000000;
+                --panel-border: rgba(255, 255, 255, 0.22);
+                --text: #ffffff;
+                --muted: #a6a6a6;
+                --accent-blue: #ffffff;
+                --accent-red: #ffffff;
+                --slider-track: #bdbdbd;
+                --slider-thumb: #ffffff;
             }
             html,
             body {
@@ -54,8 +52,8 @@
                 display: flex;
                 flex-direction: column;
                 gap: 12px;
-                box-shadow: var(--shadow);
-                backdrop-filter: blur(10px);
+                box-shadow: none;
+                backdrop-filter: none;
                 transition:
                     width 0.2s ease,
                     padding 0.2s ease;
@@ -149,7 +147,7 @@
                 background: var(--slider-thumb);
                 border: 2px solid #111;
                 margin-top: -5px;
-                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+                box-shadow: none;
             }
             input[type="range"]::-moz-range-track {
                 height: 4px;

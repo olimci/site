@@ -1,14 +1,18 @@
 +++
 title = "band structure"
 description = "silicon band structure visualisation"
-date = 2026-01-14T16:59:31Z
+featured = true
+tags = ["physics", "programming"]
 template = "post"
-sections = "posts"
-slug = "posts/band-structure"
+section = "posts"
+slug = "band-structure"
 
-[params]
-meta_description = "Silicon band structure visualisation rendered in three.js, with data calculated in Python."
-meta_keywords = "Oliver McInnes, Oli McInnes, band structure, silicon, visualisation, three.js, physics"
+[params.index_icon_morph]
+from = "h00,h10,h02,h12,v00,v01,v20,v21,d00a,d10b,d01b,d11a"
+to = "h01,h11,v00,d10a,d11b"
+duration_ms = 250
+fade_ms = 0
+decorative = true
 
 [sitemap]
 include = true
@@ -18,8 +22,6 @@ priority = 0.6
 [rss]
 include = true
 +++
-
-# band structure
 
 this is a silicon band structure visualisation. the underlying band data was calculated with python, and it’s rendered with three.js. it scored 75%.
 

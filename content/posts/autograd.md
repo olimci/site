@@ -1,14 +1,18 @@
 +++
 title = "go autograd"
-description = "research-led coursework on optical rotation"
-date = 2025-09-01T00:00:00Z
+description = "go autograd and machine learning library"
+featured = true
+tags = ["programming", "machine-learning"]
 template = "post"
-sections = "posts"
-slug = "posts/autograd"
+section = "posts"
+slug = "autograd"
 
-[params]
-meta_description = "Pure Go Autograd Library"
-meta_keywords = "Oliver McInnes, Oli McInnes, Autograd, Golang, Machine Learning"
+[params.index_icon_morph]
+from = "h00,h10,h02,h12,d00a,d01b"
+to = "h01,h11,v00,d10a,d11b"
+duration_ms = 250
+fade_ms = 0
+decorative = true
 
 [sitemap]
 include = true
@@ -20,6 +24,8 @@ include = true
 +++
 
 for [this project](https://github.com/olimci/autograd) i set myself the challenge of writing a complete autograd / machine learning library from scratch in go.
+
+## design
 
 to simplify the project i broke it up into a few submodules, `autograd/tensor` for ndarray handling, and `autograd/module` for machine learning primatives. the core `autograd` library then provides a collection of autograd operations, as well as functions for backprop and SGD.
 
@@ -47,5 +53,7 @@ model := module.Sequential{
 (this model got up to 96% in testing on MNIST, after 10,000 iterations of training!)
 
 i previously wrote a similar library for my A-Level computer science coursework, however that library didn't use an autograd, and instead you had to calculate gradients manually.
+
+## demo
 
 one of the very cool benefits of this being pure go, is that i can compile the go binaries into webassembly, and run the model in the browser. because of this i have an in-browser demo of the MNIST model [here](/wasm/run.html?path=mnist.wasm). (i'm not sure this will work quite right on mobile... sorry)

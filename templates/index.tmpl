@@ -2,113 +2,101 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {{ $aboutTitle := or (index .Page.Params "about_title") "about me" }}
+    {{ $bannerImage := index .Page.Params "banner_image" }}
+    {{ $bannerAlt := or (index .Page.Params "banner_alt") $aboutTitle }}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <meta name="description" content="{{ .Site.Description }}">
     <meta name="keywords" content="Oliver McInnes, Oli McInnes, Oli, Oliver, McInnes, programming, physics, personal blog, cv">
     <meta name="author" content="Oliver McInnes">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="{{ .Site.URL }}/">
 
     <link rel="alternate" type="application/rss+xml" title="oli's site rss" href="{{ .Site.URL }}/rss.xml">
 
     <meta property="og:title" content="{{ .Site.Title }}">
     <meta property="og:description" content="{{ .Site.Description }}">
-    <meta property="og:image" content="{{ .Site.URL }}/favicon.png"> <!-- optional if you want a preview image -->
+    <meta property="og:image" content="{{ .Site.URL }}/favicon.png">
     <meta property="og:url" content="{{ .Site.URL }}">
     <meta property="og:type" content="website">
+    <meta property="og:site_name" content="{{ .Site.Title }}">
 
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="{{ .Site.Title }}">
     <meta name="twitter:description" content="{{ .Site.Description }}">
     <meta name="twitter:image" content="{{ .Site.URL }}/favicon.png">
 
-    <title>oli.mcinnes.cc</title>
+    <title>{{ .Site.Title }}</title>
     <link rel="stylesheet" href="/styles.css" />
+    {{ template "seven_seg_icon_assets" . }}
     <link rel="icon" href="/favicon.png" type="image/png" />
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 </head>
 <body>
-<div class="content">
-    <div class="ascii-wrap">
-        <pre class="ascii">{{ .Page.Body }}</pre>
-    </div>
+{{ $sideLinks := index .Site.Params "side_links" }}
+{{ $posts := query "SELECT * FROM pages WHERE Featured=true AND Draft=false AND Section='posts' ORDER BY Updated DESC" | asPages }}
+<main class="w-shell home-layout">
+    <aside class="w-column w-rail">
+        <h1 class="identity-title">
+            <span class="identity-line">oli.</span>
+            <span class="identity-line">mcinnes</span>
+            <span class="identity-line identity-line-right">.cc</span>
+        </h1>
 
-    <div class="links-inline">
-        <a href="/cv"><i class="fa-regular fa-file"></i>  cv</a>
-        <a href="/bio"><i class="fa-regular fa-user"></i>  bio</a>
-        <a href="mailto:oli@mcinnes.cc"><i class="fa-regular fa-envelope"></i>  email</a>
-        <a href="https://github.com/olimci"><i class="fa-brands fa-github"></i>  github</a>
-        <a href="https://www.instagram.com/mcinnesoliver/profilecard/?igsh=MW5saGlmemYxMGs5Yg=="><i class="fa-brands fa-instagram"></i>  instagram</a>
-    </div>
+        <nav class="w-linklist sidebar-links" aria-label="site">
+            {{ range $link := $sideLinks }}
+                {{ $iconMorph := or (index $link "icon_morph") (index $link "iconMorph") }}
+                <a class="sidebar-link" href="{{ index $link "url" }}">
+                    {{ if $iconMorph }}{{ template "seven_seg_icon" $iconMorph }}{{ end }}
+                    <span class="sidebar-link-label">{{ index $link "label" }}</span>
+                </a>
+            {{ end }}
+        </nav>
+    </aside>
 
-    <div id="vn-box">
-        <div id="vn-text"></div>
-    </div>
+    <section class="home-main">
+        <article class="w-panel">
+            <div class="about-banner-frame"><img class="about-banner-image" src="{{ $bannerImage }}" alt="{{ $bannerAlt }}" /></div>
+            <h2 class="w-subtitle">{{ $aboutTitle }}</h2>
+            <div class="about-body">{{ .Page.Body }}</div>
+        </article>
 
-    <div class="section green">
-        <strong>POSTS</strong><br />
-        {{ $posts := where "Section" "posts" .Site.Collections.Latest }}
-        {{ range $post := $posts }}
-            <a href="/{{ $post.Slug }}/">{{ $post.Title }}</a>
-        {{ end }}
-    </div>
+        <section class="post-list-wrap">
+            <div class="section-head">
+                <div class="w-label">featured:</div>
+                <a class="section-link" href="/posts/">[all posts]</a>
+            </div>
 
-    <div class="section gold">
-        <strong>REPOS</strong><br />
-        {{range $repo := index .Page.Params "repos"}}
-            <a href="{{ index $repo "url" }}" title="{{ index $repo "description" }}">{{ index $repo "name" }}</a>
-        {{end}}
-    </div>
-</div>
-
-<div class="footer">
-    &copy; Oliver McInnes; 2026
-</div>
-
-<script>
-    const lines = [
-        {{- range $line := index .Page.Params "vn_lines" }}
-        {{ printf "%q" $line }},
-        {{- end }}
-    ];
-
-    let index = 0;
-    let textElement = document.getElementById("vn-text");
-    let box = document.getElementById("vn-box");
-    let typing = false;
-
-    function typeLine(line, i = 0) {
-        typing = true;
-        if (i <= line.length) {
-            textElement.innerText = line.slice(0, i);
-            setTimeout(() => typeLine(line, i + 1), 20);
-        } else {
-            typing = false;
-        }
-    }
-
-    function showNext() {
-        if (typing) return;
-        if (index < lines.length) {
-            typeLine(lines[index]);
-            index++;
-        } else {
-            box.classList.add("outro");
-            setTimeout(() => box.style.display = "none", 500);
-        }
-    }
-
-    window.addEventListener("load", () => {
-        setTimeout(() => {
-            box.classList.add("visible");
-            showNext();
-        }, 100);
-    });
-
-    box.addEventListener("click", showNext);
-</script>
-
+            <section class="post-list">
+            {{ range $post := $posts }}
+                {{ $postIconMorph := or (index $post.Params "index_icon_morph") (index $post.Params "_index_icon_morph") }}
+                <article class="w-panel post-card">
+                    <a class="post-card-mark post-card-primary-link" href="{{ $post.Canon }}" aria-label="{{ $post.Title }}">
+                        {{ if $postIconMorph }}{{ template "seven_seg_icon" $postIconMorph }}{{ end }}
+                    </a>
+                    <div class="post-card-content">
+                        <div class="post-card-meta-row">
+                            <div class="post-card-meta">{{ datefmt "2006-01-02" $post.PubDate }}</div>
+                            {{ if $post.Tags }}
+                                <div class="post-card-tags">
+                                    {{ range $tag := $post.Tags }}
+                                        <a class="post-card-state post-card-tag post-card-tag-link" href="/tags/{{ $tag }}/">{{ $tag }}</a>
+                                    {{ end }}
+                                </div>
+                            {{ end }}
+                        </div>
+                        <h2 class="post-card-title"><a class="post-card-primary-link" href="{{ $post.Canon }}">{{ $post.Title }}</a></h2>
+                        {{ if $post.Description }}
+                            <p class="post-card-desc">{{ $post.Description }}</p>
+                        {{ end }}
+                    </div>
+                </article>
+            {{ end }}
+            </section>
+        </section>
+    </section>
+</main>
 </body>
 </html>
 {{ end }}

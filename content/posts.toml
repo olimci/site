@@ -1,0 +1,11 @@
+title = "posts"
+description = "posts and project notes by oli mcinnes"
+template = "posts"
+
+[sitemap]
+include = true
+changefreq = "weekly"
+priority = 0.8
+
+[rss]
+include = false
