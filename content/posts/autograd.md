@@ -2,7 +2,7 @@
 title = "go autograd"
 description = "go autograd and machine learning library"
 featured = true
-tags = ["programming", "machine-learning"]
+tags = ["programming", "math"]
 template = "post"
 section = "posts"
 slug = "autograd"
@@ -52,8 +52,6 @@ model := module.Sequential{
 
 (this model got up to 96% in testing on MNIST, after 10,000 iterations of training!)
 
-i previously wrote a similar library for my A-Level computer science coursework, however that library didn't use an autograd, and instead you had to calculate gradients manually.
-
 ## demo
 
-one of the very cool benefits of this being pure go, is that i can compile the go binaries into webassembly, and run the model in the browser. because of this i have an in-browser demo of the MNIST model [here](/wasm/run.html?path=mnist.wasm). (i'm not sure this will work quite right on mobile... sorry)
+since the project is pure go, it can be compiled into webassembly, so you can run models in the browser. you can see a demo [here](/wasm/run.html?path=mnist.wasm). (probably won't work on mobile browsers)

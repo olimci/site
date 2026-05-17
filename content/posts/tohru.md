@@ -1,14 +1,15 @@
 +++
-title = "ARP fuckery"
-description = "building a distributed object store on ARP"
-draft = true
+title = "tohru"
+description = "dotfiles manager"
 tags = ["programming"]
 template = "post"
 section = "posts"
-slug = "arp"
+slug = "tohru"
+
+draft = true
 
 [params.index_icon_morph]
-from = "v00,v10,v11,v20,d00a,d00b,d10a,d10b"
+from = "v10,d00b,d10a,d01a,d11b"
 to = "h01,h11,v00,d10a,d11b"
 duration_ms = 250
 fade_ms = 0
@@ -22,3 +23,5 @@ priority = 0.6
 [rss]
 include = true
 +++
+
+stub post for [tohru](https://github.com/olimci/tohru), my dotfiles manager.

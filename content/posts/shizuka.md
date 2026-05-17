@@ -1,14 +1,15 @@
 +++
-title = "ARP fuckery"
-description = "building a distributed object store on ARP"
-draft = true
+title = "shizuka"
+description = "static site generator"
 tags = ["programming"]
 template = "post"
 section = "posts"
-slug = "arp"
+slug = "shizuka"
+
+draft = true
 
 [params.index_icon_morph]
-from = "v00,v10,v11,v20,d00a,d00b,d10a,d10b"
+from = "h00,h11,h02,h12,v00,v01,v10,v21,d10a"
 to = "h01,h11,v00,d10a,d11b"
 duration_ms = 250
 fade_ms = 0
@@ -22,3 +23,5 @@ priority = 0.6
 [rss]
 include = true
 +++
+
+stub post for [shizuka](https://github.com/olimci/shizuka), my static site generator.

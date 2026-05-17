@@ -1,8 +1,8 @@
 +++
-title = "band structure"
-description = "silicon band structure visualisation"
+title = "superlattice"
+description = "silicon superlattice band structure visualisation"
 featured = true
-tags = ["physics", "programming"]
+tags = ["physics", "math"]
 template = "post"
 section = "posts"
 slug = "band-structure"
@@ -23,6 +23,8 @@ priority = 0.6
 include = true
 +++
 
-this is a silicon band structure visualisation. the underlying band data was calculated with python, and it’s rendered with three.js. it scored 75%.
+for my 3rd year computational physics project, i investigated semiconductor band structure, more specifically the band structure of silicon germanium superlattice materials.
 
-you can view it [here](/band-structure.html) and see the poster pdf [here](/pdfs/comp_poster.pdf)
+initially i just investigated silicon, by itself, you can see the poster [here](/pdfs/comp_poster.pdf) and a cool visualisation [here](/band-structure.html).
+
+the full report is on the character of the band gap in the Si4Ge4 [001] superlattice, and can be found [here](/pdfs/superlattice-report.pdf).

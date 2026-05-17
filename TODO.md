@@ -1,6 +1,2 @@
-- [ ] Cleanup meta.
-- [ ] Port (improve?) shape rotator and asteroids code.
-- [ ] Write 3000GT post
-- [ ] Write ARP post
-- [ ] Investigate site logo
-- [ ] Better homepage copy
+- [ ] better favicon
+- [ ] photography post(s)

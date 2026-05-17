@@ -1,7 +1,7 @@
 +++
 title = "2nd year RLI"
 description = "research-led coursework on optical rotation"
-tags = ["physics", "writing"]
+tags = ["physics"]
 template = "post"
 section = "posts"
 slug = "physics-rli"
