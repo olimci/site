@@ -18,4 +18,4 @@ I'm a physics undergrad at Durham. I'm mostly interested in machine learning, st
 
 Besides that, I spend a lot of time mountain biking, messing with my car, snowboarding, taking photos, and trying to learn a bit of Japanese.
 
-Please check out my projects below! You can also check out my github [olimci](https://oli.mcinnes.cc) or email me at [oli@mcinnes.cc](mailto:oli@mcinnes.cc).
+Please check out my projects below, find more on [GitHub](https://github.com/olimci), or email me at [oli@mcinnes.cc](mailto:oli@mcinnes.cc).

@@ -27,8 +27,8 @@
 
     <title>{{ $pageTitle }}</title>
     <link rel="stylesheet" href="/styles.css" />
-    {{ template "seven_seg_icon_assets" . }}
-    <link rel="icon" href="/favicon.png" type="image/png" />
+    {{ template "icon_assets" . }}
+    {{ template "favicon_assets" . }}
 </head>
 <body>
 {{ $posts := query "SELECT * FROM pages WHERE Section='posts' ORDER BY Updated DESC" | asPages }}
@@ -37,10 +37,17 @@
     {{ template "site_nav_archive" . }}
 
     <section class="page-main">
-        <header class="page-header">
+        <header class="w-panel article-panel page-header archive-header">
             <h1 class="w-title medium">{{ .Page.Title }}</h1>
             {{ if .Page.Description }}<p class="archive-note">{{ .Page.Description }}</p>{{ end }}
         </header>
+
+        <div class="section-head archive-section-head">
+            <div class="w-label">posts:</div>
+            <nav class="archive-section-links" aria-label="Post archive links">
+                <a class="section-link" href="/tags/">[all tags]</a>
+            </nav>
+        </div>
 
         <section class="post-list post-list-states">
             {{ range $post := $posts }}
@@ -49,7 +56,7 @@
                     <article class="w-panel post-card{{ if $post.Featured }} is-featured{{ end }}{{ if $post.Draft }} is-draft{{ end }}{{ if $disablePostGlyphs }} post-card-no-mark{{ end }}">
                         {{ if not $disablePostGlyphs }}
                             <a class="post-card-mark post-card-primary-link" href="{{ $post.Canon }}" aria-label="{{ $post.Title }}">
-                                {{ if $postIconMorph }}{{ template "seven_seg_icon" $postIconMorph }}{{ end }}
+                                {{ if $postIconMorph }}{{ template "icon" $postIconMorph }}{{ end }}
                             </a>
                         {{ end }}
                         <div class="post-card-content">
@@ -83,6 +90,7 @@
             {{ end }}
         </section>
     </section>
+    {{ template "site_footer" . }}
 </main>
 </body>
 </html>

@@ -28,8 +28,8 @@
 
     <title>{{ $pageTitle }}</title>
     <link rel="stylesheet" href="/styles.css" />
-    {{ template "seven_seg_icon_assets" . }}
-    <link rel="icon" href="/favicon.png" type="image/png" />
+    {{ template "icon_assets" . }}
+    {{ template "favicon_assets" . }}
 </head>
 <body>
 {{ $photos := index .Page.Params "photos" }}
@@ -40,7 +40,6 @@
         <article class="album-page">
             <header class="w-panel article-panel album-head">
                 <div class="article-meta-row">
-                    <a class="section-link" href="/photos/">[all photos]</a>
                     {{ if .Page.Featured }}<span class="post-card-state featured">featured</span>{{ end }}
                     {{ if .Page.Draft }}<span class="post-card-state draft">draft</span>{{ end }}
                     {{ range $tag := .Page.Tags }}<span class="post-card-state post-card-tag">{{ $tag }}</span>{{ end }}
@@ -59,6 +58,7 @@
             </section>
         </article>
     </section>
+    {{ template "site_footer" . }}
 </main>
 </body>
 </html>

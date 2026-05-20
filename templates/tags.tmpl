@@ -31,8 +31,8 @@
 
     <title>{{ $pageTitle }}</title>
     <link rel="stylesheet" href="/styles.css" />
-    {{ template "seven_seg_icon_assets" . }}
-    <link rel="icon" href="/favicon.png" type="image/png" />
+    {{ template "icon_assets" . }}
+    {{ template "favicon_assets" . }}
 </head>
 <body>
 {{ $summary := index .Page.Queries "summary" }}
@@ -43,20 +43,24 @@
     {{ template "site_nav_archive" . }}
 
     <section class="page-main">
-        <header class="page-header">
+        <header class="w-panel article-panel page-header archive-header">
             {{ if .Page.Group }}
-                <div class="section-head tag-page-head">
-                    <div class="w-label">Tag:</div>
-                    <a class="section-link" href="/tags/">[all tags]</a>
-                </div>
-                <h1 class="w-title medium">#{{ .Page.Group.Value }}</h1>
+                <h1 class="w-title medium">Tag: {{ .Page.Group.Value }}</h1>
             {{ else }}
                 <h1 class="w-title medium">{{ .Page.Title }}</h1>
-                <p class="archive-note">Collections built from the post tags.</p>
+                {{ if .Page.Description }}<p class="archive-note">{{ .Page.Description }}</p>{{ end }}
             {{ end }}
         </header>
 
         {{ if .Page.Group }}
+            <div class="section-head archive-section-head">
+                <div class="w-label">posts:</div>
+                <nav class="archive-section-links" aria-label="Tag archive links">
+                    <a class="section-link" href="/tags/">[all tags]</a>
+                    <a class="section-link" href="/posts/">[all posts]</a>
+                </nav>
+            </div>
+
             <section class="post-list post-list-states">
                 {{ range $post := $posts }}
                     {{ if or $.Site.Meta.IsDev (not $post.Draft) }}
@@ -64,7 +68,7 @@
                         <article class="w-panel post-card{{ if $post.Featured }} is-featured{{ end }}{{ if $post.Draft }} is-draft{{ end }}{{ if $disablePostGlyphs }} post-card-no-mark{{ end }}">
                             {{ if not $disablePostGlyphs }}
                                 <a class="post-card-mark post-card-primary-link" href="{{ $post.Canon }}" aria-label="{{ $post.Title }}">
-                                    {{ if $postIconMorph }}{{ template "seven_seg_icon" $postIconMorph }}{{ end }}
+                                    {{ if $postIconMorph }}{{ template "icon" $postIconMorph }}{{ end }}
                                 </a>
                             {{ end }}
                             <div class="post-card-content">
@@ -108,16 +112,17 @@
                 {{ end }}
             {{ end }}
         {{ else }}
-            <section class="tag-grid">
+            <section class="w-panel tag-index" aria-label="All tags">
                 {{ range $row := $summary.Rows }}
-                    <a class="w-panel tag-tile" href="/tags/{{ index $row "tag" }}/">
-                        <div class="tag-tile-name">#{{ index $row "tag" }}</div>
-                        <div class="tag-tile-meta">{{ index $row "post_count" }} posts</div>
+                    <a class="tag-row" href="/tags/{{ index $row "tag" }}/">
+                        <span class="tag-row-name">#{{ index $row "tag" }}</span>
+                        <span class="tag-row-meta">{{ index $row "post_count" }} {{ if eq (index $row "post_count") 1 }}post{{ else }}posts{{ end }}</span>
                     </a>
                 {{ end }}
             </section>
         {{ end }}
     </section>
+    {{ template "site_footer" . }}
 </main>
 </body>
 </html>

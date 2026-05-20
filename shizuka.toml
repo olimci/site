@@ -7,54 +7,7 @@ url = "https://oli.mcinnes.cc"
 
 [site.params]
 disable_post_glyphs = true
-
-[[site.params.side_links]]
-label = "CV"
-url = "/cv"
-
-[site.params.side_links.icon_morph]
-from = "h00,h11,h02,h12,v00,v01,v10,v21,d10a"
-to = "h00,h10,h02,h12,v00,v01,v20,v21,d10a"
-duration_ms = 250
-fade_ms = 72
-outline_width = 0
-decorative = true
-
-[[site.params.side_links]]
-label = "Bio"
-url = "/bio"
-
-[site.params.side_links.icon_morph]
-from = "h00,h10,h02,h12,v00,v01,v20,v21,d10a,d10b,d01a,d01b"
-to = "h00,h10,h02,h12,v00,v01,v20,v21,d00a,d00b,d11a,d11b"
-duration_ms = 250
-fade_ms = 72
-outline_width = 0
-decorative = true
-
-[[site.params.side_links]]
-label = "Email"
-url = "mailto:oli@mcinnes.cc"
-
-[site.params.side_links.icon_morph]
-from = "h00,h10,h01,h11,v00,v01,v20,d01b"
-to = "h00,h10,h01,h11,v00,v20,v21,d11a"
-duration_ms = 250
-fade_ms = 72
-outline_width = 0
-decorative = true
-
-[[site.params.side_links]]
-label = "GitHub"
-url = "https://github.com/olimci"
-
-[site.params.side_links.icon_morph]
-from = "h12,d00a,d01b"
-to = "d00a,d10a,d01b,d11b"
-duration_ms = 250
-fade_ms = 72
-outline_width = 0
-decorative = true
+nav_title = "olimci"
 
 [build]
 minify = true

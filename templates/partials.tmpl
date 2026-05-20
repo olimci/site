@@ -1,0 +1,79 @@
+{{ define "favicon_assets" }}
+<link rel="icon" type="image/svg+xml" href="/assets/favicon/favicon-segments-black-transparent.svg" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/svg+xml" href="/assets/favicon/favicon-segments-white-transparent.svg" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-black-transparent-32.png" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-white-transparent-32.png" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon/favicon-black-transparent-48.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon-black-transparent-180.png">
+{{ end }}
+
+{{ define "nav_home_icon" }}
+<span class="seven-seg-icon" data-seven-seg-morph data-from="h02,h12,v01,v21,d00b,d10a" data-to="h02,h12,v01,v21,d00b,d10a" data-duration-ms="0" data-fade-ms="72" data-size="100%" data-outline-width="0" aria-hidden="true"></span>
+{{ end }}
+
+{{ define "nav_back_icon" }}
+<span class="seven-seg-icon" data-seven-seg-morph data-from="h01,h11,d00b,d01a" data-to="h01,h11,v20,d00b,d01a" data-duration-ms="0" data-fade-ms="72" data-size="100%" data-outline-width="0" aria-hidden="true"></span>
+{{ end }}
+
+{{ define "linktree_nav_links" }}
+{{ $linktreePage := query "SELECT * FROM pages WHERE Slug='links' LIMIT 1" | asPage }}
+{{ $linktreeLinks := or (index $linktreePage.Params "exported_links") (index $linktreePage.Params "links") }}
+<nav class="nav-box nav-links-box w-linklist sidebar-links" aria-label="linktree">
+    {{ range $link := $linktreeLinks }}
+        {{ $iconMorph := or (index $link "icon_morph") (index $link "iconMorph") }}
+        <a class="toolbar-link sidebar-link" href="{{ index $link "url" }}" aria-label="{{ index $link "label" }}" data-label="{{ index $link "label" }}">
+            {{ if $iconMorph }}{{ template "icon" $iconMorph }}{{ end }}
+            <span class="sidebar-link-label">{{ index $link "label" }}</span>
+        </a>
+    {{ end }}
+</nav>
+{{ end }}
+
+{{ define "site_nav_title" }}
+{{ $navTitle := or (index .Site.Params "nav_title") .Site.Title }}
+<div class="nav-title" aria-hidden="true">{{ $navTitle }}</div>
+{{ end }}
+
+{{ define "site_footer" }}
+<footer class="site-footer">
+    <span>&copy; 2026 Oliver McInnes</span>
+</footer>
+{{ end }}
+
+{{ define "site_nav_home" }}
+<aside class="nav-toolbar nav-toolbar-index" aria-label="linktree">
+    {{ template "linktree_nav_links" . }}
+</aside>
+{{ end }}
+
+{{ define "site_nav_archive" }}
+<aside class="nav-toolbar" aria-label="site">
+    <div class="nav-box nav-action-box">
+        <a class="toolbar-link toolbar-home" href="/" aria-label="Home" data-label="Home">{{ template "nav_home_icon" . }}</a>
+    </div>
+    {{ template "site_nav_title" . }}
+    {{ template "linktree_nav_links" . }}
+</aside>
+{{ end }}
+
+{{ define "site_nav_post_item" }}
+<aside class="nav-toolbar" aria-label="site">
+    <div class="nav-box nav-action-box">
+        <a class="toolbar-link toolbar-home" href="/" aria-label="Home" data-label="Home">{{ template "nav_home_icon" . }}</a>
+        <a class="toolbar-link toolbar-back" href="/posts/" aria-label="Back to posts" data-label="Posts">{{ template "nav_back_icon" . }}</a>
+    </div>
+    {{ template "site_nav_title" . }}
+    {{ template "linktree_nav_links" . }}
+</aside>
+{{ end }}
+
+{{ define "site_nav_photo_item" }}
+<aside class="nav-toolbar" aria-label="site">
+    <div class="nav-box nav-action-box">
+        <a class="toolbar-link toolbar-home" href="/" aria-label="Home" data-label="Home">{{ template "nav_home_icon" . }}</a>
+        <a class="toolbar-link toolbar-back" href="/photos/" aria-label="Back to photos" data-label="Photos">{{ template "nav_back_icon" . }}</a>
+    </div>
+    {{ template "site_nav_title" . }}
+    {{ template "linktree_nav_links" . }}
+</aside>
+{{ end }}

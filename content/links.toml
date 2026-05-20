@@ -1,0 +1,75 @@
+title = "Links"
+description = "Personal links and contact details"
+template = "links"
+slug = "links"
+section = "pages"
+
+# Exported links appear here and in the shared site nav.
+[[params.exported_links]]
+label = "CV"
+url = "/cv"
+
+[params.exported_links.icon_morph]
+from = "h00,h11,h02,h12,v00,v01,v10,v21,d10a"
+to = "h00,h10,h02,h12,v00,v01,v20,v21,d10a"
+duration_ms = 250
+fade_ms = 72
+outline_width = 0
+decorative = true
+
+[[params.exported_links]]
+label = "Bio"
+url = "/bio"
+
+[params.exported_links.icon_morph]
+from = "h00,h10,h02,h12,v00,v01,v20,v21,d10a,d10b,d01a,d01b"
+to = "h00,h10,h02,h12,v00,v01,v20,v21,d00a,d00b,d11a,d11b"
+duration_ms = 250
+fade_ms = 72
+outline_width = 0
+decorative = true
+
+[[params.exported_links]]
+label = "Email"
+url = "mailto:oli@mcinnes.cc"
+
+[params.exported_links.icon_morph]
+from = "h00,h10,h01,h11,v00,v01,v20,d01b"
+to = "h00,h10,h01,h11,v00,v20,v21,d11a"
+duration_ms = 250
+fade_ms = 72
+outline_width = 0
+decorative = true
+
+[[params.exported_links]]
+label = "GitHub"
+url = "https://github.com/olimci"
+
+[params.exported_links.icon_morph]
+from = "h12,d00a,d01b"
+to = "d00a,d10a,d01b,d11b"
+duration_ms = 250
+fade_ms = 72
+outline_width = 0
+decorative = true
+
+# Unexported links appear only on this page.
+[[params.unexported_links]]
+label = "Instagram"
+url = "https://www.instagram.com/mcinnesoliver/"
+
+[params.unexported_links.icon_morph]
+from = "h00,h10,h02,h12,v00,v01,v20,v21,d00b,d10a,d01a,d11b"
+to = "h00,h10,h02,h12,v00,v01,v20,v21,d00a,d00b,d10a,d10b,d01a,d01b,d11a,d11b"
+duration_ms = 250
+fade_ms = 72
+outline_width = 0
+decorative = true
+
+[sitemap]
+include = true
+changefreq = "monthly"
+priority = 0.8
+
+[rss]
+include = false

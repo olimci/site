@@ -27,8 +27,8 @@
 
     <title>{{ $pageTitle }}</title>
     <link rel="stylesheet" href="/styles.css" />
-    {{ template "seven_seg_icon_assets" . }}
-    <link rel="icon" href="/favicon.png" type="image/png" />
+    {{ template "icon_assets" . }}
+    {{ template "favicon_assets" . }}
 </head>
 <body>
 <main class="w-shell page-layout">
@@ -52,6 +52,7 @@
             <div class="w-article">{{ .Page.Body }}</div>
         </article>
     </section>
+    {{ template "site_footer" . }}
 </main>
 </body>
 </html>

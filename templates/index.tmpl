@@ -30,8 +30,8 @@
 
     <title>{{ .Site.Title }}</title>
     <link rel="stylesheet" href="/styles.css" />
-    {{ template "seven_seg_icon_assets" . }}
-    <link rel="icon" href="/favicon.png" type="image/png" />
+    {{ template "icon_assets" . }}
+    {{ template "favicon_assets" . }}
 </head>
 <body>
 {{ $disablePostGlyphs := index .Site.Params "disable_post_glyphs" }}
@@ -42,7 +42,10 @@
 
     <section class="home-main">
         <article class="w-panel">
-            <div class="about-banner-frame"><img class="about-banner-image" src="{{ $bannerImage }}" alt="{{ $bannerAlt }}" /></div>
+            <div class="about-banner-frame">
+                <img class="about-banner-image" src="{{ $bannerImage }}" alt="{{ $bannerAlt }}" />
+                <h1 class="about-banner-title">olimci</h1>
+            </div>
             <div class="about-body">{{ .Page.Body }}</div>
         </article>
 
@@ -58,7 +61,7 @@
                 <article class="w-panel post-card{{ if $disablePostGlyphs }} post-card-no-mark{{ end }}">
                     {{ if not $disablePostGlyphs }}
                         <a class="post-card-mark post-card-primary-link" href="{{ $post.Canon }}" aria-label="{{ $post.Title }}">
-                            {{ if $postIconMorph }}{{ template "seven_seg_icon" $postIconMorph }}{{ end }}
+                            {{ if $postIconMorph }}{{ template "icon" $postIconMorph }}{{ end }}
                         </a>
                     {{ end }}
                     <div class="post-card-content">
@@ -121,6 +124,7 @@
             </article>
         {{ end }}
     </section>
+    {{ template "site_footer" . }}
 </main>
 </body>
 </html>
