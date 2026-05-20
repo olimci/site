@@ -26,7 +26,7 @@ backfill = true
 
 [redirects]
 output = "_redirects"
-shorten = "q"
+disable_short_links = true
 entries = [{ from = "https://mcinnes.cc/*", to = "https://oli.mcinnes.cc/:splat", status = 301 },{ from = "http://mcinnes.cc/*", to = "https://oli.mcinnes.cc/:splat", status = 301 }, { from = "https://site-1oc.pages.dev/*", to = "https://oli.mcinnes.cc/:splat", status = 301 }, { from = "http://site-1oc.pages.dev/*", to = "https://oli.mcinnes.cc/:splat", status = 301 }]
 
 [rss]
