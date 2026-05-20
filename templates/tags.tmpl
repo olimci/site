@@ -35,37 +35,19 @@
     <link rel="icon" href="/favicon.png" type="image/png" />
 </head>
 <body>
-{{ $sideLinks := index .Site.Params "side_links" }}
 {{ $summary := index .Page.Queries "summary" }}
 {{ $grouped := index .Page.Queries "tagged" }}
 {{ $posts := $grouped | asPages }}
+{{ $disablePostGlyphs := index .Site.Params "disable_post_glyphs" }}
 <main class="w-shell page-layout">
-    <aside class="w-column page-rail">
-        <a class="identity-home" href="/" aria-label="home">
-            <h1 class="identity-title">
-                <span class="identity-line">oli.</span>
-                <span class="identity-line">mcinnes</span>
-                <span class="identity-line identity-line-right">.cc</span>
-            </h1>
-        </a>
-
-        <nav class="w-linklist sidebar-links" aria-label="site">
-            {{ range $link := $sideLinks }}
-                {{ $iconMorph := or (index $link "icon_morph") (index $link "iconMorph") }}
-                <a class="sidebar-link" href="{{ index $link "url" }}">
-                    {{ if $iconMorph }}{{ template "seven_seg_icon" $iconMorph }}{{ end }}
-                    <span class="sidebar-link-label">{{ index $link "label" }}</span>
-                </a>
-            {{ end }}
-        </nav>
-    </aside>
+    {{ template "site_nav_archive" . }}
 
     <section class="page-main">
         <header class="page-header">
             {{ if .Page.Group }}
                 <div class="section-head tag-page-head">
                     <div class="w-label">Tag:</div>
-                    <a class="section-link" href="/tags/">[All tags]</a>
+                    <a class="section-link" href="/tags/">[all tags]</a>
                 </div>
                 <h1 class="w-title medium">#{{ .Page.Group.Value }}</h1>
             {{ else }}
@@ -79,10 +61,12 @@
                 {{ range $post := $posts }}
                     {{ if or $.Site.Meta.IsDev (not $post.Draft) }}
                         {{ $postIconMorph := or (index $post.Params "index_icon_morph") (index $post.Params "_index_icon_morph") }}
-                        <article class="w-panel post-card{{ if $post.Featured }} is-featured{{ end }}{{ if $post.Draft }} is-draft{{ end }}">
-                            <a class="post-card-mark post-card-primary-link" href="{{ $post.Canon }}" aria-label="{{ $post.Title }}">
-                                {{ if $postIconMorph }}{{ template "seven_seg_icon" $postIconMorph }}{{ end }}
-                            </a>
+                        <article class="w-panel post-card{{ if $post.Featured }} is-featured{{ end }}{{ if $post.Draft }} is-draft{{ end }}{{ if $disablePostGlyphs }} post-card-no-mark{{ end }}">
+                            {{ if not $disablePostGlyphs }}
+                                <a class="post-card-mark post-card-primary-link" href="{{ $post.Canon }}" aria-label="{{ $post.Title }}">
+                                    {{ if $postIconMorph }}{{ template "seven_seg_icon" $postIconMorph }}{{ end }}
+                                </a>
+                            {{ end }}
                             <div class="post-card-content">
                                 <div class="post-card-meta-row">
                                     <div class="post-card-meta">{{ datefmt "2006-01-02" $post.PubDate }}</div>

@@ -163,9 +163,10 @@
             this.timeouts = [];
             this.runId = 0;
             this.trigger = el.closest("a, button, [data-seven-seg-trigger]") || el;
+            this.stateCheckbox = el.dataset.stateCheckbox ? document.getElementById(el.dataset.stateCheckbox) : null;
             this.applyCssVars();
             this.build();
-            this.renderAll();
+            this.syncState(false);
             this.bind();
         }
 
@@ -208,10 +209,25 @@
         }
 
         bind() {
+            if (this.stateCheckbox) {
+                this.stateCheckbox.addEventListener("change", () => this.syncState(true));
+                return;
+            }
+
             this.trigger.addEventListener("pointerenter", () => this.morphTo(this.to));
             this.trigger.addEventListener("pointerleave", () => this.morphTo(this.from));
             this.trigger.addEventListener("focusin", () => this.morphTo(this.to));
             this.trigger.addEventListener("focusout", () => this.morphTo(this.from));
+        }
+
+        syncState(animate) {
+            const target = this.stateCheckbox && this.stateCheckbox.checked ? this.to : this.from;
+            if (animate) {
+                this.morphTo(target);
+                return;
+            }
+            this.active = new Set(target);
+            this.renderAll();
         }
 
         clearTimers() {
@@ -305,4 +321,91 @@
     data-outline-width="{{ $outlineWidth }}"
     {{ if $decorative }}aria-hidden="true"{{ else }}role="img" aria-label="icon" tabindex="0"{{ end }}
 ></span>
+{{ end }}
+
+{{ define "nav_home_icon" }}
+<span class="seven-seg-icon" data-seven-seg-morph data-from="h02,h12,v01,v21,d00b,d10a" data-to="h02,h12,v01,v21,d00b,d10a" data-duration-ms="0" data-fade-ms="72" data-size="100%" data-outline-width="0" aria-hidden="true"></span>
+{{ end }}
+
+{{ define "nav_back_icon" }}
+<span class="seven-seg-icon" data-seven-seg-morph data-from="h01,h11,d00b,d01a" data-to="h01,h11,v20,d00b,d01a" data-duration-ms="0" data-fade-ms="72" data-size="100%" data-outline-width="0" aria-hidden="true"></span>
+{{ end }}
+
+{{ define "nav_index_icon" }}
+<span class="seven-seg-icon" data-seven-seg-morph data-from="h00,h10,h02,h12,v00,v01,v10,v20,v21,d01b,d11a" data-to="h00,h10,h02,h12,v00,v01,v10,v20,v21,d01b,d11a" data-duration-ms="0" data-fade-ms="72" data-size="100%" data-outline-width="0" aria-hidden="true"></span>
+{{ end }}
+
+{{ define "nav_menu_icon" }}
+<span class="seven-seg-icon" data-seven-seg-morph data-state-checkbox="site-nav-toggle" data-from="h00,h10,h01,h11,h02,h12" data-to="d00a,d10b,d01b,d11a" data-duration-ms="220" data-fade-ms="72" data-size="100%" data-outline-width="0" aria-hidden="true"></span>
+{{ end }}
+
+{{ define "site_nav_links" }}
+{{ $sideLinks := index .Site.Params "side_links" }}
+<nav class="nav-box nav-links-box w-linklist sidebar-links" aria-label="site">
+    {{ range $link := $sideLinks }}
+        {{ $iconMorph := or (index $link "icon_morph") (index $link "iconMorph") }}
+        <a class="toolbar-link sidebar-link" href="{{ index $link "url" }}" aria-label="{{ index $link "label" }}" data-label="{{ index $link "label" }}">
+            {{ if $iconMorph }}{{ template "seven_seg_icon" $iconMorph }}{{ end }}
+            <span class="sidebar-link-label">{{ index $link "label" }}</span>
+        </a>
+    {{ end }}
+</nav>
+{{ end }}
+
+{{ define "site_nav_home" }}
+<aside class="nav-toolbar nav-toolbar-index" aria-label="site">
+    <input class="nav-toggle" type="checkbox" id="site-nav-toggle" />
+    <div class="nav-box nav-action-box nav-mobile-only" aria-hidden="true">
+        <span class="toolbar-link toolbar-static">{{ template "nav_index_icon" . }}</span>
+    </div>
+    <div class="nav-spacer" aria-hidden="true"></div>
+    <label class="toolbar-link nav-toggle-label" for="site-nav-toggle" aria-label="Toggle menu" data-label="Menu">
+        {{ template "nav_menu_icon" . }}
+    </label>
+    {{ template "site_nav_links" . }}
+</aside>
+{{ end }}
+
+{{ define "site_nav_archive" }}
+<aside class="nav-toolbar" aria-label="site">
+    <input class="nav-toggle" type="checkbox" id="site-nav-toggle" />
+    <div class="nav-box nav-action-box">
+        <a class="toolbar-link toolbar-home" href="/" aria-label="Home" data-label="Home">{{ template "nav_home_icon" . }}</a>
+    </div>
+    <div class="nav-spacer" aria-hidden="true"></div>
+    <label class="toolbar-link nav-toggle-label" for="site-nav-toggle" aria-label="Toggle menu" data-label="Menu">
+        {{ template "nav_menu_icon" . }}
+    </label>
+    {{ template "site_nav_links" . }}
+</aside>
+{{ end }}
+
+{{ define "site_nav_post_item" }}
+<aside class="nav-toolbar" aria-label="site">
+    <input class="nav-toggle" type="checkbox" id="site-nav-toggle" />
+    <div class="nav-box nav-action-box">
+        <a class="toolbar-link toolbar-home" href="/" aria-label="Home" data-label="Home">{{ template "nav_home_icon" . }}</a>
+        <a class="toolbar-link toolbar-back" href="/posts/" aria-label="Back to posts" data-label="Posts">{{ template "nav_back_icon" . }}</a>
+    </div>
+    <div class="nav-spacer" aria-hidden="true"></div>
+    <label class="toolbar-link nav-toggle-label" for="site-nav-toggle" aria-label="Toggle menu" data-label="Menu">
+        {{ template "nav_menu_icon" . }}
+    </label>
+    {{ template "site_nav_links" . }}
+</aside>
+{{ end }}
+
+{{ define "site_nav_photo_item" }}
+<aside class="nav-toolbar" aria-label="site">
+    <input class="nav-toggle" type="checkbox" id="site-nav-toggle" />
+    <div class="nav-box nav-action-box">
+        <a class="toolbar-link toolbar-home" href="/" aria-label="Home" data-label="Home">{{ template "nav_home_icon" . }}</a>
+        <a class="toolbar-link toolbar-back" href="/photos/" aria-label="Back to photos" data-label="Photos">{{ template "nav_back_icon" . }}</a>
+    </div>
+    <div class="nav-spacer" aria-hidden="true"></div>
+    <label class="toolbar-link nav-toggle-label" for="site-nav-toggle" aria-label="Toggle menu" data-label="Menu">
+        {{ template "nav_menu_icon" . }}
+    </label>
+    {{ template "site_nav_links" . }}
+</aside>
 {{ end }}

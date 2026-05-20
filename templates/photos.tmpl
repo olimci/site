@@ -31,28 +31,9 @@
     <link rel="icon" href="/favicon.png" type="image/png" />
 </head>
 <body>
-{{ $sideLinks := index .Site.Params "side_links" }}
 {{ $albums := index .Page.Queries "albums" | asPages }}
 <main class="w-shell page-layout">
-    <aside class="w-column page-rail">
-        <a class="identity-home" href="/" aria-label="home">
-            <h1 class="identity-title">
-                <span class="identity-line">oli.</span>
-                <span class="identity-line">mcinnes</span>
-                <span class="identity-line identity-line-right">.cc</span>
-            </h1>
-        </a>
-
-        <nav class="w-linklist sidebar-links" aria-label="site">
-            {{ range $link := $sideLinks }}
-                {{ $iconMorph := or (index $link "icon_morph") (index $link "iconMorph") }}
-                <a class="sidebar-link" href="{{ index $link "url" }}">
-                    {{ if $iconMorph }}{{ template "seven_seg_icon" $iconMorph }}{{ end }}
-                    <span class="sidebar-link-label">{{ index $link "label" }}</span>
-                </a>
-            {{ end }}
-        </nav>
-    </aside>
+    {{ template "site_nav_archive" . }}
 
     <section class="page-main">
         <header class="page-header">

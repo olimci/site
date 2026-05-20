@@ -34,27 +34,11 @@
     <link rel="icon" href="/favicon.png" type="image/png" />
 </head>
 <body>
-{{ $sideLinks := index .Site.Params "side_links" }}
+{{ $disablePostGlyphs := index .Site.Params "disable_post_glyphs" }}
 {{ $posts := query "SELECT * FROM pages WHERE Featured=true AND Draft=false AND Section='posts' ORDER BY Updated DESC" | asPages }}
 {{ $albums := query "SELECT * FROM pages WHERE Featured=true AND Draft=false AND Section='photos' ORDER BY Weight ASC, Updated DESC" | asPages }}
 <main class="w-shell home-layout">
-    <aside class="w-column w-rail">
-        <h1 class="identity-title">
-            <span class="identity-line">oli.</span>
-            <span class="identity-line">mcinnes</span>
-            <span class="identity-line identity-line-right">.cc</span>
-        </h1>
-
-        <nav class="w-linklist sidebar-links" aria-label="site">
-            {{ range $link := $sideLinks }}
-                {{ $iconMorph := or (index $link "icon_morph") (index $link "iconMorph") }}
-                <a class="sidebar-link" href="{{ index $link "url" }}">
-                    {{ if $iconMorph }}{{ template "seven_seg_icon" $iconMorph }}{{ end }}
-                    <span class="sidebar-link-label">{{ index $link "label" }}</span>
-                </a>
-            {{ end }}
-        </nav>
-    </aside>
+    {{ template "site_nav_home" . }}
 
     <section class="home-main">
         <article class="w-panel">
@@ -64,17 +48,19 @@
 
         <section class="post-list-wrap">
             <div class="section-head">
-                <div class="w-label">Featured:</div>
-                <a class="section-link" href="/posts/">[All posts]</a>
+                <div class="w-label">featured:</div>
+                <a class="section-link" href="/posts/">[all posts]</a>
             </div>
 
             <section class="post-list">
             {{ range $post := $posts }}
                 {{ $postIconMorph := or (index $post.Params "index_icon_morph") (index $post.Params "_index_icon_morph") }}
-                <article class="w-panel post-card">
-                    <a class="post-card-mark post-card-primary-link" href="{{ $post.Canon }}" aria-label="{{ $post.Title }}">
-                        {{ if $postIconMorph }}{{ template "seven_seg_icon" $postIconMorph }}{{ end }}
-                    </a>
+                <article class="w-panel post-card{{ if $disablePostGlyphs }} post-card-no-mark{{ end }}">
+                    {{ if not $disablePostGlyphs }}
+                        <a class="post-card-mark post-card-primary-link" href="{{ $post.Canon }}" aria-label="{{ $post.Title }}">
+                            {{ if $postIconMorph }}{{ template "seven_seg_icon" $postIconMorph }}{{ end }}
+                        </a>
+                    {{ end }}
                     <div class="post-card-content">
                         <div class="post-card-meta-row">
                             <div class="post-card-meta">{{ datefmt "2006-01-02" $post.PubDate }}</div>
@@ -104,8 +90,8 @@
 
         <section class="album-list-wrap">
             <div class="section-head">
-                <div class="w-label">Photos:</div>
-                <a class="section-link" href="/photos/">[All photos]</a>
+                <div class="w-label">photos:</div>
+                <a class="section-link" href="/photos/">[all photos]</a>
             </div>
 
             <section class="album-list album-list-home">

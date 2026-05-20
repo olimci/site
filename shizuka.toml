@@ -5,6 +5,9 @@ title = "Oli's site"
 description = "Personal website of Oli McInnes"
 url = "https://oli.mcinnes.cc"
 
+[site.params]
+disable_post_glyphs = true
+
 [[site.params.side_links]]
 label = "CV"
 url = "/cv"

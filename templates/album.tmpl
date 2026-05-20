@@ -32,34 +32,15 @@
     <link rel="icon" href="/favicon.png" type="image/png" />
 </head>
 <body>
-{{ $sideLinks := index .Site.Params "side_links" }}
 {{ $photos := index .Page.Params "photos" }}
 <main class="w-shell page-layout">
-    <aside class="w-column page-rail">
-        <a class="identity-home" href="/" aria-label="home">
-            <h1 class="identity-title">
-                <span class="identity-line">oli.</span>
-                <span class="identity-line">mcinnes</span>
-                <span class="identity-line identity-line-right">.cc</span>
-            </h1>
-        </a>
-
-        <nav class="w-linklist sidebar-links" aria-label="site">
-            {{ range $link := $sideLinks }}
-                {{ $iconMorph := or (index $link "icon_morph") (index $link "iconMorph") }}
-                <a class="sidebar-link" href="{{ index $link "url" }}">
-                    {{ if $iconMorph }}{{ template "seven_seg_icon" $iconMorph }}{{ end }}
-                    <span class="sidebar-link-label">{{ index $link "label" }}</span>
-                </a>
-            {{ end }}
-        </nav>
-    </aside>
+    {{ template "site_nav_photo_item" . }}
 
     <section class="page-main">
         <article class="album-page">
             <header class="w-panel article-panel album-head">
                 <div class="article-meta-row">
-                    <a class="section-link" href="/photos/">[All photos]</a>
+                    <a class="section-link" href="/photos/">[all photos]</a>
                     {{ if .Page.Featured }}<span class="post-card-state featured">featured</span>{{ end }}
                     {{ if .Page.Draft }}<span class="post-card-state draft">draft</span>{{ end }}
                     {{ range $tag := .Page.Tags }}<span class="post-card-state post-card-tag">{{ $tag }}</span>{{ end }}
