@@ -71,6 +71,14 @@ goldmark = { extensions = ["gfm", "table", "strikethrough", "tasklist", "deflist
 enabled = true
 backfill = true
 
+[redirects]
+output = "_redirects"
+shorten = "q"
+[[redirects.entries]]
+from = "mcinnes.cc/*"
+to = "https://oli.mcinnes.cc/$1"
+status = 301
+
 [rss]
 output = "rss.xml"
 sections = ["posts"]
