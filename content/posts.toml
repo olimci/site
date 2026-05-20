@@ -1,5 +1,5 @@
-title = "posts"
-description = "posts and project notes by oli mcinnes"
+title = "Posts"
+description = "Posts and project notes by Oli McInnes"
 template = "posts"
 
 [sitemap]

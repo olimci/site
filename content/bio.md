@@ -1,6 +1,6 @@
 +++
-title = "bio"
-description = "about me"
+title = "Bio"
+description = "About me"
 template = "post"
 section = "pages"
 slug = "bio"
@@ -14,10 +14,10 @@ priority = 0.8
 include = false
 +++
 
-i'm a physics undergrad at durham university, with a deep interest in machine learning, statistical mechanics, and using network protocols in unintended ways. 
+Hi, I'm Oliver.
 
-i spend a lot of time building random tools, frameworks, or small experiments, sometimes for work, sometimes for uni, and sometimes just for fun.
+I'm a physics undergrad at Durham. I'm mostly interested in machine learning, statistical mechanics, and network protocols. I'm proficient in Go and Python.
 
-outside of coding, i'm a bit of a adrenaline junkie:  i spend a lot of my free time mountain biking climbing or snowboarding. i also into photography, and i'm working on getting my japanese to a conversational level.
+Besides that, I spend a lot of time mountain biking, messing with my car, snowboarding, taking photos, and trying to learn a bit of Japanese.
 
-check out my [projects](https://github.com/olimci) or [say hi](mailto:oli@mcinnes.cc).
+Please check out my [projects](https://github.com/olimci). You can also check out my site [oli.mcinnes.cc](https://oli.mcinnes.cc) or email me at [oli@mcinnes.cc](mailto:oli@mcinnes.cc).

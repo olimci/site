@@ -14,7 +14,7 @@
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="{{ .Site.URL }}/">
 
-    <link rel="alternate" type="application/rss+xml" title="oli's site rss" href="{{ .Site.URL }}/rss.xml">
+    <link rel="alternate" type="application/rss+xml" title="Oli's site RSS" href="{{ .Site.URL }}/rss.xml">
 
     <meta property="og:title" content="{{ .Site.Title }}">
     <meta property="og:description" content="{{ .Site.Description }}">
@@ -36,6 +36,7 @@
 <body>
 {{ $sideLinks := index .Site.Params "side_links" }}
 {{ $posts := query "SELECT * FROM pages WHERE Featured=true AND Draft=false AND Section='posts' ORDER BY Updated DESC" | asPages }}
+{{ $albums := query "SELECT * FROM pages WHERE Featured=true AND Draft=false AND Section='photos' ORDER BY Weight ASC, Updated DESC" | asPages }}
 <main class="w-shell home-layout">
     <aside class="w-column w-rail">
         <h1 class="identity-title">
@@ -58,14 +59,13 @@
     <section class="home-main">
         <article class="w-panel">
             <div class="about-banner-frame"><img class="about-banner-image" src="{{ $bannerImage }}" alt="{{ $bannerAlt }}" /></div>
-            <h2 class="w-subtitle">{{ $aboutTitle }}</h2>
             <div class="about-body">{{ .Page.Body }}</div>
         </article>
 
         <section class="post-list-wrap">
             <div class="section-head">
-                <div class="w-label">featured:</div>
-                <a class="section-link" href="/posts/">[all posts]</a>
+                <div class="w-label">Featured:</div>
+                <a class="section-link" href="/posts/">[All posts]</a>
             </div>
 
             <section class="post-list">
@@ -95,6 +95,45 @@
             {{ end }}
             </section>
         </section>
+
+        {{ with index .Page.Params "photos_intro" }}
+            <article class="w-panel home-copy-panel">
+                <p>{{ . }}</p>
+            </article>
+        {{ end }}
+
+        <section class="album-list-wrap">
+            <div class="section-head">
+                <div class="w-label">Photos:</div>
+                <a class="section-link" href="/photos/">[All photos]</a>
+            </div>
+
+            <section class="album-list album-list-home">
+            {{ range $album := $albums }}
+                {{ $cover := index $album.Params "cover" }}
+                {{ $count := index $album.Params "photo_count" }}
+                <article class="w-panel album-card">
+                    <a class="album-card-image-link" href="{{ $album.Canon }}" aria-label="{{ $album.Title }}">
+                        <img class="album-card-image" src="{{ $cover }}" alt="" loading="lazy" />
+                    </a>
+                    <div class="album-card-body">
+                        <div class="post-card-meta-row">
+                            {{ if $count }}<span class="post-card-meta">{{ $count }} photos</span>{{ end }}
+                            {{ range $tag := $album.Tags }}<span class="post-card-state post-card-tag">{{ $tag }}</span>{{ end }}
+                        </div>
+                        <h2 class="post-card-title"><a class="post-card-primary-link" href="{{ $album.Canon }}">{{ $album.Title }}</a></h2>
+                        {{ if $album.Description }}<p class="post-card-desc">{{ $album.Description }}</p>{{ end }}
+                    </div>
+                </article>
+            {{ end }}
+            </section>
+        </section>
+
+        {{ with index .Page.Params "photos_outro" }}
+            <article class="w-panel home-copy-panel">
+                <p>{{ . }}</p>
+            </article>
+        {{ end }}
     </section>
 </main>
 </body>

@@ -1,12 +1,12 @@
 version = "0.1.0"
 
 [site]
-title = "oli's site"
+title = "Oli's site"
 description = "Personal website of Oli McInnes"
 url = "https://oli.mcinnes.cc"
 
 [[site.params.side_links]]
-label = "cv"
+label = "CV"
 url = "/cv"
 
 [site.params.side_links.icon_morph]
@@ -18,7 +18,7 @@ outline_width = 0
 decorative = true
 
 [[site.params.side_links]]
-label = "bio"
+label = "Bio"
 url = "/bio"
 
 [site.params.side_links.icon_morph]
@@ -30,7 +30,7 @@ outline_width = 0
 decorative = true
 
 [[site.params.side_links]]
-label = "email"
+label = "Email"
 url = "mailto:oli@mcinnes.cc"
 
 [site.params.side_links.icon_morph]
@@ -42,7 +42,7 @@ outline_width = 0
 decorative = true
 
 [[site.params.side_links]]
-label = "github"
+label = "GitHub"
 url = "https://github.com/olimci"
 
 [site.params.side_links.icon_morph]

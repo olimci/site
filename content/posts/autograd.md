@@ -1,6 +1,6 @@
 +++
-title = "go autograd"
-description = "go autograd and machine learning library"
+title = "Go Autograd"
+description = "Go autograd and machine learning library"
 featured = true
 tags = ["programming", "math"]
 template = "post"
@@ -23,13 +23,13 @@ priority = 0.6
 include = true
 +++
 
-for [this project](https://github.com/olimci/autograd) i set myself the challenge of writing a complete autograd / machine learning library from scratch in go.
+For [this project](https://github.com/olimci/autograd), I set myself the challenge of writing a complete autograd and machine learning library from scratch in Go.
 
-## design
+## Design
 
-to simplify the project i broke it up into a few submodules, `autograd/tensor` for ndarray handling, and `autograd/module` for machine learning primatives. the core `autograd` library then provides a collection of autograd operations, as well as functions for backprop and SGD.
+To simplify the project, I broke it up into a few submodules: `autograd/tensor` for ndarray handling, and `autograd/module` for machine learning primitives. The core `autograd` library then provides a collection of autograd operations, as well as functions for backprop and SGD.
 
-i figured MNIST is the obvious MVP machine learning model to implement, so the library includes 2d convolutions and pooling as default primatives. here is an example of a LeNet-style model built in this library:
+I figured MNIST is the obvious MVP machine learning model to implement, so the library includes 2D convolutions and pooling as default primitives. Here is an example of a LeNet-style model built in this library:
 
 ```go
 var eval bool
@@ -50,8 +50,8 @@ model := module.Sequential{
 }
 ```
 
-(this model got up to 96% in testing on MNIST, after 10,000 iterations of training!)
+(This model got up to 96% in testing on MNIST, after 10,000 iterations of training.)
 
-## demo
+## Demo
 
-since the project is pure go, it can be compiled into webassembly, so you can run models in the browser. you can see a demo [here](/wasm/run.html?path=mnist.wasm). (probably won't work on mobile browsers)
+Since the project is pure Go, it can be compiled into WebAssembly, so you can run models in the browser. You can see a demo [here](/wasm/run.html?path=mnist.wasm). (It probably won't work on mobile browsers.)

@@ -1,6 +1,6 @@
 +++
-title = "2nd year RLI"
-description = "research-led coursework on optical rotation"
+title = "2nd-year RLI"
+description = "Research-led coursework on optical rotation"
 tags = ["physics"]
 template = "post"
 section = "posts"
@@ -22,6 +22,6 @@ priority = 0.6
 include = true
 +++
 
-this is my research-led-investigation project on optical rotation of chiral molecules, from 2nd year. it scored 63%.
+This is my second-year research-led investigation project on optical rotation of chiral molecules. It scored 63%.
 
-[see the full pdf](/pdfs/RLI.pdf)
+[See the full PDF](/pdfs/RLI.pdf)

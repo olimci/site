@@ -1,0 +1,14 @@
+title = "Photos"
+description = "Photo albums by Oli McInnes"
+template = "photos"
+
+[queries.albums]
+query = "SELECT * FROM pages WHERE Section='photos' ORDER BY Weight ASC, Updated DESC"
+
+[sitemap]
+include = true
+changefreq = "monthly"
+priority = 0.7
+
+[rss]
+include = false

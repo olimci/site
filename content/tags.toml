@@ -1,5 +1,5 @@
-title = "tags"
-description = "topics and collections across posts and project notes"
+title = "Tags"
+description = "Topics and collections across posts and project notes"
 template = "tags"
 
 [queries.tagged]

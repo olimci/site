@@ -1,6 +1,6 @@
 +++
-title = "superlattice"
-description = "silicon superlattice band structure visualisation"
+title = "Superlattice"
+description = "Silicon superlattice band structure visualisation"
 featured = true
 tags = ["physics", "math"]
 template = "post"
@@ -23,8 +23,8 @@ priority = 0.6
 include = true
 +++
 
-for my 3rd year computational physics project, i investigated semiconductor band structure, more specifically the band structure of silicon germanium superlattice materials.
+For my third-year computational physics project, I investigated semiconductor band structure, more specifically the band structure of silicon-germanium superlattice materials.
 
-initially i just investigated silicon, by itself, you can see the poster [here](/pdfs/comp_poster.pdf) and a cool visualisation [here](/band-structure.html).
+Initially, I just investigated silicon by itself. You can see the poster [here](/pdfs/comp_poster.pdf) and a cool visualisation [here](/band-structure.html).
 
-the full report is on the character of the band gap in the Si4Ge4 [001] superlattice, and can be found [here](/pdfs/superlattice-report.pdf).
+The full report is on the character of the band gap in the Si4Ge4 [001] superlattice, and can be found [here](/pdfs/superlattice-report.pdf).

@@ -6,8 +6,8 @@
     {{ $pageURL := or .Page.Canon (printf "%s/%s/" .Site.URL .Page.Slug) }}
     {{ $pageTitle := printf "%s | %s" .Page.Title .Site.Title }}
     {{ if .Page.Group }}
-        {{ $pageTitle = printf "%v | tags | %s" .Page.Group.Value .Site.Title }}
-        {{ $pageDescription = printf "posts tagged %v" .Page.Group.Value }}
+        {{ $pageTitle = printf "%v | Tags | %s" .Page.Group.Value .Site.Title }}
+        {{ $pageDescription = printf "Posts tagged %v" .Page.Group.Value }}
     {{ end }}
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -64,13 +64,13 @@
         <header class="page-header">
             {{ if .Page.Group }}
                 <div class="section-head tag-page-head">
-                    <div class="w-label">tag:</div>
-                    <a class="section-link" href="/tags/">[all tags]</a>
+                    <div class="w-label">Tag:</div>
+                    <a class="section-link" href="/tags/">[All tags]</a>
                 </div>
                 <h1 class="w-title medium">#{{ .Page.Group.Value }}</h1>
             {{ else }}
                 <h1 class="w-title medium">{{ .Page.Title }}</h1>
-                <p class="archive-note">collections built from the post tags.</p>
+                <p class="archive-note">Collections built from the post tags.</p>
             {{ end }}
         </header>
 
@@ -117,9 +117,9 @@
             {{ with .Page.Pagination }}
                 {{ if gt .TotalPages 1 }}
                     <nav class="pagination-nav" aria-label="pagination">
-                        {{ if .HasPrev }}<a class="pagination-link" href="{{ .PrevURL }}/">[prev]</a>{{ else }}<span class="pagination-link is-disabled">[prev]</span>{{ end }}
+                        {{ if .HasPrev }}<a class="pagination-link" href="{{ .PrevURL }}/">[Prev]</a>{{ else }}<span class="pagination-link is-disabled">[Prev]</span>{{ end }}
                         <span class="pagination-current">{{ printf "%02d" .PageNumber }} / {{ printf "%02d" .TotalPages }}</span>
-                        {{ if .HasNext }}<a class="pagination-link" href="{{ .NextURL }}/">[next]</a>{{ else }}<span class="pagination-link is-disabled">[next]</span>{{ end }}
+                        {{ if .HasNext }}<a class="pagination-link" href="{{ .NextURL }}/">[Next]</a>{{ else }}<span class="pagination-link is-disabled">[Next]</span>{{ end }}
                     </nav>
                 {{ end }}
             {{ end }}
