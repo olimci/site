@@ -1,6 +1,6 @@
 +++
 title = "Romania 2025"
-description = "Photos from Romania."
+description = "Random photos from Romania"
 featured = true
 template = "album"
 section = "photos"

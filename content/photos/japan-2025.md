@@ -1,6 +1,6 @@
 +++
 title = "Japan 2025"
-description = "A couple of photos from Japan."
+description = "Random photos from Japan"
 featured = true
 template = "album"
 section = "photos"

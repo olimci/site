@@ -1,5 +1,5 @@
 title = "Photos"
-description = "Photo albums by Oli McInnes"
+description = "Photos I took"
 template = "photos"
 
 [queries.albums]
