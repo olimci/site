@@ -6,13 +6,6 @@ template = "post"
 section = "posts"
 slug = "physics-rli"
 
-[params.index_icon_morph]
-from = "v00,v01,v20,v21,d00b,d10a,d01a,d11b"
-to = "h01,h11,v00,d10a,d11b"
-duration_ms = 250
-fade_ms = 0
-decorative = true
-
 [sitemap]
 include = true
 changefreq = "never"

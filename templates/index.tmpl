@@ -35,7 +35,7 @@
 </head>
 <body>
 {{ $disablePostGlyphs := index .Site.Params "disable_post_glyphs" }}
-{{ $posts := query "SELECT * FROM pages WHERE Featured=true AND Draft=false AND Section='posts' ORDER BY Updated DESC" | asPages }}
+{{ $posts := query "SELECT * FROM pages WHERE Featured=true AND Draft=false AND Section='posts' ORDER BY Created DESC" | asPages }}
 {{ $albums := query "SELECT * FROM pages WHERE Featured=true AND Draft=false AND Section='photos' ORDER BY Weight ASC, Updated DESC" | asPages }}
 <main class="w-shell home-layout">
     {{ template "site_nav_home" . }}

@@ -1,18 +1,12 @@
 +++
 title = "Go Autograd"
 description = "Go autograd and machine learning library"
-featured = true
 tags = ["programming", "math"]
 template = "post"
 section = "posts"
 slug = "autograd"
 
-[params.index_icon_morph]
-from = "h00,h10,h02,h12,d00a,d01b"
-to = "h01,h11,v00,d10a,d11b"
-duration_ms = 250
-fade_ms = 0
-decorative = true
+featured = true
 
 [sitemap]
 include = true
@@ -28,6 +22,26 @@ For [this project](https://github.com/olimci/autograd), I set myself the challen
 ## Design
 
 To simplify the project, I broke it up into a few submodules: `autograd/tensor` for ndarray handling, and `autograd/module` for machine learning primitives. The core `autograd` library then provides a collection of autograd operations, as well as functions for backprop and SGD.
+
+The core autograd design is strongly inspired by [Andrej Karpathy's micrograd](https://github.com/karpathy/micrograd). It is built around a simple `Node` struct that represents a computation node in the graph:
+
+```go
+type Node struct {
+	Val       *tensor.Tensor[float32]
+	Grad      *tensor.Tensor[float32]
+	WantsGrad bool
+	Parents   []*Edge
+}
+
+type Edge struct {
+	Parent   *Node
+	Backward func(dy *tensor.Tensor[float32])
+}
+```
+
+Backpropagation is then handled by working backwards through the graph, accumulating gradients along the way.
+
+## Testing
 
 I figured MNIST is the obvious MVP machine learning model to implement, so the library includes 2D convolutions and pooling as default primitives. Here is an example of a LeNet-style model built in this library:
 
@@ -50,7 +64,7 @@ model := module.Sequential{
 }
 ```
 
-(This model got up to 96% in testing on MNIST, after 10,000 iterations of training.)
+(This model got up to 96% in testing on MNIST, after 10,000 iterations of training.) In practice it doesn't work paticularly well, just we just using the training data as-is.
 
 ## Demo
 

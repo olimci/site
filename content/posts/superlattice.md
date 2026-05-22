@@ -1,18 +1,10 @@
 +++
 title = "Superlattice"
 description = "Silicon superlattice band structure visualisation"
-featured = true
 tags = ["physics", "math"]
 template = "post"
 section = "posts"
-slug = "band-structure"
-
-[params.index_icon_morph]
-from = "h00,h10,h02,h12,v00,v01,v20,v21,d00a,d10b,d01b,d11a"
-to = "h01,h11,v00,d10a,d11b"
-duration_ms = 250
-fade_ms = 0
-decorative = true
+slug = "superlattice"
 
 [sitemap]
 include = true
