@@ -1,0 +1,75 @@
+.post-list {
+    display: grid;
+    gap: 1rem;
+}
+
+.post-card {
+    display: grid;
+    align-items: stretch;
+    padding: 0;
+    overflow: hidden;
+}
+
+.post-card-content {
+    display: grid;
+    gap: 0.35rem;
+    align-content: center;
+    padding: 0.95rem 1.1rem 1rem;
+}
+
+.post-list-states .post-card.is-featured {
+    border-color: rgba(184, 74, 74, 0.55);
+}
+
+.post-list-states .post-card.is-draft {
+    border-color: rgba(72, 166, 72, 0.55);
+}
+
+.pagination-nav {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    color: var(--line);
+}
+
+.pagination-link {
+    color: var(--line);
+    text-decoration: none;
+}
+
+.pagination-link:hover,
+.pagination-link:focus-visible {
+    color: var(--bright);
+}
+
+.pagination-link.is-disabled {
+    opacity: 0.45;
+}
+
+.pagination-current {
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-size: 0.78rem;
+}
+
+@media (orientation: portrait) and (max-width: 720px) {
+    .post-list {
+        gap: 0;
+        padding-bottom: 0.75rem;
+    }
+
+    .post-card {
+        margin-top: 0.45rem;
+        margin-right: var(--mobile-gutter);
+        margin-bottom: 0;
+        margin-left: var(--mobile-gutter);
+        padding: 0;
+        border: 1px solid var(--line);
+        overflow: hidden;
+    }
+
+    .post-card-content {
+        padding: 0.72rem 0.75rem 0.78rem;
+    }
+}

@@ -5,6 +5,7 @@ tags = ["programming", "math"]
 template = "post"
 section = "posts"
 slug = "autograd"
+weight = 20
 
 featured = true
 
@@ -68,4 +69,4 @@ model := module.Sequential{
 
 ## Demo
 
-Since the project is pure Go, it can be compiled into WebAssembly, so you can run models in the browser. You can see a demo [here](/wasm/run.html?path=mnist.wasm). (It probably won't work on mobile browsers.)
+Since the project is pure Go, it can be compiled into WebAssembly, so you can run models in the browser. You can see a demo [here](/demos/wasm/run.html?path=mnist.wasm). (It probably won't work on mobile browsers.)

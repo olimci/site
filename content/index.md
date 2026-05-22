@@ -8,7 +8,7 @@ changefreq = "weekly"
 priority = 1.0
 
 [params]
-banner_image = "/banner.png"
+banner_image = "/assets/images/banner.png"
 banner_alt = "Monochrome tower banner"
 +++
 

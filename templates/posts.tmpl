@@ -15,7 +15,7 @@
 
     <meta property="og:title" content="{{ $pageTitle }}">
     <meta property="og:description" content="{{ $pageDescription }}">
-    <meta property="og:image" content="{{ .Site.URL }}/favicon.png">
+    <meta property="og:image" content="{{ .Site.URL }}/assets/favicon/favicon-white-on-black-512.png">
     <meta property="og:url" content="{{ $pageURL }}">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="{{ .Site.Title }}">
@@ -23,16 +23,17 @@
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="{{ $pageTitle }}">
     <meta name="twitter:description" content="{{ $pageDescription }}">
-    <meta name="twitter:image" content="{{ .Site.URL }}/favicon.png">
+    <meta name="twitter:image" content="{{ .Site.URL }}/assets/favicon/favicon-white-on-black-512.png">
 
     <title>{{ $pageTitle }}</title>
-    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/assets/css/styles.css" />
+    <link rel="stylesheet" href="/assets/css/posts.css" />
+    <link rel="stylesheet" href="/assets/css/article.css" />
     {{ template "icon_assets" . }}
     {{ template "favicon_assets" . }}
 </head>
 <body>
-{{ $posts := query "SELECT * FROM pages WHERE Section='posts' ORDER BY Updated DESC" | asPages }}
-{{ $disablePostGlyphs := index .Site.Params "disable_post_glyphs" }}
+{{ $posts := query "SELECT * FROM pages WHERE Section='posts' ORDER BY PubDate DESC" | asPages }}
 <main class="w-shell page-layout">
     {{ template "site_nav_archive" . }}
 
@@ -52,13 +53,7 @@
         <section class="post-list post-list-states">
             {{ range $post := $posts }}
                 {{ if or $.Site.Meta.IsDev (not $post.Draft) }}
-                    {{ $postIconMorph := or (index $post.Params "index_icon_morph") (index $post.Params "_index_icon_morph") }}
-                    <article class="w-panel post-card{{ if $post.Featured }} is-featured{{ end }}{{ if $post.Draft }} is-draft{{ end }}{{ if $disablePostGlyphs }} post-card-no-mark{{ end }}">
-                        {{ if not $disablePostGlyphs }}
-                            <a class="post-card-mark post-card-primary-link" href="{{ $post.Canon }}" aria-label="{{ $post.Title }}">
-                                {{ if $postIconMorph }}{{ template "icon" $postIconMorph }}{{ end }}
-                            </a>
-                        {{ end }}
+                    <article class="w-panel post-card{{ if $post.Featured }} is-featured{{ end }}{{ if $post.Draft }} is-draft{{ end }}">
                         <div class="post-card-content">
                             <div class="post-card-meta-row">
                                 <div class="post-card-meta">{{ datefmt "2006-01-02" $post.PubDate }}</div>

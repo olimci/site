@@ -9,16 +9,16 @@ weight = 20
 tags = ["travel"]
 
 [params]
-cover = "/photos/japan-2025/web/fuji.jpg"
+cover = "/assets/photos/japan-2025/web/fuji.jpg"
 photo_count = 2
 
 [[params.photos]]
-src = "/photos/japan-2025/web/skytree.jpg"
+src = "/assets/photos/japan-2025/web/skytree.jpg"
 alt = "Tokyo Skytree"
 caption = "Skytree"
 
 [[params.photos]]
-src = "/photos/japan-2025/web/fuji.jpg"
+src = "/assets/photos/japan-2025/web/fuji.jpg"
 alt = "Mount Fuji"
 caption = "Fuji"
 

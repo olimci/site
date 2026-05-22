@@ -8,11 +8,90 @@
 {{ end }}
 
 {{ define "nav_home_icon" }}
-<span class="seven-seg-icon" data-seven-seg-morph data-from="h02,h12,v01,v21,d00b,d10a" data-to="h02,h12,v01,v21,d00b,d10a" data-duration-ms="0" data-fade-ms="72" data-size="100%" data-outline-width="0" aria-hidden="true"></span>
+<span class="seven-seg-icon" data-seven-seg-morph data-from="h00,h10,h02,h12,v00,v01,v10,v20,v21,d01b,d11a" data-to="h00,h10,h02,h12,v00,v01,v11,v20,v21,d00a,d10b" data-duration-ms="0" data-fade-ms="72" data-size="100%" data-outline-width="0" aria-hidden="true"></span>
 {{ end }}
 
 {{ define "nav_back_icon" }}
-<span class="seven-seg-icon" data-seven-seg-morph data-from="h01,h11,d00b,d01a" data-to="h01,h11,v20,d00b,d01a" data-duration-ms="0" data-fade-ms="72" data-size="100%" data-outline-width="0" aria-hidden="true"></span>
+<span class="seven-seg-icon" data-seven-seg-morph data-from="h01,h11,d00b,d01a" data-to="d00b,d10b,d01a,d11a" data-duration-ms="0" data-fade-ms="72" data-size="100%" data-outline-width="0" aria-hidden="true"></span>
+{{ end }}
+
+{{ define "nav_random_icon" }}
+<span class="seven-seg-icon" data-seven-seg-morph data-from="h00,h10,h02,h12,v00,v01,v20,v21,d10a,d10b,d01a,d01b" data-to="h00,h10,h02,h12,v00,v01,v20,v21,d00a,d00b,d11a,d11b" data-duration-ms="260" data-fade-ms="72" data-size="100%" data-outline-width="0" aria-hidden="true"></span>
+{{ end }}
+
+{{ define "nav_random_post" }}
+{{ $posts := query "SELECT * FROM pages WHERE Section='posts' AND (? OR Draft=false) ORDER BY PubDate DESC" .Site.Meta.IsDev | asPages }}
+{{ $fallback := "/posts/" }}
+{{ with first $posts }}{{ $fallback = printf "/%s/" .URLPath }}{{ end }}
+<a class="toolbar-link toolbar-random" href="{{ $fallback }}" aria-label="Random Post" data-label="Random Post" data-random-nav>{{ template "nav_random_icon" . }}</a>
+<div class="nav-random-options" hidden>
+    {{ range $post := $posts }}
+        <a href="/{{ $post.URLPath }}/"></a>
+    {{ end }}
+</div>
+{{ end }}
+
+{{ define "nav_random_post_desktop" }}
+{{ $posts := query "SELECT * FROM pages WHERE Section='posts' AND (? OR Draft=false) ORDER BY PubDate DESC" .Site.Meta.IsDev | asPages }}
+{{ $fallback := "/posts/" }}
+{{ with first $posts }}{{ $fallback = printf "/%s/" .URLPath }}{{ end }}
+<a class="toolbar-link toolbar-random toolbar-random-desktop" href="{{ $fallback }}" aria-label="Random Post" data-label="Random Post" data-random-nav>{{ template "nav_random_icon" . }}</a>
+<div class="nav-random-options" hidden>
+    {{ range $post := $posts }}
+        <a href="/{{ $post.URLPath }}/"></a>
+    {{ end }}
+</div>
+{{ end }}
+
+{{ define "nav_random_album_mobile" }}
+{{ $albums := query "SELECT * FROM pages WHERE Section='photos' AND (? OR Draft=false) ORDER BY Weight ASC, Updated DESC" .Site.Meta.IsDev | asPages }}
+{{ $fallback := "/photos/" }}
+{{ with first $albums }}{{ $fallback = printf "/%s/" .URLPath }}{{ end }}
+<a class="toolbar-link toolbar-random toolbar-random-mobile" href="{{ $fallback }}" aria-label="Random Album" data-label="Random Album" data-random-nav>{{ template "nav_random_icon" . }}</a>
+<div class="nav-random-options" hidden>
+    {{ range $album := $albums }}
+        <a href="/{{ $album.URLPath }}/"></a>
+    {{ end }}
+</div>
+{{ end }}
+
+{{ define "nav_random_script" }}
+<script>
+(() => {
+    if (window.SiteRandomPostNav) {
+        window.SiteRandomPostNav.init(document);
+        return;
+    }
+
+    function init(root = document) {
+        const links = root.querySelectorAll("[data-random-nav]");
+        for (const link of links) {
+            if (link.__siteRandomPostNav) {
+                continue;
+            }
+
+            const options = link.parentElement?.querySelectorAll(".nav-random-options a[href]") || [];
+            const targets = Array.from(options, (option) => option.href).filter(Boolean);
+            if (targets.length === 0) {
+                continue;
+            }
+
+            link.__siteRandomPostNav = true;
+            link.addEventListener("click", () => {
+                link.href = targets[Math.floor(Math.random() * targets.length)];
+            });
+        }
+    }
+
+    window.SiteRandomPostNav = { init };
+
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", () => init(document), { once: true });
+    } else {
+        init(document);
+    }
+})();
+</script>
 {{ end }}
 
 {{ define "linktree_nav_links" }}
@@ -42,38 +121,62 @@
 
 {{ define "site_nav_home" }}
 <aside class="nav-toolbar nav-toolbar-index" aria-label="linktree">
+    <div class="nav-box nav-action-box">
+        {{ template "nav_random_post" . }}
+    </div>
     {{ template "linktree_nav_links" . }}
 </aside>
+{{ template "nav_random_script" . }}
 {{ end }}
 
 {{ define "site_nav_archive" }}
 <aside class="nav-toolbar" aria-label="site">
     <div class="nav-box nav-action-box">
         <a class="toolbar-link toolbar-home" href="/" aria-label="Home" data-label="Home">{{ template "nav_home_icon" . }}</a>
+        {{ template "nav_random_post" . }}
     </div>
     {{ template "site_nav_title" . }}
     {{ template "linktree_nav_links" . }}
 </aside>
+{{ template "nav_random_script" . }}
+{{ end }}
+
+{{ define "site_nav_photo_archive" }}
+<aside class="nav-toolbar" aria-label="site">
+    <div class="nav-box nav-action-box">
+        <a class="toolbar-link toolbar-home" href="/" aria-label="Home" data-label="Home">{{ template "nav_home_icon" . }}</a>
+        {{ template "nav_random_post_desktop" . }}
+        {{ template "nav_random_album_mobile" . }}
+    </div>
+    {{ template "site_nav_title" . }}
+    {{ template "linktree_nav_links" . }}
+</aside>
+{{ template "nav_random_script" . }}
 {{ end }}
 
 {{ define "site_nav_post_item" }}
 <aside class="nav-toolbar" aria-label="site">
-    <div class="nav-box nav-action-box">
+    <div class="nav-box nav-action-box nav-item-actions">
         <a class="toolbar-link toolbar-home" href="/" aria-label="Home" data-label="Home">{{ template "nav_home_icon" . }}</a>
         <a class="toolbar-link toolbar-back" href="/posts/" aria-label="Back to posts" data-label="Posts">{{ template "nav_back_icon" . }}</a>
+        {{ template "nav_random_post" . }}
     </div>
     {{ template "site_nav_title" . }}
     {{ template "linktree_nav_links" . }}
 </aside>
+{{ template "nav_random_script" . }}
 {{ end }}
 
 {{ define "site_nav_photo_item" }}
 <aside class="nav-toolbar" aria-label="site">
-    <div class="nav-box nav-action-box">
+    <div class="nav-box nav-action-box nav-item-actions">
         <a class="toolbar-link toolbar-home" href="/" aria-label="Home" data-label="Home">{{ template "nav_home_icon" . }}</a>
         <a class="toolbar-link toolbar-back" href="/photos/" aria-label="Back to photos" data-label="Photos">{{ template "nav_back_icon" . }}</a>
+        {{ template "nav_random_post_desktop" . }}
+        {{ template "nav_random_album_mobile" . }}
     </div>
     {{ template "site_nav_title" . }}
     {{ template "linktree_nav_links" . }}
 </aside>
+{{ template "nav_random_script" . }}
 {{ end }}

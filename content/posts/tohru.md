@@ -5,6 +5,7 @@ tags = ["programming"]
 template = "post"
 section = "posts"
 slug = "tohru"
+weight = 40
 
 featured = true
 

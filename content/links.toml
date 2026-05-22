@@ -18,18 +18,6 @@ outline_width = 0
 decorative = true
 
 [[params.exported_links]]
-label = "Bio"
-url = "/bio"
-
-[params.exported_links.icon_morph]
-from = "h00,h10,h02,h12,v00,v01,v20,v21,d10a,d10b,d01a,d01b"
-to = "h00,h10,h02,h12,v00,v01,v20,v21,d00a,d00b,d11a,d11b"
-duration_ms = 250
-fade_ms = 72
-outline_width = 0
-decorative = true
-
-[[params.exported_links]]
 label = "Email"
 url = "mailto:oli@mcinnes.cc"
 

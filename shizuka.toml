@@ -6,7 +6,6 @@ description = "Personal website of Oli McInnes"
 url = "https://oli.mcinnes.cc"
 
 [site.params]
-disable_post_glyphs = true
 nav_title = "olimci"
 
 [build]
