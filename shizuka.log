@@ -1,0 +1,58 @@
+{"level":"INFO","msg":"building","time":"2026-05-31T16:09:02.993723+01:00"}
+{"component":"build","level":"DEBUG","msg":"config loaded","path":"shizuka.jsonc","root":".","time":"2026-05-31T16:09:02.994161+01:00"}
+{"component":"dag","level":"DEBUG","msg":"build graph assembled","nodes":13,"time":"2026-05-31T16:09:02.9942+01:00"}
+{"component":"build","level":"INFO","msg":"build started","root":".","time":"2026-05-31T16:09:02.994215+01:00"}
+{"component":"build","config":"shizuka.jsonc","level":"DEBUG","msg":"build config","source_root":".","time":"2026-05-31T16:09:02.994224+01:00"}
+{"component":"manifest","level":"INFO","msg":"manifest started","time":"2026-05-31T16:09:02.99432+01:00"}
+{"component":"workers","level":"INFO","msg":"worker pool started","time":"2026-05-31T16:09:02.994335+01:00","workers":8}
+{"component":"dag","level":"INFO","msg":"executing graph","nodes":13,"time":"2026-05-31T16:09:02.994346+01:00","workers":8}
+{"component":"step","level":"INFO","msg":"step running","step":"pages:index","time":"2026-05-31T16:09:02.994385+01:00"}
+{"at":"187µs","component":"step","level":"DEBUG","msg":"step started","step":"pages:index","time":"2026-05-31T16:09:02.994401+01:00"}
+{"component":"step","level":"INFO","msg":"step running","step":"static","time":"2026-05-31T16:09:02.99439+01:00"}
+{"at":"298µs","component":"step","level":"DEBUG","msg":"step started","step":"static","time":"2026-05-31T16:09:02.994512+01:00"}
+{"component":"step","discovered":17,"kept":17,"level":"INFO","msg":"pages indexed","step":"pages:index","time":"2026-05-31T16:09:02.997714+01:00"}
+{"component":"step","duration":"3.371ms","level":"DEBUG","msg":"step complete","step":"pages:index","time":"2026-05-31T16:09:02.997757+01:00"}
+{"component":"step","level":"INFO","msg":"step running","step":"git","time":"2026-05-31T16:09:02.997799+01:00"}
+{"at":"3.625ms","component":"step","level":"DEBUG","msg":"step started","step":"git","time":"2026-05-31T16:09:02.99784+01:00"}
+{"component":"step","count":60,"level":"INFO","msg":"static files emitted","root":"static","step":"static","time":"2026-05-31T16:09:03.061615+01:00"}
+{"component":"step","duration":"70.965ms","level":"DEBUG","msg":"step complete","step":"static","time":"2026-05-31T16:09:03.065574+01:00"}
+{"component":"step","duration":"308.203ms","level":"DEBUG","msg":"step complete","step":"git","time":"2026-05-31T16:09:03.306004+01:00"}
+{"component":"step","level":"INFO","msg":"step running","step":"pages:resolve","time":"2026-05-31T16:09:03.306076+01:00"}
+{"at":"311.886ms","component":"step","level":"DEBUG","msg":"step started","step":"pages:resolve","time":"2026-05-31T16:09:03.306098+01:00"}
+{"component":"step","duration":"59µs","level":"DEBUG","msg":"step complete","step":"pages:resolve","time":"2026-05-31T16:09:03.306127+01:00"}
+{"component":"step","level":"INFO","msg":"step running","step":"pages:render","time":"2026-05-31T16:09:03.306144+01:00"}
+{"at":"311.942ms","component":"step","level":"DEBUG","msg":"step started","step":"pages:render","time":"2026-05-31T16:09:03.306155+01:00"}
+{"component":"step","level":"INFO","msg":"step running","step":"sitemap","time":"2026-05-31T16:09:03.306166+01:00"}
+{"at":"311.992ms","component":"step","level":"DEBUG","msg":"step started","step":"sitemap","time":"2026-05-31T16:09:03.306204+01:00"}
+{"component":"step","level":"INFO","msg":"step running","step":"robots","time":"2026-05-31T16:09:03.306182+01:00"}
+{"at":"312.011ms","component":"step","level":"DEBUG","msg":"step started","step":"robots","time":"2026-05-31T16:09:03.306224+01:00"}
+{"component":"step","level":"INFO","msg":"step running","step":"meta","time":"2026-05-31T16:09:03.30619+01:00"}
+{"at":"312.023ms","component":"step","level":"DEBUG","msg":"step started","step":"meta","time":"2026-05-31T16:09:03.306235+01:00"}
+{"component":"step","duration":"65µs","level":"DEBUG","msg":"step complete","step":"meta","time":"2026-05-31T16:09:03.306245+01:00"}
+{"component":"step","level":"INFO","msg":"step running","step":"rss","time":"2026-05-31T16:09:03.306169+01:00"}
+{"at":"312.046ms","component":"step","level":"DEBUG","msg":"step started","step":"rss","time":"2026-05-31T16:09:03.306259+01:00"}
+{"component":"step","count":13,"level":"INFO","msg":"pages preprocessed","step":"pages:render","time":"2026-05-31T16:09:03.310541+01:00"}
+{"component":"step","duration":"4.412ms","level":"DEBUG","msg":"step complete","step":"pages:render","time":"2026-05-31T16:09:03.310556+01:00"}
+{"component":"step","level":"INFO","msg":"step running","step":"pages:query","time":"2026-05-31T16:09:03.310568+01:00"}
+{"at":"316.366ms","component":"step","level":"DEBUG","msg":"step started","step":"pages:query","time":"2026-05-31T16:09:03.310578+01:00"}
+{"component":"step","duration":"4.413ms","level":"DEBUG","msg":"step complete","step":"robots","time":"2026-05-31T16:09:03.310582+01:00"}
+{"component":"step","duration":"4.472ms","level":"DEBUG","msg":"step complete","step":"sitemap","time":"2026-05-31T16:09:03.31062+01:00"}
+{"component":"step","level":"INFO","msg":"data loaded","pages":17,"step":"pages:query","tables":0,"time":"2026-05-31T16:09:03.310648+01:00"}
+{"component":"step","duration":"139µs","level":"DEBUG","msg":"step complete","step":"pages:query","time":"2026-05-31T16:09:03.310709+01:00"}
+{"component":"step","duration":"4.516ms","level":"DEBUG","msg":"step complete","step":"rss","time":"2026-05-31T16:09:03.310672+01:00"}
+{"component":"step","level":"INFO","msg":"step running","step":"pages:templates","time":"2026-05-31T16:09:03.310745+01:00"}
+{"at":"316.56ms","component":"step","level":"DEBUG","msg":"step started","step":"pages:templates","time":"2026-05-31T16:09:03.310772+01:00"}
+{"component":"step","count":39,"glob":"templates/html/**/*.tmpl","level":"INFO","msg":"templates parsed","step":"pages:templates","time":"2026-05-31T16:09:03.316766+01:00"}
+{"component":"step","duration":"8.242ms","level":"DEBUG","msg":"step complete","step":"pages:templates","time":"2026-05-31T16:09:03.318983+01:00"}
+{"component":"step","level":"INFO","msg":"step running","step":"pages:build","time":"2026-05-31T16:09:03.318998+01:00"}
+{"component":"step","level":"INFO","msg":"step running","step":"not_found","time":"2026-05-31T16:09:03.319007+01:00"}
+{"at":"324.812ms","component":"step","level":"DEBUG","msg":"step started","step":"not_found","time":"2026-05-31T16:09:03.319024+01:00"}
+{"component":"step","duration":"33µs","level":"DEBUG","msg":"step complete","step":"not_found","time":"2026-05-31T16:09:03.319038+01:00"}
+{"at":"324.799ms","component":"step","level":"DEBUG","msg":"step started","step":"pages:build","time":"2026-05-31T16:09:03.319011+01:00"}
+{"built":15,"component":"step","drafts_skipped":2,"errored":0,"level":"INFO","msg":"pages built","step":"pages:build","time":"2026-05-31T16:09:03.319063+01:00"}
+{"component":"step","duration":"76µs","level":"DEBUG","msg":"step complete","step":"pages:build","time":"2026-05-31T16:09:03.319073+01:00"}
+{"component":"dag","duration":"324.874ms","level":"DEBUG","msg":"graph complete","time":"2026-05-31T16:09:03.319087+01:00"}
+{"component":"workers","level":"DEBUG","msg":"worker pool drained","time":"2026-05-31T16:09:03.327669+01:00"}
+{"component":"manifest","level":"INFO","msg":"manifest complete","success":true,"time":"2026-05-31T16:09:03.480632+01:00"}
+{"component":"build","duration":"486.434ms","level":"INFO","msg":"build complete","time":"2026-05-31T16:09:03.480646+01:00"}
+{"level":"INFO","msg":"build complete","time":"2026-05-31T16:09:03.480654+01:00"}

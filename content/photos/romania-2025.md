@@ -4,7 +4,6 @@ description = "Random photos from Romania"
 featured = true
 template = "album"
 section = "photos"
-slug = "romania-2025"
 weight = 10
 tags = ["travel"]
 

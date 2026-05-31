@@ -2,9 +2,6 @@ title = "Photos"
 description = "Photos I took"
 template = "photos"
 
-[queries.albums]
-query = "SELECT * FROM pages WHERE Section='photos' ORDER BY Weight ASC, Updated DESC"
-
 [sitemap]
 include = true
 changefreq = "monthly"

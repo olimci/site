@@ -20,37 +20,37 @@
 {{ end }}
 
 {{ define "nav_random_post" }}
-{{ $posts := query "SELECT * FROM pages WHERE Section='posts' AND (? OR Draft=false) ORDER BY PubDate DESC" .Site.Meta.IsDev | asPages }}
+{{ $posts := queryPages "SELECT * FROM pages WHERE Section='posts' AND (? OR Draft=false) ORDER BY PubDate DESC" .Site.Dev }}
 {{ $fallback := "/posts/" }}
-{{ with first $posts }}{{ $fallback = printf "/%s/" .URLPath }}{{ end }}
+{{ with first $posts }}{{ $fallback = printf "/%s/" .Canon }}{{ end }}
 <a class="toolbar-link toolbar-random" href="{{ $fallback }}" aria-label="Random Post" data-label="Random Post" data-random-nav>{{ template "nav_random_icon" . }}</a>
 <div class="nav-random-options" hidden>
     {{ range $post := $posts }}
-        <a href="/{{ $post.URLPath }}/"></a>
+        <a href="/{{ $post.Canon }}/"></a>
     {{ end }}
 </div>
 {{ end }}
 
 {{ define "nav_random_post_desktop" }}
-{{ $posts := query "SELECT * FROM pages WHERE Section='posts' AND (? OR Draft=false) ORDER BY PubDate DESC" .Site.Meta.IsDev | asPages }}
+{{ $posts := queryPages "SELECT * FROM pages WHERE Section='posts' AND (? OR Draft=false) ORDER BY PubDate DESC" .Site.Dev }}
 {{ $fallback := "/posts/" }}
-{{ with first $posts }}{{ $fallback = printf "/%s/" .URLPath }}{{ end }}
+{{ with first $posts }}{{ $fallback = printf "/%s/" .Canon }}{{ end }}
 <a class="toolbar-link toolbar-random toolbar-random-desktop" href="{{ $fallback }}" aria-label="Random Post" data-label="Random Post" data-random-nav>{{ template "nav_random_icon" . }}</a>
 <div class="nav-random-options" hidden>
     {{ range $post := $posts }}
-        <a href="/{{ $post.URLPath }}/"></a>
+        <a href="/{{ $post.Canon }}/"></a>
     {{ end }}
 </div>
 {{ end }}
 
 {{ define "nav_random_album_mobile" }}
-{{ $albums := query "SELECT * FROM pages WHERE Section='photos' AND (? OR Draft=false) ORDER BY Weight ASC, Updated DESC" .Site.Meta.IsDev | asPages }}
+{{ $albums := queryPages "SELECT * FROM pages WHERE Section='photos' AND (? OR Draft=false) ORDER BY Weight ASC, Updated DESC" .Site.Dev }}
 {{ $fallback := "/photos/" }}
-{{ with first $albums }}{{ $fallback = printf "/%s/" .URLPath }}{{ end }}
+{{ with first $albums }}{{ $fallback = printf "/%s/" .Canon }}{{ end }}
 <a class="toolbar-link toolbar-random toolbar-random-mobile" href="{{ $fallback }}" aria-label="Random Album" data-label="Random Album" data-random-nav>{{ template "nav_random_icon" . }}</a>
 <div class="nav-random-options" hidden>
     {{ range $album := $albums }}
-        <a href="/{{ $album.URLPath }}/"></a>
+        <a href="/{{ $album.Canon }}/"></a>
     {{ end }}
 </div>
 {{ end }}
@@ -95,7 +95,7 @@
 {{ end }}
 
 {{ define "linktree_nav_links" }}
-{{ $linktreePage := query "SELECT * FROM pages WHERE Slug='links' LIMIT 1" | asPage }}
+{{ $linktreePage := queryPage "SELECT * FROM pages WHERE Path='/links/' LIMIT 1" }}
 {{ $linktreeLinks := or (index $linktreePage.Params "exported_links") (index $linktreePage.Params "links") }}
 <nav class="nav-box nav-links-box w-linklist sidebar-links" aria-label="linktree">
     {{ range $link := $linktreeLinks }}
@@ -115,7 +115,7 @@
 
 {{ define "site_footer" }}
 <footer class="site-footer">
-    <span>&copy; 2026 Oliver McInnes</span>
+    <span>&copy; 2026 Oliver McInnes <a href="http://localhost:6767/_shizuka">c#{{.Site.Git.ShortHash}}</a></span>
 </footer>
 {{ end }}
 

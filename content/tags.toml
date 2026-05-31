@@ -2,19 +2,6 @@ title = "Tags"
 description = "Topics and collections across posts and project notes"
 template = "tags"
 
-[queries.tagged]
-query = "select _page, tag.value as tag, Title, Updated, Draft from pages p join unnest(p.Tags) tag on true where p.Section='posts' and p.Draft=false order by tag.value asc, Updated desc"
-group_by = "tag"
-group_format = "%s"
-paginate = true
-page_size = 12
-page_format = "%02d"
-redirect_page_1 = false
-template = "tags"
-
-[queries.summary]
-query = "select tag.value as tag, count(p.Title) as post_count from pages p join unnest(p.Tags) tag on true where p.Section='posts' and p.Draft=false group by tag.value order by post_count desc, tag.value asc"
-
 [sitemap]
 include = true
 changefreq = "weekly"

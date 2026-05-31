@@ -1,7 +1,6 @@
 title = "Links"
 description = "Personal links and contact details"
 template = "links"
-slug = "links"
 section = "pages"
 
 # Exported links appear here and in the shared site nav.

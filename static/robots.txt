@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://oli.mcinnes.cc/sitemap.xml

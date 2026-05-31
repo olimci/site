@@ -3,7 +3,6 @@
 <html lang="en">
 <head>
     {{ $pageDescription := or .Page.Description .Site.Description }}
-    {{ $pageURL := or .Page.Canon (printf "%s/%s/" .Site.URL .Page.Slug) }}
     {{ $pageTitle := printf "%s | %s" .Page.Title .Site.Title }}
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -11,12 +10,12 @@
     <meta name="description" content="{{ $pageDescription }}">
     <meta name="author" content="Oliver McInnes">
     <meta name="robots" content="index, follow">
-    <link rel="canonical" href="{{ $pageURL }}">
+    <link rel="canonical" href="{{ .Page.Canon }}">
 
     <meta property="og:title" content="{{ $pageTitle }}">
     <meta property="og:description" content="{{ $pageDescription }}">
     <meta property="og:image" content="{{ .Site.URL }}/assets/favicon/favicon-white-on-black-512.png">
-    <meta property="og:url" content="{{ $pageURL }}">
+    <meta property="og:url" content="{{ .Page.Canon }}">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="{{ .Site.Title }}">
 
@@ -33,7 +32,7 @@
     {{ template "favicon_assets" . }}
 </head>
 <body>
-{{ $posts := query "SELECT * FROM pages WHERE Section='posts' ORDER BY PubDate DESC" | asPages }}
+{{ $posts := queryPages "SELECT * FROM pages WHERE Section='posts' ORDER BY PubDate DESC" }}
 <main class="w-shell page-layout">
     {{ template "site_nav_archive" . }}
 
@@ -52,7 +51,7 @@
 
         <section class="post-list post-list-states">
             {{ range $post := $posts }}
-                {{ if or $.Site.Meta.IsDev (not $post.Draft) }}
+                {{ if or $.Site.Dev (not $post.Draft) }}
                     <article class="w-panel post-card{{ if $post.Featured }} is-featured{{ end }}{{ if $post.Draft }} is-draft{{ end }}">
                         <div class="post-card-content">
                             <div class="post-card-meta-row">

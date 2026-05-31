@@ -2,20 +2,10 @@
 title = "Go Autograd"
 description = "Go autograd and machine learning library"
 tags = ["programming", "math"]
-template = "post"
 section = "posts"
-slug = "autograd"
 weight = 20
 
 featured = true
-
-[sitemap]
-include = true
-changefreq = "never"
-priority = 0.6
-
-[rss]
-include = true
 +++
 
 For [this project](https://github.com/olimci/autograd), I set myself the challenge of writing a complete autograd and machine learning library from scratch in Go.

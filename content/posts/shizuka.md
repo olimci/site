@@ -2,20 +2,10 @@
 title = "Shizuka"
 description = "Static site generator"
 tags = ["programming"]
-template = "post"
 section = "posts"
-slug = "shizuka"
 weight = 30
 
 featured = true
-
-[sitemap]
-include = true
-changefreq = "never"
-priority = 0.6
-
-[rss]
-include = true
 +++
 
 [Shizuka](https://github.com/olimci/shizuka) is my static site generator. I built it because I wasn't paticularly happy with existing static site generators, and I thought it would be an interesting project to make my own.

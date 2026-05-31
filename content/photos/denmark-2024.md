@@ -4,7 +4,6 @@ description = "Random photos from Denmark"
 featured = true
 template = "album"
 section = "photos"
-slug = "denmark-2024"
 weight = 30
 tags = ["travel"]
 

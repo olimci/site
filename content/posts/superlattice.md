@@ -2,17 +2,7 @@
 title = "Superlattice"
 description = "Silicon superlattice band structure visualisation"
 tags = ["physics", "math"]
-template = "post"
 section = "posts"
-slug = "superlattice"
-
-[sitemap]
-include = true
-changefreq = "never"
-priority = 0.6
-
-[rss]
-include = true
 +++
 
 For my third-year computational physics project, I investigated semiconductor band structure, more specifically the band structure of silicon-germanium superlattice materials.

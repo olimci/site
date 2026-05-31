@@ -2,20 +2,10 @@
 title = "ARP Fuckery"
 description = "Building a distributed object store on ARP"
 tags = ["programming"]
-template = "post"
 section = "posts"
-slug = "arp"
 weight = 10
 
 featured = true
-
-[sitemap]
-include = true
-changefreq = "never"
-priority = 0.6
-
-[rss]
-include = true
 +++
 [LARP](https://github.com/olimci/larp) is an experiment in using ARP to tunnel data between machines on the same LAN.
 

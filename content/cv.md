@@ -3,7 +3,6 @@ title = "CV"
 description = "My CV"
 template = "post"
 section = "pages"
-slug = "cv"
 
 [sitemap]
 include = true
