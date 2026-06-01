@@ -1,5 +1,6 @@
 +++
-title = "oli.mcinnes.cc"
+title = "Oliver McInnes"
+description = "physics student; go evangelist; systems thinking enthusiast"
 template = "index"
 
 [sitemap]
@@ -7,40 +8,57 @@ include = true
 changefreq = "weekly"
 priority = 1.0
 
-[params]
-banner_image = "/assets/images/banner.png"
-banner_alt = "Monochrome tower banner"
+[[params.sections]]
+kind = "content"
+title = ""
+section = 0
 
-# Layout order on the home page. Slots:
-#   about              banner + the first markdown section
-#   posts              featured posts list
-#   photos             featured albums list
-#   copy   index = N   render markdown section N inside a copy panel
-# Section indices map to body chunks separated by standalone `---` lines.
-[[params.layout]]
-type = "about"
+[[params.sections]]
+kind = "projects_shelf"
+title = "My Projects"
+id = "projects"
 
-[[params.layout]]
-type = "posts"
+[[params.sections]]
+kind = "content"
+title = ""
+section = 1
 
-[[params.layout]]
-type = "copy"
-index = 1
+[[params.sections]]
+kind = "posts_shelf"
+title = "Recent Posts"
 
-[[params.layout]]
-type = "photos"
+[[params.sections]]
+kind = "content"
+title = ""
+section = 2
+
+[[params.sections]]
+kind = "photos_shelf"
+title = "Photos"
+
+[[params.projects]]
+title = "shizuka"
+description = "A small, opinionated static site generator written in Go. Powers this site."
+url = "/shizuka/"
+colour = "lime"
+
+[[params.projects]]
+title = "tohru"
+description = "A Go CLI for managing personal computer configuration, with backup and restore handling for conflicts."
+url = "/tohru/"
+colour = "rose"
 +++
 
-Hi, I'm Oliver.
+Hi, I'm Oliver. I'm a physics undergrad at Durham. I'm mostly interested in machine learning, statistical mechanics, and network protocols. I'm proficient in Go and Python, and I like building small, practical tools that help me understand things properly.
 
-I'm a physics undergrad at Durham. I'm mostly interested in machine learning, statistical mechanics, and network protocols. I'm proficient in Go and Python, but I'm able to work with other languages as well.
+Besides that, I spend a lot of time mountain biking, messing with my [car](/posts/3000gt), snowboarding, taking [photos](/photos/), and trying to learn a bit of Japanese.
 
-Besides that, I spend a lot of time mountain biking, messing with my car, snowboarding, taking photos, and trying to learn a bit of Japanese.
-
-Please check out my projects or photos below, find more on [GitHub](https://github.com/olimci), or email me at [oli@mcinnes.cc](mailto:oli@mcinnes.cc).
-
-You can see my CV [here](/cv)
+Have a look around, my [CV](/cv/) is here if you need it. You can also find me on [GitHub](https://github.com/olimci) or at [oli@mcinnes.cc](mailto:oli@mcinnes.cc).
 
 ---
 
-Please check out some of my photos too:
+I occasionally write posts about projects, programming, physics, and whatever else I am trying to figure out at the time.
+
+---
+
+I also take photos, mostly while travelling, that I upload here.

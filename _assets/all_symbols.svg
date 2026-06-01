@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="2954.8655"
+   height="2250.9031"
+   viewBox="0 0 2954.8655 2250.9031"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4.4 (dcaf3e7, 2026-05-05)"
+   sodipodi:docname="shizuka.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="px"
+     showgrid="false"
+     inkscape:zoom="0.62295299"
+     inkscape:cx="121.99958"
+     inkscape:cy="166.14416"
+     inkscape:window-width="1431"
+     inkscape:window-height="918"
+     inkscape:window-x="97"
+     inkscape:window-y="34"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="layer1">
+    <inkscape:grid
+       id="grid1"
+       units="px"
+       originx="-1043.8987"
+       originy="3308.7642"
+       spacingx="1"
+       spacingy="1"
+       empcolor="#0099e5"
+       empopacity="0.30196078"
+       color="#0099e5"
+       opacity="0.14901961"
+       empspacing="5"
+       enabled="true"
+       visible="false" />
+    <sodipodi:guide
+       position="-1043.8987,-1057.8611"
+       orientation="0,512"
+       id="guide5"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="-531.89868,-1057.8611"
+       orientation="512,0"
+       id="guide6"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="-531.89868,-1569.8611"
+       orientation="0,-512"
+       id="guide7"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="-1043.8987,-1569.8611"
+       orientation="-512,0"
+       id="guide8"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="-979.89868,-1121.8611"
+       orientation="384,0"
+       id="guide2"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="-979.89868,-1505.8611"
+       orientation="0,384"
+       id="guide3"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="-599.89868,-1537.8611"
+       orientation="-384,0"
+       id="guide4"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="-595.89868,-1121.8611"
+       orientation="0,-384"
+       id="guide9"
+       inkscape:locked="false" />
+    <inkscape:page
+       x="0"
+       y="0"
+       width="2954.8655"
+       height="2250.9031"
+       id="page1"
+       margin="0"
+       bleed="0" />
+  </sodipodi:namedview>
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-1043.8987,3308.7642)">
+    <path
+       d="m 1049.7586,-3290.7251 v 384.0001 h 128 a 64,64 0 0 1 64,-64 64,64 0 0 1 64,64 h 128 v -384.0001 z m 192,128 a 64,64 0 0 1 64,64 64,64 0 0 1 -64,64 64,64 0 0 1 -64,-64 64,64 0 0 1 64,-64 z"
+       id="path10"
+       style="fill:#000000" />
+    <path
+       d="m 2067.1624,-3290.7251 v 384.0001 h 384 v -128.0001 a 64,64 0 0 1 -64,-64 64,64 0 0 1 64,-64 v -128 z"
+       id="path11"
+       style="fill:#000000" />
+    <path
+       d="m 2967.1997,-3234.0605 a 64,64 0 0 1 -64,-64 h -320 v 384.0001 h 320 a 64,64 0 0 1 64,-64 z m -192,64 a 64,64 0 0 1 64,64 64,64 0 0 1 -64,64 64,64 0 0 1 -64,-64 64,64 0 0 1 64,-64 z"
+       id="path12"
+       style="fill:#000000" />
+    <path
+       d="m 3084.5662,-3298.0605 v 384.0001 h 384 v -42.666 a 64,64 0 0 1 -64,-64 64,64 0 0 1 64,-64.0001 v -42.6679 a 64,64 0 0 1 -64,-64 64,64 0 0 1 64,-64 v -42.6661 z"
+       id="path16"
+       style="fill:#000000" />
+    <path
+       d="m 1043.8987,-2343.5816 v 384 h 42.666 a 64,64 0 0 1 64,-64 64,64 0 0 1 64,64 h 42.668 a 64,64 0 0 1 64,-64 64,64 0 0 1 64,64 h 42.666 v -384 z"
+       id="path24" />
+    <path
+       d="m 1836.4667,-2826.0356 a 64,64 0 0 1 -64,64 64,64 0 0 1 -64,-64 h -128 v 384 h 128 a 64,64 0 0 1 64,-64 64,64 0 0 1 64,64 h 128 v -384 z"
+       style="fill:#000000"
+       id="path19" />
+    <path
+       d="m 1043.8987,-2831.0806 v 128 a 64,64 0 0 1 64,64 64,64 0 0 1 -64,64 v 128 h 316 a 64,64 0 0 1 64,-64 64,64 0 0 1 4,0.125 v -320.125 z m 192,128 a 64,64 0 0 1 64,64 64,64 0 0 1 -64,64 64,64 0 0 1 -64,-64 64,64 0 0 1 64,-64 z"
+       id="path41-8" />
+    <path
+       d="m 1580.6238,-1446.1425 v 42.666 a 64,64 0 0 1 64,64 64,64 0 0 1 -64,64 v 42.668 a 64,64 0 0 1 64,64 64,64 0 0 1 -64,64 v 42.666 h 384 v -384 z"
+       id="path40" />
+    <path
+       d="m 1309.8076,-1441.8611 a 64,64 0 0 1 -64,64 64,64 0 0 1 -64,-64 h -128 v 128 a 64,64 0 0 1 64,64 64,64 0 0 1 -64,64 v 128 h 316 a 64,64 0 0 1 64,-64 64,64 0 0 1 4,0.125 v -320.125 z"
+       id="path39" />
+    <path
+       d="m 3593.4226,-3308.7641 v 384 h 316 a 64,64 0 0 1 64,-64 64,64 0 0 1 4,0.125 v -64.125 a 64,64 0 0 1 -64,-64 64,64 0 0 1 64,-64 v -128 z"
+       id="path38" />
+    <path
+       d="m 1579.5038,-3297.642 v 384 h 384 v -384 z m 196,42.666 a 64,64 0 0 1 64,64 64,64 0 0 1 -64,64 64,64 0 0 1 -64,-64 64,64 0 0 1 64,-64 z m 0,170.668 a 64,64 0 0 1 64,64 64,64 0 0 1 -64,64 64,64 0 0 1 -64,-64 64,64 0 0 1 64,-64 z"
+       id="path37" />
+    <path
+       d="m 1576.1983,-1896.5826 v 320 a 64,64 0 0 1 64,64 h 252 a 64,64 0 0 1 64,-64 64,64 0 0 1 4,0.125 v -320.125 z"
+       id="path36" />
+    <path
+       d="m 2571.5305,-2838.4172 v 128 a 64,64 0 0 1 64,64 64,64 0 0 1 -64,64 v 128 h 316 a 64,64 0 0 1 64,-64 64,64 0 0 1 4,0.125 v -320.125 z"
+       id="path35" />
+    <path
+       d="m 3870.7641,-1896.0607 a 64,64 0 0 1 -64,64 64,64 0 0 1 -64,-64 h -128 v 128 a 64,64 0 0 1 64,64 64,64 0 0 1 -64,64 v 128 h 128 a 64,64 0 0 1 64,-64 64,64 0 0 1 64,64 h 128 v -128 a 64,64 0 0 1 -64,-64 64,64 0 0 1 64,-64 v -128 z"
+       id="path33" />
+    <path
+       d="m 3264.7674,-1918.7793 a 64,64 0 0 1 -64,64 64,64 0 0 1 -64,-64 h -42.6661 v 384 h 384 v -384 h -42.666 a 64,64 0 0 1 -64,64 64,64 0 0 1 -64,-64 z"
+       id="path32" />
+    <path
+       d="m 2858.6792,-1894.6666 a 64,64 0 0 1 -64,64 64,64 0 0 1 -64,-64 h -128 v 320 a 64,64 0 0 1 64,64 h 252 a 64,64 0 0 1 64,-64 64,64 0 0 1 4,0.125 v -320.125 z"
+       id="path31" />
+    <path
+       d="m 2331.6769,-1900.5259 a 64,64 0 0 1 -64,64 64,64 0 0 1 -64,-64 h -128 v 384 h 384 v -384 z"
+       id="path30" />
+    <path
+       d="m 1049.5582,-1894.2429 v 213.334 a 64,64 0 0 1 64,64 64,64 0 0 1 -64,64 v 42.666 h 384 v -213.334 a 64,64 0 0 1 -64,-64 64,64 0 0 1 64,-64 v -42.666 z"
+       id="path28" />
+    <path
+       d="m 3588.3467,-2347.7928 v 384 h 128 a 64,64 0 0 1 64,-64 64,64 0 0 1 64,64 h 128 v -128 a 64,64 0 0 1 -64,-64 64,64 0 0 1 64,-64 v -128 z m 192,128 a 64,64 0 0 1 64,64 64,64 0 0 1 -64,64 64,64 0 0 1 -64,-64 64,64 0 0 1 64,-64 z"
+       id="path27" />
+    <path
+       d="m 3083.8235,-2344.3186 v 320.0001 a 64,64 0 0 1 64,64 h 320 v -384.0001 z m 192,128 a 64,64 0 0 1 64,64.0001 64,64 0 0 1 -64,64 64,64 0 0 1 -64,-64 64,64 0 0 1 64,-64.0001 z"
+       id="path26" />
+    <path
+       d="m 2562.0138,-2342.7969 v 384 h 320 a 64,64 0 0 1 64,-64 v -320 z m 192,128 a 64,64 0 0 1 64,64 64,64 0 0 1 -64,64 64,64 0 0 1 -64,-64 64,64 0 0 1 64,-64 z"
+       id="path26-5" />
+    <path
+       d="m 2067.1624,-2353.0528 v 384 h 384 v -384 z m 192,128 a 64,64 0 0 1 64,64 64,64 0 0 1 -64,64 64,64 0 0 1 -64,-64 64,64 0 0 1 64,-64 z"
+       id="path26-4" />
+    <path
+       d="m 1929.767,-2360.9174 a 64,64 0 0 1 -64,64 64,64 0 0 1 -64,-64 h -213.334 v 384.0001 h 42.666 a 64,64 0 0 1 64,-64 64,64 0 0 1 64,64 h 213.334 v -384.0001 z"
+       id="path25" />
+    <path
+       d="m 3965.2581,-2752.0117 a 64,64 0 0 1 -64,-64 h -320 v 384 h 384 z"
+       id="path23" />
+    <path
+       d="m 3340.5662,-2833.3709 a 64,64 0 0 1 -64,64 64,64 0 0 1 -64,-64 h -128 v 384 h 128 a 64,64 0 0 1 64,-64 64,64 0 0 1 64,64 h 128 v -128 a 64,64 0 0 1 -64,-64 64,64 0 0 1 64,-64 v -128 z"
+       id="path22"
+       style="fill:#000000" />
+    <path
+       d="m 2067.1624,-2826.0356 v 128 a 64,64 0 0 1 64,64 64,64 0 0 1 -64,64 v 128 h 384 v -128 a 64,64 0 0 1 -64,-64 64,64 0 0 1 64,-64 v -128 z"
+       style="fill:#000000"
+       id="path20" />
+  </g>
+</svg>

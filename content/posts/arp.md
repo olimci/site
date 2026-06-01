@@ -7,7 +7,7 @@ weight = 10
 
 featured = true
 +++
-[LARP](https://github.com/olimci/larp) is an experiment in using ARP to tunnel data between machines on the same LAN.
+[ARP fuckery](https://github.com/olimci/arpfuckery) is an experiment in using ARP to tunnel data between machines on the same LAN.
 
 ## Concept
 
@@ -129,7 +129,7 @@ The shared packet header is:
 </table>
 </div>
 
-I found that packets much larger than 100 bytes were often poorly delivered, so we have an 100-byte advisory limit on packet bodies. Similarly we cannot specify a protocol address larger than 255 bytes, so the maximum possible fragment payload size is ~82 bytes.
+I found that packets much larger than 100 bytes were often poorly delivered, so we have a 100-byte advisory limit on packet bodies. Similarly, we cannot specify a protocol address larger than 255 bytes, so the maximum possible fragment payload size is ~82 bytes.
 
 Objects have an ID, full hash, size, fragment count, and a small metadata blob. The client keeps track of partial objects, retries missing fragments, pins owned or received objects when needed, and emits progress events as fragments arrive.
 

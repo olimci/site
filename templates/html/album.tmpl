@@ -5,12 +5,7 @@
     {{ $pageDescription := or .Page.Description .Site.Description }}
     {{ $pageTitle := printf "%s | %s" .Page.Title .Site.Title }}
     {{ $cover := index .Page.Params "cover" }}
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
     <meta name="description" content="{{ $pageDescription }}">
-    <meta name="author" content="Oliver McInnes">
-    <meta name="robots" content="index, follow">
     <link rel="canonical" href="{{ .Page.Canon }}">
 
     <meta property="og:title" content="{{ $pageTitle }}">
@@ -21,46 +16,42 @@
     <meta property="og:site_name" content="{{ .Site.Title }}">
 
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="{{ $pageTitle }}">
-    <meta name="twitter:description" content="{{ $pageDescription }}">
     <meta name="twitter:image" content="{{ .Site.URL }}{{ $cover }}">
 
     <title>{{ $pageTitle }}</title>
-    <link rel="stylesheet" href="/assets/css/styles.css" />
-    <link rel="stylesheet" href="/assets/css/article.css" />
-    <link rel="stylesheet" href="/assets/css/albums.css" />
-    {{ template "icon_assets" . }}
-    {{ template "favicon_assets" . }}
+    {{ template "head_common" . }}
 </head>
 <body>
+{{ template "topnav" "photos" }}
+
 {{ $photos := index .Page.Params "photos" }}
-<main class="w-shell page-layout">
-    {{ template "site_nav_photo_item" . }}
 
-    <section class="page-main">
-        <article class="album-page">
-            <header class="w-panel article-panel album-head">
-                <div class="article-meta-row">
-                    {{ if .Page.Featured }}<span class="post-card-state featured">featured</span>{{ end }}
-                    {{ if .Page.Draft }}<span class="post-card-state draft">draft</span>{{ end }}
-                    {{ range $tag := .Page.Tags }}<span class="post-card-state post-card-tag">{{ $tag }}</span>{{ end }}
-                </div>
-                <h1 class="w-title medium">{{ .Page.Title }}</h1>
-                {{ if .Page.Description }}<p class="article-deck">{{ .Page.Description }}</p>{{ end }}
-            </header>
-
-            <section class="photo-grid">
-                {{ range $photo := $photos }}
-                    <figure class="photo-frame">
-                        <img class="photo-image" src="{{ index $photo "src" }}" alt="{{ index $photo "alt" }}" loading="lazy" />
-                        {{ with index $photo "caption" }}<figcaption>{{ . }}</figcaption>{{ end }}
-                    </figure>
-                {{ end }}
-            </section>
-        </article>
+<main>
+    <section class="page-header">
+        <div class="page-header-inner">
+            {{ if not .Page.PubDate.IsZero }}
+            <div class="page-kicker">
+                <span class="date">{{ datefmt "2006-01-02" .Page.PubDate }}</span>
+            </div>
+            {{ end }}
+            <h1>{{ .Page.Title }}</h1>
+            {{ if .Page.Description }}<p class="deck">{{ .Page.Description }}</p>{{ end }}
+        </div>
     </section>
-    {{ template "site_footer" . }}
+
+    <div class="album-shell">
+        <div class="gallery">
+            {{ range $photo := $photos }}
+                <figure>
+                    <span class="gallery-frame" style="background-image:url('{{ index $photo "src" }}')" aria-label="{{ index $photo "alt" }}"></span>
+                    {{ with index $photo "caption" }}<figcaption>{{ . }}</figcaption>{{ end }}
+                </figure>
+            {{ end }}
+        </div>
+    </div>
 </main>
+
+{{ template "site_footer" . }}
 </body>
 </html>
 {{ end }}

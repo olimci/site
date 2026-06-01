@@ -55,7 +55,7 @@ model := module.Sequential{
 }
 ```
 
-(This model got up to 96% in testing on MNIST, after 10,000 iterations of training.) In practice it doesn't work paticularly well, just we just using the training data as-is.
+(This model got up to 96% in testing on MNIST, after 10,000 iterations of training.) In practice it doesn't work particularly well, as we are just using the training data as-is.
 
 ## Demo
 

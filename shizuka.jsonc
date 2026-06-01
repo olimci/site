@@ -5,11 +5,8 @@
   "site": {
     "title": "Oli's site",
     "description": "Personal website of Oli McInnes",
-    "url": "https://oli.mcinnes.cc",
+    "url": "https://olimci.com",
 
-    "params": {
-      "nav_title": "olimci",
-    },
   },
 
   "build": {

@@ -9,7 +9,6 @@ tags = ["travel"]
 
 [params]
 cover = "/assets/photos/denmark-2024/web/red-1.jpg"
-photo_count = 3
 
 [[params.photos]]
 src = "/assets/photos/denmark-2024/web/red-1.jpg"

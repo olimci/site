@@ -1,0 +1,135 @@
+{{ define "tohru_nav" }}
+<header class="shizuka-topnav">
+    <div class="glass-backdrop" aria-hidden="true"></div>
+    <div class="shizuka-topnav-inner">
+        <a class="shizuka-brand" href="/tohru/">
+            <span class="symbol symbol-tohru" aria-hidden="true"></span>
+            <span>tohru</span>
+        </a>
+        <nav class="shizuka-topnav-links" aria-label="Tohru">
+            <a href="/tohru/docs/" aria-label="Docs" {{ if eq .Page.Section "tohru-docs" }}class="active"{{ end }}>
+                <span class="shizuka-nav-icon shizuka-nav-icon-docs" aria-hidden="true"></span>
+            </a>
+            <a href="https://github.com/olimci/tohru" rel="noopener noreferrer" aria-label="GitHub">
+                <span class="shizuka-nav-icon shizuka-nav-icon-github" aria-hidden="true"></span>
+            </a>
+            <a href="/" aria-label="olimci.com">
+                <span class="symbol symbol-olimci" aria-hidden="true"></span>
+            </a>
+        </nav>
+    </div>
+</header>
+{{ end }}
+
+{{ define "tohru_landing" }}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {{ $pageDescription := or .Page.Description .Site.Description }}
+    {{ $pageTitle := printf "%s | %s" .Page.Title .Site.Title }}
+    <meta name="description" content="{{ $pageDescription }}">
+    <link rel="canonical" href="{{ .Page.Canon }}">
+
+    <meta property="og:title" content="{{ $pageTitle }}">
+    <meta property="og:description" content="{{ $pageDescription }}">
+    <meta property="og:image" content="{{ .Site.URL }}/assets/favicon/favicon-white-on-black-512.png">
+    <meta property="og:url" content="{{ .Page.Canon }}">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="{{ .Site.Title }}">
+
+    <title>{{ $pageTitle }}</title>
+    {{ template "head_common" . }}
+</head>
+<body class="project-tohru">
+{{ template "tohru_nav" . }}
+
+<main>
+    <section class="shizuka-hero">
+        <div class="shizuka-hero-inner">
+            <div>
+                <h1><span class="symbol symbol-tohru" aria-hidden="true"></span>{{ .Page.Title }}</h1>
+                <p>{{ .Page.Description }}</p>
+                <div class="shizuka-actions">
+                    <a class="shizuka-button shizuka-button-primary" href="/tohru/docs/">Read the docs</a>
+                    <a class="shizuka-button" href="https://github.com/olimci/tohru" rel="noopener noreferrer">GitHub</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="shizuka-prose-section">
+        <div class="shizuka-prose">
+            {{ .Page.Body }}
+        </div>
+    </section>
+</main>
+
+{{ template "shizuka_footer" . }}
+{{ template "copy_code_script" . }}
+</body>
+</html>
+{{ end }}
+
+{{ define "tohru_doc" }}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {{ $pageDescription := or .Page.Description .Site.Description }}
+    {{ $pageTitle := printf "%s | tohru | %s" .Page.Title .Site.Title }}
+    <meta name="description" content="{{ $pageDescription }}">
+    <link rel="canonical" href="{{ .Page.Canon }}">
+
+    <meta property="og:title" content="{{ $pageTitle }}">
+    <meta property="og:description" content="{{ $pageDescription }}">
+    <meta property="og:image" content="{{ .Site.URL }}/assets/favicon/favicon-white-on-black-512.png">
+    <meta property="og:url" content="{{ .Page.Canon }}">
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="{{ .Site.Title }}">
+
+    <title>{{ $pageTitle }}</title>
+    {{ template "head_common" . }}
+</head>
+<body class="project-tohru">
+{{ template "tohru_nav" . }}
+
+{{ $current := .Page }}
+{{ $docs := queryPages "SELECT * FROM pages WHERE Section='tohru-docs' AND (? OR Draft=false) ORDER BY Weight ASC, Title ASC" .Site.Dev }}
+
+<main class="shizuka-doc-shell">
+    <aside class="shizuka-sidebar" aria-label="Tohru documentation">
+        <div class="shizuka-sidebar-group">
+            <p class="shizuka-sidebar-heading">tohru</p>
+            <ul>
+                {{ range $doc := $docs }}
+                <li>
+                    <a href="{{ $doc.Path }}" {{ if eq $doc.Path $current.Path }}aria-current="page"{{ end }}>{{ $doc.Title }}</a>
+                    {{ if and (eq $doc.Path $current.Path) $current.ToC }}
+                    <ol class="shizuka-sidebar-toc" aria-label="On this page">
+                        {{ range $current.ToC }}
+                            {{ if .ID }}<li class="toc-level-{{ .Level }}"><a href="#{{ .ID }}">{{ .Text }}</a></li>{{ end }}
+                        {{ end }}
+                    </ol>
+                    {{ end }}
+                </li>
+                {{ end }}
+            </ul>
+        </div>
+    </aside>
+
+    <article class="shizuka-doc-content">
+        <header class="shizuka-doc-header">
+            <span class="crumb"><a href="/tohru/">tohru</a> &nbsp;/&nbsp; docs</span>
+            <h1>{{ .Page.Title }}</h1>
+            {{ if .Page.Description }}<p>{{ .Page.Description }}</p>{{ end }}
+        </header>
+        <div class="shizuka-prose">
+            {{ .Page.Body }}
+        </div>
+    </article>
+</main>
+
+{{ template "shizuka_footer" . }}
+{{ template "copy_code_script" . }}
+</body>
+</html>
+{{ end }}

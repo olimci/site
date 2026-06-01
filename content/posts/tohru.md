@@ -3,7 +3,7 @@ title = "Tohru"
 description = "Dotfiles manager"
 tags = ["programming"]
 section = "posts"
-weight = 40
+weight = 50
 
 featured = true
 +++

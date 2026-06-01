@@ -1,182 +1,85 @@
 {{ define "favicon_assets" }}
-<link rel="icon" type="image/svg+xml" href="/assets/favicon/favicon-segments-black-transparent.svg" media="(prefers-color-scheme: light)">
-<link rel="icon" type="image/svg+xml" href="/assets/favicon/favicon-segments-white-transparent.svg" media="(prefers-color-scheme: dark)">
-<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-black-transparent-32.png" media="(prefers-color-scheme: light)">
-<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-white-transparent-32.png" media="(prefers-color-scheme: dark)">
-<link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon/favicon-black-transparent-48.png">
+{{ $light := "/assets/symbols/olimci-black.svg" }}
+{{ $dark := "/assets/symbols/olimci-white.svg" }}
+{{ if or (eq .Page.Section "shizuka") (eq .Page.Section "shizuka-docs") }}
+    {{ $light = "/assets/symbols/shizuka-black.svg" }}
+    {{ $dark = "/assets/symbols/shizuka-white.svg" }}
+{{ else if or (eq .Page.Section "tohru") (eq .Page.Section "tohru-docs") }}
+    {{ $light = "/assets/symbols/tohru-black.svg" }}
+    {{ $dark = "/assets/symbols/tohru-white.svg" }}
+{{ end }}
+<link rel="icon" type="image/svg+xml" href="{{ $light }}" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/svg+xml" href="{{ $dark }}" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-black-transparent-32.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon-black-transparent-180.png">
 {{ end }}
 
-{{ define "nav_home_icon" }}
-<span class="seven-seg-icon" data-seven-seg-morph data-from="h00,h10,h02,h12,v00,v01,v10,v20,v21,d01b,d11a" data-to="h00,h10,h02,h12,v00,v01,v11,v20,v21,d00a,d10b" data-duration-ms="0" data-fade-ms="72" data-size="100%" data-outline-width="0" aria-hidden="true"></span>
+{{ define "fonts" }}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 {{ end }}
 
-{{ define "nav_back_icon" }}
-<span class="seven-seg-icon" data-seven-seg-morph data-from="h01,h11,d00b,d01a" data-to="d00b,d10b,d01a,d11a" data-duration-ms="0" data-fade-ms="72" data-size="100%" data-outline-width="0" aria-hidden="true"></span>
-{{ end }}
-
-{{ define "nav_random_icon" }}
-<span class="seven-seg-icon" data-seven-seg-morph data-from="h00,h10,h02,h12,v00,v01,v20,v21,d10a,d10b,d01a,d01b" data-to="h00,h10,h02,h12,v00,v01,v20,v21,d00a,d00b,d11a,d11b" data-duration-ms="260" data-fade-ms="72" data-size="100%" data-outline-width="0" aria-hidden="true"></span>
-{{ end }}
-
-{{ define "nav_random_post" }}
-{{ $posts := queryPages "SELECT * FROM pages WHERE Section='posts' AND (? OR Draft=false) ORDER BY PubDate DESC" .Site.Dev }}
-{{ $fallback := "/posts/" }}
-{{ with first $posts }}{{ $fallback = printf "/%s/" .Canon }}{{ end }}
-<a class="toolbar-link toolbar-random" href="{{ $fallback }}" aria-label="Random Post" data-label="Random Post" data-random-nav>{{ template "nav_random_icon" . }}</a>
-<div class="nav-random-options" hidden>
-    {{ range $post := $posts }}
-        <a href="/{{ $post.Canon }}/"></a>
-    {{ end }}
-</div>
-{{ end }}
-
-{{ define "nav_random_post_desktop" }}
-{{ $posts := queryPages "SELECT * FROM pages WHERE Section='posts' AND (? OR Draft=false) ORDER BY PubDate DESC" .Site.Dev }}
-{{ $fallback := "/posts/" }}
-{{ with first $posts }}{{ $fallback = printf "/%s/" .Canon }}{{ end }}
-<a class="toolbar-link toolbar-random toolbar-random-desktop" href="{{ $fallback }}" aria-label="Random Post" data-label="Random Post" data-random-nav>{{ template "nav_random_icon" . }}</a>
-<div class="nav-random-options" hidden>
-    {{ range $post := $posts }}
-        <a href="/{{ $post.Canon }}/"></a>
-    {{ end }}
-</div>
-{{ end }}
-
-{{ define "nav_random_album_mobile" }}
-{{ $albums := queryPages "SELECT * FROM pages WHERE Section='photos' AND (? OR Draft=false) ORDER BY Weight ASC, Updated DESC" .Site.Dev }}
-{{ $fallback := "/photos/" }}
-{{ with first $albums }}{{ $fallback = printf "/%s/" .Canon }}{{ end }}
-<a class="toolbar-link toolbar-random toolbar-random-mobile" href="{{ $fallback }}" aria-label="Random Album" data-label="Random Album" data-random-nav>{{ template "nav_random_icon" . }}</a>
-<div class="nav-random-options" hidden>
-    {{ range $album := $albums }}
-        <a href="/{{ $album.Canon }}/"></a>
-    {{ end }}
-</div>
-{{ end }}
-
-{{ define "nav_random_script" }}
-<script>
-(() => {
-    if (window.SiteRandomPostNav) {
-        window.SiteRandomPostNav.init(document);
-        return;
-    }
-
-    function init(root = document) {
-        const links = root.querySelectorAll("[data-random-nav]");
-        for (const link of links) {
-            if (link.__siteRandomPostNav) {
-                continue;
-            }
-
-            const options = link.parentElement?.querySelectorAll(".nav-random-options a[href]") || [];
-            const targets = Array.from(options, (option) => option.href).filter(Boolean);
-            if (targets.length === 0) {
-                continue;
-            }
-
-            link.__siteRandomPostNav = true;
-            link.addEventListener("click", () => {
-                link.href = targets[Math.floor(Math.random() * targets.length)];
-            });
-        }
-    }
-
-    window.SiteRandomPostNav = { init };
-
-    if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", () => init(document), { once: true });
-    } else {
-        init(document);
-    }
-})();
-</script>
-{{ end }}
-
-{{ define "linktree_nav_links" }}
-{{ $linktreePage := queryPage "SELECT * FROM pages WHERE Path='/links/' LIMIT 1" }}
-{{ $linktreeLinks := or (index $linktreePage.Params "exported_links") (index $linktreePage.Params "links") }}
-<nav class="nav-box nav-links-box w-linklist sidebar-links" aria-label="linktree">
-    {{ range $link := $linktreeLinks }}
-        {{ $iconMorph := or (index $link "icon_morph") (index $link "iconMorph") }}
-        <a class="toolbar-link sidebar-link" href="{{ index $link "url" }}" aria-label="{{ index $link "label" }}" data-label="{{ index $link "label" }}">
-            {{ if $iconMorph }}{{ template "icon" $iconMorph }}{{ end }}
-            <span class="sidebar-link-label">{{ index $link "label" }}</span>
+{{ define "topnav" }}
+{{ $active := . }}
+<header class="topnav">
+    <div class="glass-backdrop" aria-hidden="true"></div>
+    <div class="topnav-inner">
+        <a class="brand" href="/">
+            <span class="symbol symbol-olimci" aria-hidden="true"></span>
+            <span>olimci.com</span>
         </a>
-    {{ end }}
-</nav>
-{{ end }}
-
-{{ define "site_nav_title" }}
-{{ $navTitle := or (index .Site.Params "nav_title") .Site.Title }}
-<div class="nav-title" aria-hidden="true">{{ $navTitle }}</div>
+        <nav class="topnav-links" aria-label="Primary">
+            <a href="/" {{ if eq $active "home" }}class="active"{{ end }}>home</a>
+            <a href="/posts/" {{ if eq $active "posts" }}class="active"{{ end }}>posts</a>
+            <a href="/photos/" {{ if eq $active "photos" }}class="active"{{ end }}>photos</a>
+            <a href="/cv/" {{ if eq $active "cv" }}class="active"{{ end }}>cv</a>
+        </nav>
+    </div>
+</header>
 {{ end }}
 
 {{ define "site_footer" }}
 <footer class="site-footer">
-    <span>&copy; 2026 Oliver McInnes <a href="http://localhost:6767/_shizuka">c#{{.Site.Git.ShortHash}}</a></span>
+    <div class="site-footer-inner">
+        <span>&copy; 2026 oliver mcinnes</span>
+        <span>built with <a href="/shizuka">shizuka</a> &middot; <a href="http://localhost:6767/_shizuka">c#{{ .Site.Git.ShortHash }}</a></span>
+    </div>
 </footer>
 {{ end }}
 
-{{ define "site_nav_home" }}
-<aside class="nav-toolbar nav-toolbar-index" aria-label="linktree">
-    <div class="nav-box nav-action-box">
-        {{ template "nav_random_post" . }}
-    </div>
-    {{ template "linktree_nav_links" . }}
-</aside>
-{{ template "nav_random_script" . }}
+{{ define "head_common" }}
+{{ $data := . }}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="Oliver McInnes">
+<meta name="robots" content="index, follow">
+<link rel="alternate" type="application/rss+xml" title="olimci.com RSS" href="{{ $data.Site.URL }}/rss.xml">
+{{ template "fonts" . }}
+<link rel="stylesheet" href="/assets/css/site.css">
+{{ template "favicon_assets" . }}
 {{ end }}
 
-{{ define "site_nav_archive" }}
-<aside class="nav-toolbar" aria-label="site">
-    <div class="nav-box nav-action-box">
-        <a class="toolbar-link toolbar-home" href="/" aria-label="Home" data-label="Home">{{ template "nav_home_icon" . }}</a>
-        {{ template "nav_random_post" . }}
-    </div>
-    {{ template "site_nav_title" . }}
-    {{ template "linktree_nav_links" . }}
-</aside>
-{{ template "nav_random_script" . }}
-{{ end }}
-
-{{ define "site_nav_photo_archive" }}
-<aside class="nav-toolbar" aria-label="site">
-    <div class="nav-box nav-action-box">
-        <a class="toolbar-link toolbar-home" href="/" aria-label="Home" data-label="Home">{{ template "nav_home_icon" . }}</a>
-        {{ template "nav_random_post_desktop" . }}
-        {{ template "nav_random_album_mobile" . }}
-    </div>
-    {{ template "site_nav_title" . }}
-    {{ template "linktree_nav_links" . }}
-</aside>
-{{ template "nav_random_script" . }}
-{{ end }}
-
-{{ define "site_nav_post_item" }}
-<aside class="nav-toolbar" aria-label="site">
-    <div class="nav-box nav-action-box nav-item-actions">
-        <a class="toolbar-link toolbar-home" href="/" aria-label="Home" data-label="Home">{{ template "nav_home_icon" . }}</a>
-        <a class="toolbar-link toolbar-back" href="/posts/" aria-label="Back to posts" data-label="Posts">{{ template "nav_back_icon" . }}</a>
-        {{ template "nav_random_post" . }}
-    </div>
-    {{ template "site_nav_title" . }}
-    {{ template "linktree_nav_links" . }}
-</aside>
-{{ template "nav_random_script" . }}
-{{ end }}
-
-{{ define "site_nav_photo_item" }}
-<aside class="nav-toolbar" aria-label="site">
-    <div class="nav-box nav-action-box nav-item-actions">
-        <a class="toolbar-link toolbar-home" href="/" aria-label="Home" data-label="Home">{{ template "nav_home_icon" . }}</a>
-        <a class="toolbar-link toolbar-back" href="/photos/" aria-label="Back to photos" data-label="Photos">{{ template "nav_back_icon" . }}</a>
-        {{ template "nav_random_post_desktop" . }}
-        {{ template "nav_random_album_mobile" . }}
-    </div>
-    {{ template "site_nav_title" . }}
-    {{ template "linktree_nav_links" . }}
-</aside>
-{{ template "nav_random_script" . }}
+{{ define "copy_code_script" }}
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    for (const pre of document.querySelectorAll(".shizuka-prose pre")) {
+        const code = pre.querySelector("code");
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "copy-code";
+        button.setAttribute("aria-label", "Copy code");
+        button.textContent = "Copy";
+        button.addEventListener("click", async () => {
+            await navigator.clipboard.writeText(code.innerText);
+            button.textContent = "Copied";
+            window.setTimeout(() => {
+                button.textContent = "Copy";
+            }, 1200);
+        });
+        pre.classList.add("has-copy-code");
+        pre.append(button);
+    }
+});
+</script>
 {{ end }}

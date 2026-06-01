@@ -4,12 +4,7 @@
 <head>
     {{ $pageDescription := or .Page.Description .Site.Description }}
     {{ $pageTitle := printf "%s | %s" .Page.Title .Site.Title }}
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
     <meta name="description" content="{{ $pageDescription }}">
-    <meta name="author" content="Oliver McInnes">
-    <meta name="robots" content="index, follow">
     <link rel="canonical" href="{{ .Page.Canon }}">
 
     <meta property="og:title" content="{{ $pageTitle }}">
@@ -25,35 +20,48 @@
     <meta name="twitter:image" content="{{ .Site.URL }}/assets/favicon/favicon-white-on-black-512.png">
 
     <title>{{ $pageTitle }}</title>
-    <link rel="stylesheet" href="/assets/css/styles.css" />
-    <link rel="stylesheet" href="/assets/css/article.css" />
-    {{ template "icon_assets" . }}
-    {{ template "favicon_assets" . }}
+    {{ template "head_common" . }}
 </head>
 <body>
-<main class="w-shell page-layout">
-    {{ if eq .Page.Section "posts" }}{{ template "site_nav_post_item" . }}{{ else }}{{ template "site_nav_archive" . }}{{ end }}
+{{ if eq .Page.Section "posts" }}{{ template "topnav" "posts" }}{{ else if eq .Page.Path "/cv/" }}{{ template "topnav" "cv" }}{{ else }}{{ template "topnav" "" }}{{ end }}
 
-    <section class="page-main">
-        <article class="w-panel article-panel">
-            <header class="article-head">
-                <div class="article-meta-row">
-                    <span>{{ datefmt "2006-01-02" .Page.PubDate }}</span>
-                    {{ if .Page.Featured }}<span class="post-card-state featured">featured</span>{{ end }}
-                    {{ if .Page.Draft }}<span class="post-card-state draft">draft</span>{{ end }}
-                    {{ range $tag := .Page.Tags }}<a class="post-card-state post-card-tag post-card-tag-link" href="/tags/{{ $tag }}/">{{ $tag }}</a>{{ end }}
-                </div>
-                <h1 class="w-title medium">{{ .Page.Title }}</h1>
-                {{ if .Page.Description }}
-                    <p class="article-deck">{{ .Page.Description }}</p>
-                {{ end }}
-            </header>
+<main>
 
-            <div class="w-article">{{ .Page.Body }}</div>
-        </article>
+    <section class="page-header">
+        <div class="page-header-inner">
+            {{ if not .Page.PubDate.IsZero }}
+            <div class="page-kicker">
+                <span class="date">{{ datefmt "2006-01-02" .Page.PubDate }}</span>
+            </div>
+            {{ end }}
+            <h1>{{ .Page.Title }}</h1>
+            {{ if .Page.Description }}<p class="deck">{{ .Page.Description }}</p>{{ end }}
+            {{ if .Page.Draft }}
+            <div class="meta">
+                <span>draft</span>
+            </div>
+            {{ end }}
+        </div>
     </section>
-    {{ template "site_footer" . }}
+
+    <div class="article-shell{{ if .Page.ToC }} has-toc{{ end }}">
+        {{ if .Page.ToC }}
+        <aside class="article-toc" aria-label="On this page">
+            <span class="label">On this page</span>
+            <ol>
+                {{ range .Page.ToC }}
+                    {{ if .ID }}<li class="toc-level-{{ .Level }}"><a href="#{{ .ID }}">{{ .Text }}</a></li>{{ end }}
+                {{ end }}
+            </ol>
+        </aside>
+        {{ end }}
+        <article class="article">
+            <div class="prose">{{ .Page.Body }}</div>
+        </article>
+    </div>
 </main>
+
+{{ template "site_footer" . }}
 </body>
 </html>
 {{ end }}

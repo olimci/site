@@ -4,12 +4,7 @@
 <head>
     {{ $pageDescription := or .Page.Description .Site.Description }}
     {{ $pageTitle := printf "%s | %s" .Page.Title .Site.Title }}
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
     <meta name="description" content="{{ $pageDescription }}">
-    <meta name="author" content="Oliver McInnes">
-    <meta name="robots" content="index, follow">
     <link rel="canonical" href="{{ .Page.Canon }}">
 
     <meta property="og:title" content="{{ $pageTitle }}">
@@ -25,67 +20,46 @@
     <meta name="twitter:image" content="{{ .Site.URL }}/assets/favicon/favicon-white-on-black-512.png">
 
     <title>{{ $pageTitle }}</title>
-    <link rel="stylesheet" href="/assets/css/styles.css" />
-    <link rel="stylesheet" href="/assets/css/posts.css" />
-    <link rel="stylesheet" href="/assets/css/article.css" />
-    {{ template "icon_assets" . }}
-    {{ template "favicon_assets" . }}
+    {{ template "head_common" . }}
 </head>
 <body>
-{{ $posts := queryPages "SELECT * FROM pages WHERE Section='posts' ORDER BY PubDate DESC" }}
-<main class="w-shell page-layout">
-    {{ template "site_nav_archive" . }}
+{{ template "topnav" "posts" }}
 
-    <section class="page-main">
-        <header class="w-panel article-panel page-header archive-header">
-            <h1 class="w-title medium">{{ .Page.Title }}</h1>
-            {{ if .Page.Description }}<p class="archive-note">{{ .Page.Description }}</p>{{ end }}
-        </header>
+{{ $posts := queryPages "SELECT * FROM pages WHERE Section='posts' AND (? OR Draft=false) ORDER BY PubDate DESC" .Site.Dev }}
+{{ $tags := query "select Tag, TagSlug, count(PageTitle) as PostCount from tags where Section = 'posts' and (? OR Draft=false) group by TagSlug, Tag order by PostCount desc, Tag asc" .Site.Dev }}
 
-        <div class="section-head archive-section-head">
-            <div class="w-label">posts:</div>
-            <nav class="archive-section-links" aria-label="Post archive links">
-                <a class="section-link" href="/tags/">[all tags]</a>
-            </nav>
+<main>
+    <section class="page-header">
+        <div class="page-header-inner">
+            <h1>{{ .Page.Title }}.</h1>
+            {{ if .Page.Description }}<p class="deck">{{ .Page.Description }}</p>{{ end }}
         </div>
-
-        <section class="post-list post-list-states">
-            {{ range $post := $posts }}
-                {{ if or $.Site.Dev (not $post.Draft) }}
-                    <article class="w-panel post-card{{ if $post.Featured }} is-featured{{ end }}{{ if $post.Draft }} is-draft{{ end }}">
-                        <div class="post-card-content">
-                            <div class="post-card-meta-row">
-                                <div class="post-card-meta">{{ datefmt "2006-01-02" $post.PubDate }}</div>
-                                {{ if $post.Featured }}
-                                    <div class="post-card-flags">
-                                        <span class="post-card-state featured">featured</span>
-                                        {{ if $post.Draft }}<span class="post-card-state draft">draft</span>{{ end }}
-                                    </div>
-                                {{ else if $post.Draft }}
-                                    <div class="post-card-flags">
-                                        <span class="post-card-state draft">draft</span>
-                                    </div>
-                                {{ end }}
-                                {{ if $post.Tags }}
-                                    <div class="post-card-tags">
-                                        {{ range $tag := $post.Tags }}
-                                            <a class="post-card-state post-card-tag post-card-tag-link" href="/tags/{{ $tag }}/">{{ $tag }}</a>
-                                        {{ end }}
-                                    </div>
-                                {{ end }}
-                            </div>
-                            <h2 class="post-card-title"><a class="post-card-primary-link" href="{{ $post.Canon }}">{{ $post.Title }}</a></h2>
-                            {{ if $post.Description }}
-                                <p class="post-card-desc">{{ $post.Description }}</p>
-                            {{ end }}
-                        </div>
-                    </article>
-                {{ end }}
-            {{ end }}
-        </section>
     </section>
-    {{ template "site_footer" . }}
+
+    <div class="shell">
+        {{ if $tags }}
+        <div class="chips">
+            <a class="chip is-active" href="/posts/">all <span class="n">{{ len $posts }}</span></a>
+            {{ range $t := $tags }}
+                <a class="chip" href="/posts/tag/{{ index $t "TagSlug" }}/">{{ index $t "Tag" }} <span class="n">{{ index $t "PostCount" }}</span></a>
+            {{ end }}
+            <a class="chip chip-more" href="/posts/tag/">browse all →</a>
+        </div>
+        {{ end }}
+
+        <div class="posts">
+        {{ range $post := $posts }}
+            <a class="post" href="{{ $post.Path }}">
+                <span class="date">{{ datefmt "2006-01-02" $post.PubDate }}</span>
+                <span class="title">{{ $post.Title }}{{ if $post.Draft }} <small style="color:var(--dim);font-family:var(--font-mono);font-size:.7rem">(draft)</small>{{ end }}</span>
+                {{ with first $post.Tags }}<span class="tag">{{ . }}</span>{{ end }}
+            </a>
+        {{ end }}
+        </div>
+    </div>
 </main>
+
+{{ template "site_footer" . }}
 </body>
 </html>
 {{ end }}

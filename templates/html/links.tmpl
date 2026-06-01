@@ -4,12 +4,7 @@
 <head>
     {{ $pageDescription := or .Page.Description .Site.Description }}
     {{ $pageTitle := printf "%s | %s" .Page.Title .Site.Title }}
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
     <meta name="description" content="{{ $pageDescription }}">
-    <meta name="author" content="Oliver McInnes">
-    <meta name="robots" content="index, follow">
     <link rel="canonical" href="{{ .Page.Canon }}">
 
     <meta property="og:title" content="{{ $pageTitle }}">
@@ -19,53 +14,55 @@
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="{{ .Site.Title }}">
 
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="{{ $pageTitle }}">
-    <meta name="twitter:description" content="{{ $pageDescription }}">
-    <meta name="twitter:image" content="{{ .Site.URL }}/assets/favicon/favicon-white-on-black-512.png">
-
     <title>{{ $pageTitle }}</title>
-    <link rel="stylesheet" href="/assets/css/styles.css" />
-    <link rel="stylesheet" href="/assets/css/links.css" />
-    {{ template "icon_assets" . }}
-    {{ template "favicon_assets" . }}
+    {{ template "head_common" . }}
 </head>
 <body>
-{{ $exportedLinks := or (index .Page.Params "exported_links") (index .Page.Params "links") }}
-{{ $unexportedLinks := index .Page.Params "unexported_links" }}
-<main class="w-shell page-layout linktree-layout">
-    <section class="page-main">
-        <header class="page-header linktree-header">
-            <h1 class="w-title medium">{{ .Page.Title }}</h1>
-            {{ if .Page.Description }}<p class="archive-note">{{ .Page.Description }}</p>{{ end }}
-        </header>
+{{ template "topnav" "links" }}
 
-        <section class="linktree-list" aria-label="links">
-            <a class="w-panel linktree-card" href="/">
-                <span class="linktree-icon">{{ template "nav_home_icon" . }}</span>
-                <span class="linktree-label">Home</span>
-            </a>
-            {{ range $link := $exportedLinks }}
-                {{ $iconMorph := or (index $link "icon_morph") (index $link "iconMorph") }}
-                <a class="w-panel linktree-card" href="{{ index $link "url" }}">
-                    <span class="linktree-icon">
-                        {{ if $iconMorph }}{{ template "icon" $iconMorph }}{{ end }}
-                    </span>
-                    <span class="linktree-label">{{ index $link "label" }}</span>
-                </a>
-            {{ end }}
-            {{ range $link := $unexportedLinks }}
-                {{ $iconMorph := or (index $link "icon_morph") (index $link "iconMorph") }}
-                <a class="w-panel linktree-card" href="{{ index $link "url" }}">
-                    <span class="linktree-icon">
-                        {{ if $iconMorph }}{{ template "icon" $iconMorph }}{{ end }}
-                    </span>
-                    <span class="linktree-label">{{ index $link "label" }}</span>
-                </a>
-            {{ end }}
-        </section>
+{{ $exported := or (index .Page.Params "exported_links") (index .Page.Params "links") }}
+{{ $unexported := index .Page.Params "unexported_links" }}
+
+<main>
+    <section class="page-header">
+        <div class="page-header-inner">
+            <h1>{{ .Page.Title }}.</h1>
+            {{ if .Page.Description }}<p class="deck">{{ .Page.Description }}</p>{{ end }}
+        </div>
     </section>
+
+    <div class="shell">
+        <div class="linktree">
+            <a class="link-card" href="/">
+                <span class="icon"><span class="symbol symbol-olimci" aria-hidden="true"></span></span>
+                <span class="label">Home</span>
+                <span class="host">olimci.com</span>
+            </a>
+            {{ range $link := $exported }}
+                <a class="link-card" href="{{ index $link "url" }}">
+                    <span class="icon"><span class="symbol symbol-olimci" aria-hidden="true"></span></span>
+                    <span class="label">{{ index $link "label" }}</span>
+                    <span class="host">{{ or (index $link "host") (index $link "url") }}</span>
+                </a>
+            {{ end }}
+        </div>
+
+        {{ if $unexported }}
+        <div class="section-rule">elsewhere</div>
+        <div class="linktree">
+            {{ range $link := $unexported }}
+                <a class="link-card" href="{{ index $link "url" }}">
+                    <span class="icon"><span class="symbol symbol-olimci" aria-hidden="true"></span></span>
+                    <span class="label">{{ index $link "label" }}</span>
+                    <span class="host">{{ or (index $link "host") (index $link "url") }}</span>
+                </a>
+            {{ end }}
+        </div>
+        {{ end }}
+    </div>
 </main>
+
+{{ template "site_footer" . }}
 </body>
 </html>
 {{ end }}

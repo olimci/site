@@ -4,12 +4,7 @@
 <head>
     {{ $pageDescription := or .Page.Description .Site.Description }}
     {{ $pageTitle := printf "%s | %s" .Page.Title .Site.Title }}
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
     <meta name="description" content="{{ $pageDescription }}">
-    <meta name="author" content="Oliver McInnes">
-    <meta name="robots" content="index, follow">
     <link rel="canonical" href="{{ .Page.Canon }}">
 
     <meta property="og:title" content="{{ $pageTitle }}">
@@ -19,59 +14,40 @@
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="{{ .Site.Title }}">
 
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="{{ $pageTitle }}">
-    <meta name="twitter:description" content="{{ $pageDescription }}">
-    <meta name="twitter:image" content="{{ .Site.URL }}/assets/favicon/favicon-white-on-black-512.png">
-
     <title>{{ $pageTitle }}</title>
-    <link rel="stylesheet" href="/assets/css/styles.css" />
-    <link rel="stylesheet" href="/assets/css/article.css" />
-    <link rel="stylesheet" href="/assets/css/albums.css" />
-    {{ template "icon_assets" . }}
-    {{ template "favicon_assets" . }}
+    {{ template "head_common" . }}
 </head>
 <body>
-{{ $albums := query "SELECT * FROM pages WHERE Section='photos' ORDER BY Weight ASC, Updated DESC" }}
-<main class="w-shell page-layout">
-    {{ template "site_nav_photo_archive" . }}
+{{ template "topnav" "photos" }}
 
-    <section class="page-main">
-        <header class="w-panel article-panel page-header archive-header">
-            <h1 class="w-title medium">{{ .Page.Title }}</h1>
-            {{ if .Page.Description }}<p class="archive-note">{{ .Page.Description }}</p>{{ end }}
-        </header>
+{{ $albums := queryPages "SELECT * FROM pages WHERE Section='photos' AND (? OR Draft=false) ORDER BY Weight ASC, Updated DESC" .Site.Dev }}
 
-        <section class="album-list album-list-page">
-            {{ range $album := $albums }}
-                {{ if or $.Site.Dev (not $album.Draft) }}
-                    {{ template "album_card" $album }}
-                {{ end }}
-            {{ end }}
-        </section>
+<main>
+    <section class="page-header">
+        <div class="page-header-inner">
+            <h1>{{ .Page.Title }}.</h1>
+            {{ if .Page.Description }}<p class="deck">{{ .Page.Description }}</p>{{ end }}
+        </div>
     </section>
-    {{ template "site_footer" . }}
+
+    <div class="shell">
+        <div class="cards cards-shelf">
+            {{ range $album := $albums }}
+                {{ $cover := index $album.Params "cover" }}
+                <a class="card" href="{{ $album.Path }}">
+                    <div class="card-cover" {{ if $cover }}style="background:#000 center/cover no-repeat url('{{ $cover }}')"{{ end }}></div>
+                    <div class="card-body">
+                        <h3>{{ $album.Title }}</h3>
+                        <span class="meta">{{ datefmt "2006-01-02" $album.PubDate }}</span>
+                        {{ with $album.Description }}<p>{{ . }}</p>{{ end }}
+                    </div>
+                </a>
+            {{ end }}
+        </div>
+    </div>
 </main>
+
+{{ template "site_footer" . }}
 </body>
 </html>
-{{ end }}
-
-{{ define "album_card" }}
-{{ $cover := index .Params "cover" }}
-{{ $count := index .Params "photo_count" }}
-<article class="w-panel album-card">
-    <a class="album-card-image-link" href="{{ .Canon }}" aria-label="{{ .Title }}">
-        <img class="album-card-image" src="{{ $cover }}" alt="" loading="lazy" />
-    </a>
-    <div class="album-card-body">
-        <div class="post-card-meta-row">
-            {{ if $count }}<span class="post-card-meta">{{ $count }} photos</span>{{ end }}
-            {{ if .Featured }}<span class="post-card-state featured">featured</span>{{ end }}
-            {{ if .Draft }}<span class="post-card-state draft">draft</span>{{ end }}
-            {{ range $tag := .Tags }}<span class="post-card-state post-card-tag">{{ $tag }}</span>{{ end }}
-        </div>
-        <h2 class="post-card-title"><a class="post-card-primary-link" href="{{ .Canon }}">{{ .Title }}</a></h2>
-        {{ if .Description }}<p class="post-card-desc">{{ .Description }}</p>{{ end }}
-    </div>
-</article>
 {{ end }}

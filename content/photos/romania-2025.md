@@ -9,7 +9,6 @@ tags = ["travel"]
 
 [params]
 cover = "/assets/photos/romania-2025/web/big-cloud.jpg"
-photo_count = 9
 
 [[params.photos]]
 src = "/assets/photos/romania-2025/web/radio.jpg"

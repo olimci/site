@@ -2,19 +2,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    {{ $aboutTitle := or (index .Page.Params "about_title") "about me" }}
-    {{ $bannerImage := index .Page.Params "banner_image" }}
-    {{ $bannerAlt := or (index .Page.Params "banner_alt") $aboutTitle }}
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <meta name="description" content="{{ .Site.Description }}">
-    <meta name="keywords" content="Oliver McInnes, Oli McInnes, Oli, Oliver, McInnes, programming, physics, personal blog, cv">
-    <meta name="author" content="Oliver McInnes">
-    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="Oliver McInnes, Oli McInnes, programming, physics, personal blog, cv">
     <link rel="canonical" href="{{ .Site.URL }}/">
-
-    <link rel="alternate" type="application/rss+xml" title="Oli's site RSS" href="{{ .Site.URL }}/rss.xml">
 
     <meta property="og:title" content="{{ .Site.Title }}">
     <meta property="og:description" content="{{ .Site.Description }}">
@@ -29,103 +19,104 @@
     <meta name="twitter:image" content="{{ .Site.URL }}/assets/favicon/favicon-white-on-black-512.png">
 
     <title>{{ .Site.Title }}</title>
-    <link rel="stylesheet" href="/assets/css/styles.css" />
-    <link rel="stylesheet" href="/assets/css/home.css" />
-    <link rel="stylesheet" href="/assets/css/posts.css" />
-    <link rel="stylesheet" href="/assets/css/albums.css" />
-    {{ template "icon_assets" . }}
-    {{ template "favicon_assets" . }}
+    {{ template "head_common" . }}
 </head>
 <body>
-{{ $posts := queryPages "SELECT * FROM pages WHERE Featured=true AND Draft=false AND Section='posts' ORDER BY Weight ASC" }}
-{{ $albums := queryPages "SELECT * FROM pages WHERE Featured=true AND Draft=false AND Section='photos' ORDER BY Weight ASC, Updated DESC" }}
-<main class="w-shell home-layout">
-    {{ template "site_nav_home" . }}
+{{ template "topnav" "home" }}
 
-    {{ $sections := .Page.Sections }}
-    {{ $layout := index .Page.Params "layout" }}
+{{ $sections := index .Page.Params "sections" }}
+{{ $projects := index .Page.Params "projects" }}
+{{ $posts := queryPages "SELECT * FROM pages WHERE Section='posts' AND Featured=true AND (? OR Draft=false) ORDER BY Weight ASC, PubDate DESC LIMIT 8" .Site.Dev }}
+{{ $albums := queryPages "SELECT * FROM pages WHERE Featured=true AND Draft=false AND Section='photos' ORDER BY Weight ASC, Updated DESC LIMIT 3" }}
 
-    <section class="home-main">
-    {{ range $slot := $layout }}
-        {{ $type := index $slot "type" }}
-        {{ if eq $type "about" }}
-            <article class="w-panel">
-                <div class="about-banner-frame">
-                    <img class="about-banner-image" src="{{ $bannerImage }}" alt="{{ $bannerAlt }}" />
-                    <h1 class="about-banner-title">olimci</h1>
-                </div>
-                {{ $idx := index $slot "index" }}
-                {{ $body := $.Page.Body }}
-                {{ if and (ne $idx nil) (lt $idx (len $sections)) }}{{ $body = index $sections $idx }}{{ else if $sections }}{{ $body = index $sections 0 }}{{ end }}
-                <div class="about-body">{{ $body }}</div>
-            </article>
-        {{ else if eq $type "copy" }}
-            {{ $idx := index $slot "index" }}
-            {{ if and (ne $idx nil) (lt $idx (len $sections)) }}
-                <article class="w-panel home-copy-panel">{{ index $sections $idx }}</article>
-            {{ end }}
-        {{ else if eq $type "posts" }}
-            <section class="post-list-wrap">
-                <div class="section-head">
-                    <div class="w-label">featured:</div>
-                    <a class="section-link" href="/posts/">[all posts]</a>
-                </div>
+<main>
 
-                <section class="post-list">
-                {{ range $post := $posts }}
-                    <article class="w-panel post-card">
-                        <div class="post-card-content">
-                            <div class="post-card-meta-row">
-                                <div class="post-card-meta">{{ datefmt "2006-01-02" $post.PubDate }}</div>
-                                {{ if $post.Tags }}
-                                    <div class="post-card-tags">
-                                        {{ range $tag := $post.Tags }}
-                                            <a class="post-card-state post-card-tag post-card-tag-link" href="/tags/{{ $tag }}/">{{ $tag }}</a>
-                                        {{ end }}
-                                    </div>
-                                {{ end }}
-                            </div>
-                            <h2 class="post-card-title"><a class="post-card-primary-link" href="{{ $post.Canon }}">{{ $post.Title }}</a></h2>
-                            {{ if $post.Description }}
-                                <p class="post-card-desc">{{ $post.Description }}</p>
-                            {{ end }}
-                        </div>
-                    </article>
-                {{ end }}
-                </section>
-            </section>
-        {{ else if eq $type "photos" }}
-            <section class="album-list-wrap">
-                <div class="section-head">
-                    <div class="w-label">photos:</div>
-                    <a class="section-link" href="/photos/">[all photos]</a>
-                </div>
-
-                <section class="album-list album-list-home">
-                {{ range $album := $albums }}
-                    {{ $cover := index $album.Params "cover" }}
-                    {{ $count := index $album.Params "photo_count" }}
-                    <article class="w-panel album-card">
-                        <a class="album-card-image-link" href="{{ $album.Canon }}" aria-label="{{ $album.Title }}">
-                            <img class="album-card-image" src="{{ $cover }}" alt="" loading="lazy" />
-                        </a>
-                        <div class="album-card-body">
-                            <div class="post-card-meta-row">
-                                {{ if $count }}<span class="post-card-meta">{{ $count }} photos</span>{{ end }}
-                                {{ range $tag := $album.Tags }}<span class="post-card-state post-card-tag">{{ $tag }}</span>{{ end }}
-                            </div>
-                            <h2 class="post-card-title"><a class="post-card-primary-link" href="{{ $album.Canon }}">{{ $album.Title }}</a></h2>
-                            {{ if $album.Description }}<p class="post-card-desc">{{ $album.Description }}</p>{{ end }}
-                        </div>
-                    </article>
-                {{ end }}
-                </section>
-            </section>
-        {{ end }}
-    {{ end }}
+    <section class="hero">
+        <div class="hero-inner">
+            <div class="hero-text">
+                <h1><span class="symbol symbol-olimci" aria-hidden="true"></span>Oliver McInnes</h1>
+                <p>physics student; go evangelist; systems thinking enthusiast</p>
+            </div>
+        </div>
     </section>
-    {{ template "site_footer" . }}
+
+    <div class="shell">
+
+        {{ range $section := $sections }}
+            {{ $kind := index $section "kind" }}
+            {{ if eq $kind "content" }}
+                <section class="section">
+                    {{ if index $section "title" }}
+                        <div class="section-head"><h2>{{ index $section "title" }}</h2></div>
+                    {{ end }}
+                    <div class="about">{{ index $.Page.Sections (index $section "section") }}</div>
+                </section>
+            {{ else if eq $kind "projects_shelf" }}
+                {{ if $projects }}
+                <section class="section" id="{{ index $section "id" }}">
+                    <div class="section-head"><h2>{{ index $section "title" }}</h2></div>
+                    <div class="cards cards-shelf">
+                        {{ range $project := $projects }}
+                            {{ $colour := or (index $project "colour") "paper" }}
+                            {{ $meta := index $project "meta" }}
+                            {{ $url := index $project "url" }}
+                            <a class="card" data-colour="{{ $colour }}" href="{{ $url }}">
+                                <div class="card-cover project-cover"><span class="symbol symbol-{{ $colour }}" aria-hidden="true"></span></div>
+                                <div class="card-body">
+                                    <h3>{{ index $project "title" }}</h3>
+                                    {{ if $meta }}<span class="meta">{{ $meta }}</span>{{ end }}
+                                    {{ with index $project "description" }}<p>{{ . }}</p>{{ end }}
+                                </div>
+                            </a>
+                        {{ end }}
+                    </div>
+                </section>
+                {{ end }}
+            {{ else if eq $kind "posts_shelf" }}
+                <section class="section">
+                    <div class="section-head">
+                        <h2>{{ index $section "title" }}</h2>
+                        <a class="more" href="/posts/">all posts &rarr;</a>
+                    </div>
+                    <div class="posts">
+                        {{ range $post := $posts }}
+                            <a class="post" href="{{ $post.Path }}">
+                                <span class="date">{{ datefmt "2006-01-02" $post.PubDate }}</span>
+                                <span class="title">{{ $post.Title }}</span>
+                                {{ with first $post.Tags }}<span class="tag">{{ . }}</span>{{ end }}
+                            </a>
+                        {{ end }}
+                    </div>
+                </section>
+            {{ else if eq $kind "photos_shelf" }}
+                {{ if $albums }}
+                <section class="section">
+                    <div class="section-head">
+                        <h2>{{ index $section "title" }}</h2>
+                        <a class="more" href="/photos/">all albums &rarr;</a>
+                    </div>
+                    <div class="cards cards-shelf">
+                        {{ range $album := $albums }}
+                            {{ $cover := index $album.Params "cover" }}
+                            <a class="card" href="{{ $album.Path }}">
+                                <div class="card-cover" {{ if $cover }}style="background:#000 center/cover no-repeat url('{{ $cover }}')"{{ end }}></div>
+                                <div class="card-body">
+                                    <h3>{{ $album.Title }}</h3>
+                                    <span class="meta">{{ datefmt "2006-01-02" $album.PubDate }}</span>
+                                    {{ with $album.Description }}<p>{{ . }}</p>{{ end }}
+                                </div>
+                            </a>
+                        {{ end }}
+                    </div>
+                </section>
+                {{ end }}
+            {{ end }}
+        {{ end }}
+
+    </div>
 </main>
+
+{{ template "site_footer" . }}
 </body>
 </html>
 {{ end }}

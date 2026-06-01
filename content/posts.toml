@@ -1,5 +1,5 @@
 title = "Posts"
-description = "Posts and project notes"
+description = "All Posts"
 template = "posts"
 
 [sitemap]

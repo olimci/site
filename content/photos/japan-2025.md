@@ -9,7 +9,6 @@ tags = ["travel"]
 
 [params]
 cover = "/assets/photos/japan-2025/web/fuji.jpg"
-photo_count = 2
 
 [[params.photos]]
 src = "/assets/photos/japan-2025/web/skytree.jpg"
