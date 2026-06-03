@@ -38,8 +38,8 @@ Global flags:
 | --- | --- |
 | `tohru plan <profile>` | Preview what loading a profile would do. |
 | `tohru load [--force] [--discard-changes] [--no-hooks] <profile>` | Load a profile by path or cached slug. |
-| `tohru reload [--force] [--discard-changes] [--no-hooks]` | Reload the current profile. |
-| `tohru unload [--no-hooks]` | Unload the current profile and restore tracked conflicts. |
+| `tohru reload [--force] [--discard-changes] [--no-hooks]` | Unload and load the current profile again. |
+| `tohru unload [--force] [--discard-changes] [--no-hooks]` | Unload the current profile and restore tracked conflicts. |
 
 `tohru load` also has the alias `tohru switch`.
 

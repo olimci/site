@@ -13,7 +13,7 @@ Configs may include `$schema` for editor support:
 ```jsonc
 {
   "$schema": "https://raw.githubusercontent.com/olimci/tohru/refs/heads/main/_assets/config.schema.json",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "options": {
     "backups": {
       "enabled": true,
@@ -36,5 +36,8 @@ Configs may include `$schema` for editor support:
 
 Configured protected paths are checked the same way as built-in protections,
 including paths reached through existing parent symlinks.
+
+Tohru also rejects manifests that try to write into the store root or back into
+the active profile source tree.
 
 Use `tohru tidy` to remove unreferenced backups when backup pruning is manual.

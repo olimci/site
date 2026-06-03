@@ -36,6 +36,15 @@ _Python Developer · Summers 2022–2025_
 - Improved the reliability, visibility, and turnaround time of routine business processes by reducing dependence on manual checks and ad-hoc scripts.
 - Worked across the full lifecycle of internal tooling, from requirements gathering and system design through to deployment, iteration, and maintenance.
 
+### Napster
+
+_R&D Intern · Summer 2021_
+
+- Joined Napster’s R&D team as an early internship opportunity between GCSEs and A-levels.
+- Worked on experimental cryptocurrency and Web3 development using Solidity.
+- Built prototype smart-contract and NFT-related functionality as part of exploratory internal R&D.
+- Gained early exposure to software development in a commercial research environment.
+
 ## Selected Projects
 
 ### Go Machine Learning Framework

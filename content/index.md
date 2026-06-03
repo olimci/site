@@ -49,11 +49,11 @@ url = "/tohru/"
 colour = "rose"
 +++
 
-Hi, I'm Oliver. I'm a physics undergrad at Durham. I'm mostly interested in machine learning, statistical mechanics, and network protocols. I'm proficient in Go and Python, and I like building small, practical tools that help me understand things properly.
+Hi, I'm Oliver. I'm a physics undergrad at Durham. I'm mostly interested in machine learning, statistical mechanics, and network protocols. I'm proficient in Go and Python, and I'm interested in building small, practical tools that help me understand things properly. A lot of my projects come from trying to understand something by rebuilding a simplified version of it myself.
 
-Besides that, I spend a lot of time mountain biking, messing with my [car](/posts/3000gt), snowboarding, taking [photos](/photos/), and trying to learn a bit of Japanese.
+Besides that, I spend a lot of time mountain biking, messing with my [car](/posts/3000gt), snowboarding, taking [photos](/photos/), and learning Japanese.
 
-Have a look around, my [CV](/cv/) is here if you need it. You can also find me on [GitHub](https://github.com/olimci) or at [oli@mcinnes.cc](mailto:oli@mcinnes.cc).
+Have a look around, you can also check out my [CV](/cv/), or find me on [GitHub](https://github.com/olimci) or message me at [oli@mcinnes.cc](mailto:oli@mcinnes.cc).
 
 ---
 

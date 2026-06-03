@@ -41,6 +41,6 @@ profile is unloaded.
 Profiles are described by JSONC manifests named `tohru.jsonc`, with optional
 schema metadata for editor support.
 
-## Status
+## Contribute
 
-Currently in prerelease. Manifest and command contracts may change before `1.0`.
+Contributions are welcome! Please open an issue or submit a pull request on [GitHub](https://github.com/olimci/tohru).

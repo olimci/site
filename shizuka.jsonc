@@ -1,6 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/olimci/shizuka/refs/heads/main/_assets/config.schema.json",
-  "version": "0.1.0",
+  "version": "1.0.0",
 
   "site": {
     "title": "Oli's site",

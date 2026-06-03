@@ -15,7 +15,7 @@ JSON configs may include `$schema` for editor support:
 ```json
 {
   "$schema": "https://raw.githubusercontent.com/olimci/shizuka/refs/heads/main/_assets/config.schema.json",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "site": {
     "title": "My site",
     "description": "A small static site.",
@@ -129,7 +129,7 @@ also emit the same site/config payload as formatted JSON at `_shizuka.json`.
 ```json
 {
   "$schema": "https://raw.githubusercontent.com/olimci/shizuka/refs/heads/main/_assets/config.schema.json",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "site": {
     "title": "My site",
     "description": "A small static site.",
