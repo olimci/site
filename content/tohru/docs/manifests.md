@@ -147,7 +147,7 @@ entries.
 | `link` | Manage the destination as a symbolic link to the profile source. |
 | `copy` | Copy the profile source to the destination. |
 | `tracked` | Track destination state and restore conflicts when unloading. |
-| `untracked` | Manage without recording the destination for restore. Only valid for copied files or directories. |
+| `untracked` | Manage without recording the destination for restore. Existing destinations are replaced when `clobber_untracked` is enabled. Only valid for copied files or directories. |
 
 Type flags are valid on files only. Directory metadata may set tracking flags.
 

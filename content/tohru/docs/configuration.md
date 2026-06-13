@@ -20,6 +20,7 @@ Configs may include `$schema` for editor support:
       "prune": "auto"
     },
     "cache_profiles": true,
+    "clobber_untracked": true,
     "protected_paths": ["~/.ssh", "~/.gnupg"]
   }
 }
@@ -32,6 +33,7 @@ Configs may include `$schema` for editor support:
 | `backups.enabled` | Enable backups for files Tohru would otherwise clobber. |
 | `backups.prune` | Backup pruning mode, either `auto` or `manual`. |
 | `cache_profiles` | Cache loaded profile slugs for future command lookup. |
+| `clobber_untracked` | Replace existing destinations for manifest entries marked `untracked`. |
 | `protected_paths` | Extra destinations that profiles may not manage. |
 
 Configured protected paths are checked the same way as built-in protections,
