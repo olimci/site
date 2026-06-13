@@ -28,5 +28,11 @@ shizuka dev
 Open the URL printed by `shizuka dev`, then edit files under `content/`,
 `templates/`, and `static/`.
 
+Shell completions are available for `bash`, `zsh`, `fish`, and `pwsh`:
+
+```sh
+shizuka completion zsh
+```
+
 Continue with [Creating Sites](/shizuka/docs/site-structure/) to see how the
 source directory maps to generated output.

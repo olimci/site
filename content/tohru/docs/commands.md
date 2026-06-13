@@ -22,6 +22,7 @@ Global flags:
 | `tohru uninstall [--no-hooks]` | Unload the current profile and remove Tohru application files. |
 | `tohru tidy` | Remove untracked backups. |
 | `tohru version` | Print the current version. |
+| `tohru completion <shell>` | Print a shell completion script for `bash`, `zsh`, `fish`, or `pwsh`. |
 
 ## Profiles
 
@@ -52,3 +53,14 @@ Global flags:
 | `tohru hooks trusted [profile]` | List trusted hooks. |
 | `tohru hooks allow <profile> <hook-id>` | Trust a profile hook locally. |
 | `tohru hooks revoke <profile> <hook-id>` | Revoke local trust for a profile hook. |
+
+## Shell Completions
+
+Generate completions with:
+
+```sh
+tohru completion zsh
+```
+
+Use the shell name you need: `bash`, `zsh`, `fish`, or `pwsh`.
+Generated completions include commands, flags, cached profile slugs, and hook IDs where a command accepts them.
