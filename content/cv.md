@@ -21,9 +21,9 @@ include = false
 
 ### Durham University, UK
 
-_MPhys Physics, Year 3 of 4_
+_MPhys Physics, Year 4 of 4_
 
-- Achieved first-class marks in both Year 1 and Year 2.
+- Working at average 2:1
 
 ## Work Experience
 
