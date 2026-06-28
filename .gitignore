@@ -5,5 +5,7 @@
 
 # shizuka build output
 dist/
+dist-*/
+shizuka.lock
 
 TODO.md
