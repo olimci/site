@@ -15,7 +15,8 @@ featured = true
 The core of the protocol is embedding data in gratuitous ARP requests, using a custom protocol header. A normal ARP packet looks like this:
 
 <div class="table-scroll">
-<table class="packet-table">
+<table class="byte-offset-table">
+  <colgroup><col><col><col><col></colgroup>
   <tr><th>0</th><th>1</th><th>2</th><th>3</th></tr>
 
   <tr>
@@ -45,7 +46,8 @@ By using the Local Experimental EtherType (0x88B5), we can use a custom protocol
 Given this, our ARP packets end up looking like this:
 
 <div class="table-scroll">
-<table class="packet-table">
+<table class="byte-offset-table">
+  <colgroup><col><col><col><col></colgroup>
   <tr><th>0</th><th>1</th><th>2</th><th>3</th></tr>
 
   <tr>
@@ -88,7 +90,7 @@ All multi-byte integers are encoded big-endian. `object id` is the first 16 byte
 The shared packet header is:
 
 <div class="table-scroll">
-<table class="packet-table">
+<table>
   <tr><th>bytes</th><th>field</th></tr>
   <tr><td>4</td><td>magic: <code>0x70697275</code></td></tr>
   <tr><td>1</td><td>packet type</td></tr>
@@ -98,7 +100,7 @@ The shared packet header is:
 `HAVE` packets announce that a peer has an object:
 
 <div class="table-scroll">
-<table class="packet-table">
+<table>
   <tr><th>bytes</th><th>field</th></tr>
   <tr><td>16</td><td>object id</td></tr>
   <tr><td>8</td><td>object size</td></tr>
@@ -111,7 +113,7 @@ The shared packet header is:
 `WANT` packets request one or more fragments from an announced object:
 
 <div class="table-scroll">
-<table class="packet-table">
+<table>
   <tr><th>bytes</th><th>field</th></tr>
   <tr><td>16</td><td>object id</td></tr>
   <tr><td>2</td><td>fragment count</td></tr>
@@ -122,7 +124,7 @@ The shared packet header is:
 `FRAG` packets carry one fragment of object data:
 
 <div class="table-scroll">
-<table class="packet-table">
+<table>
   <tr><th>bytes</th><th>field</th></tr>
   <tr><td>16</td><td>object id</td></tr>
   <tr><td>2</td><td>fragment index</td></tr>

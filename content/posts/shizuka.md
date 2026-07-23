@@ -8,7 +8,7 @@ weight = 40
 featured = true
 +++
 
-[Shizuka](https://github.com/olimci/shizuka) is my static site generator. I built it because I wasn't particularly happy with existing static site generators, and I thought it would be an interesting project to make my own.
+[Shizuka](/shizuka/) is my static site generator. I built it because I wasn't particularly happy with existing static site generators, and I thought it would be an interesting project to make my own. The source is on [GitHub](https://github.com/olimci/shizuka).
 
 This site itself is generated using Shizuka. You can see the source code [here](https://github.com/olimci/site).
 

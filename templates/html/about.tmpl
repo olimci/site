@@ -1,0 +1,42 @@
+{{ define "about" }}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {{ $pageDescription := or .Page.Description .Site.Description }}
+    {{ $pageTitle := printf "%s | %s" .Page.Title .Site.Title }}
+    <meta name="description" content="{{ $pageDescription }}">
+    <link rel="canonical" href="{{ .Page.Canon }}">
+
+    <meta property="og:title" content="{{ $pageTitle }}">
+    <meta property="og:description" content="{{ $pageDescription }}">
+    <meta property="og:image" content="{{ .Site.URL }}/assets/favicon/favicon-white-on-black-512.png">
+    <meta property="og:url" content="{{ .Page.Canon }}">
+    <meta property="og:type" content="profile">
+    <meta property="og:site_name" content="{{ .Site.Title }}">
+
+    <title>{{ $pageTitle }}</title>
+    {{ template "head_common" . }}
+</head>
+<body>
+{{ template "topnav" "about" }}
+
+<main>
+    <section class="page-header">
+        <div class="page-header-inner">
+            <span class="crumb">about</span>
+            <h1>{{ .Page.Title }}</h1>
+            {{ if .Page.Description }}<p class="deck">{{ .Page.Description }}</p>{{ end }}
+        </div>
+    </section>
+
+    <div class="article-shell">
+        <article class="article">
+            <div class="prose">{{ .Page.Body }}</div>
+        </article>
+    </div>
+</main>
+
+{{ template "site_footer" . }}
+</body>
+</html>
+{{ end }}

@@ -238,14 +238,12 @@ void main() {
     vec3 black = vec3(0.0314);
     vec3 silver = vec3(0.749, 0.741, 0.714);
 
-    float bottom = 1.0 - smoothstep(0.0, 0.13, screenUv.y);
-    float fadeTone = mix(tone, 0.0, bottom);
-    float fadeBit = step(threshold, fadeTone);
-    vec3 fadeColour = mix(black, silver, fadeBit);
+    float ditherBit = step(threshold, tone);
+    vec3 ditherColour = mix(black, silver, ditherBit);
     float top = smoothstep(0.78, 1.0, screenUv.y);
-    fadeColour = mix(fadeColour, black, top * 0.46);
+    ditherColour = mix(ditherColour, black, top * 0.46);
 
-    fragmentColor = vec4(fadeColour, 1.0);
+    fragmentColor = vec4(ditherColour, 1.0);
 }
 `;
 

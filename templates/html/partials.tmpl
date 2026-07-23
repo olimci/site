@@ -35,9 +35,9 @@
         </a>
         <nav class="topnav-links" aria-label="Primary">
             {{ if ne $active "home" }}<a href="/">home</a>{{ end }}
+            <a href="/about/" {{ if eq $active "about" }}class="active"{{ end }}>about</a>
             <a href="/posts/" {{ if eq $active "posts" }}class="active"{{ end }}>posts</a>
             <a href="/photos/" {{ if eq $active "photos" }}class="active"{{ end }}>photos</a>
-            <a href="/cv/" {{ if eq $active "cv" }}class="active"{{ end }}>cv</a>
         </nav>
     </div>
 </header>
@@ -47,7 +47,7 @@
 <footer class="site-footer">
     <div class="site-footer-inner">
         <span>&copy; 2026 oliver mcinnes</span>
-        <span>built with <a href="/shizuka">shizuka</a> &middot; <a href="http://olimci.com/_shizuka">c#{{ .Site.Git.ShortHash }}</a></span>
+        <span><a href="http://olimci.com/_shizuka">c#{{ .Site.Git.ShortHash }}</a></span>
     </div>
 </footer>
 {{ end }}
@@ -61,6 +61,7 @@
 <link rel="alternate" type="application/rss+xml" title="olimci.com RSS" href="{{ $data.Site.URL }}/rss.xml">
 {{ template "fonts" . }}
 <link rel="stylesheet" href="/assets/css/site.css">
+<script src="/assets/js/dither.js" defer></script>
 {{ template "favicon_assets" . }}
 {{ end }}
 
