@@ -36,36 +36,35 @@ Defined template names must be unique across all template files in their folder.
 
 Each page is rendered with this root object:
 
-| Key | Meaning |
-| --- | --- |
+| Key     | Meaning           |
+| ------- | ----------------- |
 | `.Page` | The current page. |
 | `.Site` | Global site data. |
 
 ### Page Fields
 
-| Field | Meaning |
-| --- | --- |
-| `.Page.Title`, `.Page.Description`, `.Page.Tags`, `.Page.Featured`, `.Page.Draft` | Basic page fields. |
-| `.Page.Path` | Root-relative route path, for example `/` or `/posts/hello/`. |
-| `.Page.Slug` | Page identifier. Explicit slugs come from frontmatter; missing or duplicate slugs receive generated hex values. |
-| `.Page.Weight` | Integer ordering hint. |
-| `.Page.Canon` | Absolute canonical URL. |
-| `.Page.Section` | Resolved section name. |
-| `.Page.Params` | Arbitrary map. |
-| `.Page.Created`, `.Page.Updated`, `.Page.PubDate` | `time.Time` values. |
-| `.Page.File.Available`, `.Page.File.Created`, `.Page.File.Updated`, `.Page.File.Size` | Source file data. |
-| `.Page.Body` | `template.HTML`. |
-| `.Page.Sections` | `[]template.HTML`, split on Markdown thematic breaks. Use a blank line before a separator after paragraph text. |
-| `.Page.ToC` | Markdown headings as `{ Level, ID, Text }` entries. |
+| Field                                                                                 | Meaning                                                                                                         |
+| ------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| `.Page.Title`, `.Page.Description`, `.Page.Tags`, `.Page.Featured`, `.Page.Draft`     | Basic page fields.                                                                                              |
+| `.Page.Path`                                                                          | Root-relative route path, for example `/` or `/posts/hello/`.                                                   |
+| `.Page.Slug`                                                                          | Page identifier. Explicit slugs come from frontmatter; missing or duplicate slugs receive generated hex values. |
+| `.Page.Weight`                                                                        | Integer ordering hint.                                                                                          |
+| `.Page.Canon`                                                                         | Absolute canonical URL.                                                                                         |
+| `.Page.Section`                                                                       | Resolved section name.                                                                                          |
+| `.Page.Params`                                                                        | Arbitrary map.                                                                                                  |
+| `.Page.Created`, `.Page.Updated`, `.Page.PubDate`                                     | `time.Time` values.                                                                                             |
+| `.Page.File.Available`, `.Page.File.Created`, `.Page.File.Updated`, `.Page.File.Size` | Source file data.                                                                                               |
+| `.Page.Body`                                                                          | `template.HTML`.                                                                                                |
+| `.Page.Sections`                                                                      | `[]template.HTML`, split on Markdown thematic breaks. Use a blank line before a separator after paragraph text. |
+| `.Page.ToC`                                                                           | Markdown headings as `{ Level, ID, Text }` entries.                                                             |
 
 #### Optional Git Metadata
 
-| Field | Meaning |
-| --- | --- |
-| `.Page.Git.Tracked` | Whether the page source is tracked by Git. |
-| `.Page.Git.Created`, `.Page.Git.Updated` | First and latest Git commit timestamps for the page source. |
-| `.Page.Git.CommitHash`, `.Page.Git.ShortHash`, `.Page.Git.AuthorName` | Latest Git commit data for the page source. |
-
+| Field                                                                 | Meaning                                                     |
+| --------------------------------------------------------------------- | ----------------------------------------------------------- |
+| `.Page.Git.Tracked`                                                   | Whether the page source is tracked by Git.                  |
+| `.Page.Git.Created`, `.Page.Git.Updated`                              | First and latest Git commit timestamps for the page source. |
+| `.Page.Git.CommitHash`, `.Page.Git.ShortHash`, `.Page.Git.AuthorName` | Latest Git commit data for the page source.                 |
 
 #### Tables of Contents
 
@@ -77,42 +76,42 @@ explicit heading IDs such as `## Install {#install}`.
 
 ### Site Fields
 
-| Field | Meaning |
-| --- | --- |
+| Field                                           | Meaning                   |
+| ----------------------------------------------- | ------------------------- |
 | `.Site.Title`, `.Site.Description`, `.Site.URL` | Configured site identity. |
-| `.Site.Params` | Configured params map. |
-| `.Site.Dev`, `.Site.BuildTime` | Build mode and timestamp. |
+| `.Site.Params`                                  | Configured params map.    |
+| `.Site.Dev`, `.Site.BuildTime`                  | Build mode and timestamp. |
 
 #### Optional Git Metadata
 
-| Field | Meaning |
-| --- | --- |
-| `.Site.Git.Available`, `.Site.Git.RepoRoot`, `.Site.Git.GitDir` | Repository paths. |
+| Field                                                                                | Meaning            |
+| ------------------------------------------------------------------------------------ | ------------------ |
+| `.Site.Git.Available`, `.Site.Git.RepoRoot`, `.Site.Git.GitDir`                      | Repository paths.  |
 | `.Site.Git.Branch`, `.Site.Git.CommitHash`, `.Site.Git.ShortHash`, `.Site.Git.Dirty` | Current Git state. |
 
 ## Template functions
 
-| Function | Meaning |
-| --- | --- |
-| `datefmt layout t` | Format a time value; returns `""` for zero time. |
-| `uniq values` | Deduplicate `[]string`, preserving original order. |
-| `first` | Return the first item from an array-like value. |
-| `dict key value ...` | Build a `map[string]any`. |
-| `merge map ...` | Merge maps; later maps win. |
-| `raw value` | Convert a string to `template.HTML`. |
-| `markdown value` | Render Markdown text to `template.HTML` using configured markdown options. |
-| `debug value` | Render any value as escaped nested HTML tables for inspection. |
-| `debugShort value` | Like `debug`, but omits zero and empty values. |
-| `discard` | Abort the current template artefact without failing the build. |
+| Function             | Meaning                                                                    |
+| -------------------- | -------------------------------------------------------------------------- |
+| `datefmt layout t`   | Format a time value; returns `""` for zero time.                           |
+| `uniq values`        | Deduplicate `[]string`, preserving original order.                         |
+| `first`              | Return the first item from an array-like value.                            |
+| `dict key value ...` | Build a `map[string]any`.                                                  |
+| `merge map ...`      | Merge maps; later maps win.                                                |
+| `raw value`          | Convert a string to `template.HTML`.                                       |
+| `markdown value`     | Render Markdown text to `template.HTML` using configured markdown options. |
+| `debug value`        | Render any value as escaped nested HTML tables for inspection.             |
+| `debugShort value`   | Like `debug`, but omits zero and empty values.                             |
+| `discard`            | Abort the current template artefact without failing the build.             |
 
 ## Queries
 
-| Function | Meaning |
-| --- | --- |
-| `query sql args...` | Return `[]map[string]any`. |
-| `queryRow sql args...` | Return the first row as `map[string]any`, or `nil`. |
-| `queryPages sql args...` | Return page template data objects; the result must include `_page`. |
-| `queryPage sql args...` | Return the first page template data object, or `nil`; the result must include `_page`. |
+| Function                 | Meaning                                                                                |
+| ------------------------ | -------------------------------------------------------------------------------------- |
+| `query sql args...`      | Return `[]map[string]any`.                                                             |
+| `queryRow sql args...`   | Return the first row as `map[string]any`, or `nil`.                                    |
+| `queryPages sql args...` | Return page template data objects; the result must include `_page`.                    |
+| `queryPage sql args...`  | Return the first page template data object, or `nil`; the result must include `_page`. |
 
 The built-in query tables include `pages` and `tags`. `select * from pages ...` includes `_page`, so use `queryPages` when you want page objects. Projected queries like `select Title from pages` return ordinary row data and can use `query`.
 
@@ -131,12 +130,12 @@ If a `data/` directory exists, its manifests may register additional tables for 
 
 ## Pagination
 
-| Function | Meaning |
-| --- | --- |
-| `paginate perPage template items` | Abort the current render and render numbered child pages from `items`. |
-| `paginateRoot perPage pageTemplate rootTemplate items` | Like `paginate`, but also render `rootTemplate` at the current page route. |
-| `paginateOn field template items` | Abort the current render and render one child page per comparable `field` value. |
-| `paginateOnRoot field pageTemplate rootTemplate items` | Like `paginateOn`, but also render `rootTemplate` at the current page route. |
+| Function                                               | Meaning                                                                          |
+| ------------------------------------------------------ | -------------------------------------------------------------------------------- |
+| `paginate perPage template items`                      | Abort the current render and render numbered child pages from `items`.           |
+| `paginateRoot perPage pageTemplate rootTemplate items` | Like `paginate`, but also render `rootTemplate` at the current page route.       |
+| `paginateOn field template items`                      | Abort the current render and render one child page per comparable `field` value. |
+| `paginateOnRoot field pageTemplate rootTemplate items` | Like `paginateOn`, but also render `rootTemplate` at the current page route.     |
 
 Pagination functions are render effects. They discard any bytes already written by the current template and request new template renders.
 
@@ -166,13 +165,13 @@ Group values must be comparable. String group values are used directly as URL pa
 
 Paginated templates receive the normal `.Page` and `.Site` data, plus `.Pagination`:
 
-| Field | Meaning |
-| --- | --- |
-| `.Pagination.Items` | Items selected for this generated page or group. |
-| `.Pagination.Page`, `.Pagination.Pages` | Current page number and total page count. |
-| `.Pagination.Total`, `.Pagination.PerPage` | Total selected items and chunk size. |
-| `.Pagination.Prev`, `.Pagination.Next` | Previous and next route paths, when present. |
-| `.Pagination.Group` | Group value for `paginateOn`; `nil` for `paginate`. |
+| Field                                      | Meaning                                             |
+| ------------------------------------------ | --------------------------------------------------- |
+| `.Pagination.Items`                        | Items selected for this generated page or group.    |
+| `.Pagination.Page`, `.Pagination.Pages`    | Current page number and total page count.           |
+| `.Pagination.Total`, `.Pagination.PerPage` | Total selected items and chunk size.                |
+| `.Pagination.Prev`, `.Pagination.Next`     | Previous and next route paths, when present.        |
+| `.Pagination.Group`                        | Group value for `paginateOn`; `nil` for `paginate`. |
 
 Everything else is standard Go template behavior: `range`, `if`, `len`,
 `index`, and the usual comparison functions.

@@ -8,10 +8,10 @@ weight = 30
 
 Shizuka stores structured page metadata in markdown (or optionally HTML) frontmatter. A frontmatter block must be the very first thing in the file, with no leading whitespace. Shizuka will consume the following formats:
 
-| Format | Syntax |
-| --- | --- |
-| YAML | Fence with `---`. |
-| TOML | Fence with `+++`. |
+| Format     | Syntax                                                                                |
+| ---------- | ------------------------------------------------------------------------------------- |
+| YAML       | Fence with `---`.                                                                     |
+| TOML       | Fence with `+++`.                                                                     |
 | JSON/JSONC | Put a JSON object at the very start of the file, with no fence. Comments are allowed. |
 
 If present, the fence line must be the very first line of the file, with no
@@ -43,10 +43,10 @@ Markdown content here.
 
 Non-Markup content files are parsed like the frontmatter, as a single object and must include:
 
-| Key | Meaning |
-| --- | --- |
-| `template` | The template name to render. |
-| `body` | A string containing HTML to inject as `.Page.Body`. |
+| Key             | Meaning                                                                                            |
+| --------------- | -------------------------------------------------------------------------------------------------- |
+| `template`      | The template name to render.                                                                       |
+| `body`          | A string containing HTML to inject as `.Page.Body`.                                                |
 | `body_markdown` | Optional boolean. When true, `body` is rendered as Markdown before it is injected as `.Page.Body`. |
 
 For example:
@@ -68,25 +68,25 @@ This is an **about** page.
 
 ### Identifiers
 
-| Key | Type |
-| --- | --- |
-| `title` | string |
-| `description` | string |
-| `section` | string, becomes `.Page.Section` |
-| `slug` | optional identifier. Explicit slugs must contain only letters, numbers, `_`, and `-`; missing slugs are generated for the build. |
-| `tags` | list of strings |
-| `weight` | integer ordering hint; lower values sort earlier |
-| `created`, `updated` | timestamps |
-| `featured` | boolean |
-| `draft` | boolean |
-| `params` | arbitrary map merged into `.Page.Params` |
-| `template` | string, required for rendering unless a default supplies it |
+| Key                  | Type                                                                                                                             |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| `title`              | string                                                                                                                           |
+| `description`        | string                                                                                                                           |
+| `section`            | string, becomes `.Page.Section`                                                                                                  |
+| `slug`               | optional identifier. Explicit slugs must contain only letters, numbers, `_`, and `-`; missing slugs are generated for the build. |
+| `tags`               | list of strings                                                                                                                  |
+| `weight`             | integer ordering hint; lower values sort earlier                                                                                 |
+| `created`, `updated` | timestamps                                                                                                                       |
+| `featured`           | boolean                                                                                                                          |
+| `draft`              | boolean                                                                                                                          |
+| `params`             | arbitrary map merged into `.Page.Params`                                                                                         |
+| `template`           | string, required for rendering unless a default supplies it                                                                      |
 
 ### Extra fields
 
-| Key | Type |
-| --- | --- |
+| Key       | Type                                               |
+| --------- | -------------------------------------------------- |
 | `headers` | map of per-page headers for the headers build step |
-| `rss` | `include`, `title`, `description`, `guid` |
-| `sitemap` | `include`, `changefreq`, `priority` |
-| `robots` | `disallow` |
+| `rss`     | `include`, `title`, `description`, `guid`          |
+| `sitemap` | `include`, `changefreq`, `priority`                |
+| `robots`  | `disallow`                                         |

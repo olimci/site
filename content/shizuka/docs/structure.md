@@ -15,13 +15,13 @@ A Shizuka site is a directory with a config file and some content:
 
 ## File Structure
 
-| Path | Purpose |
-| --- | --- |
-| `content/` | Source pages. Markdown pages are converted to HTML and then rendered through a template. |
-| `data/` | Optional structured data manifests registered as query tables. |
+| Path         | Purpose                                                                                                       |
+| ------------ | ------------------------------------------------------------------------------------------------------------- |
+| `content/`   | Source pages. Markdown pages are converted to HTML and then rendered through a template.                      |
+| `data/`      | Optional structured data manifests registered as query tables.                                                |
 | `templates/` | Go template files. HTML layouts live under `templates/html/`; markdown components live under `templates/md/`. |
-| `static/` | Copied to the output as-is: CSS, images, JavaScript, fonts, and other static files. |
-| `dist/` | The default build output folder. |
+| `static/`    | Copied to the output as-is: CSS, images, JavaScript, fonts, and other static files.                           |
+| `dist/`      | The default build output folder.                                                                              |
 
 ## Output Structure
 
@@ -29,19 +29,19 @@ Shizuka outputs pretty URLs by writing `index.html` files into directories. File
 
 For example:
 
-| Source | Output |
-| --- | --- |
-| `content/index.md` | `dist/index.html` |
-| `content/about.md` | `dist/about/index.html` |
+| Source                   | Output                        |
+| ------------------------ | ----------------------------- |
+| `content/index.md`       | `dist/index.html`             |
+| `content/about.md`       | `dist/about/index.html`       |
 | `content/posts/hello.md` | `dist/posts/hello/index.html` |
-| `content/posts/index.md` | `dist/posts/index.html` |
+| `content/posts/index.md` | `dist/posts/index.html`       |
 
 ## Content File Types
 
-| Extension | Behavior |
-| --- | --- |
-| `*.md` | Markdown body, optional frontmatter. |
-| `*.html` | Raw HTML body, optional frontmatter. |
+| Extension                                        | Behavior                                                                                                                   |
+| ------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------- |
+| `*.md`                                           | Markdown body, optional frontmatter.                                                                                       |
+| `*.html`                                         | Raw HTML body, optional frontmatter.                                                                                       |
 | `*.toml`, `*.yaml`, `*.yml`, `*.json`, `*.jsonc` | Structured page objects. They must contain `template` and `body`; set `body_markdown = true` to render `body` as Markdown. |
 
 All other filetypes under `content/` are ignored. Put CSS, images, JavaScript, fonts, and other static files under `static/`.
@@ -59,10 +59,10 @@ or more query tables:
       "name": "shop_products",
       "rows": [
         { "id": "a", "title": "Alpha" },
-        { "id": "b", "title": "Beta" }
-      ]
-    }
-  }
+        { "id": "b", "title": "Beta" },
+      ],
+    },
+  },
 }
 ```
 

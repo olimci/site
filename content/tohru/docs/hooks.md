@@ -14,19 +14,19 @@ Profiles can define trusted operation hooks:
     {
       "triggers": ["post_load"],
       "run": ["kitty", "@", "load-config"],
-      "cwd": "home"
-    }
-  ]
+      "cwd": "home",
+    },
+  ],
 }
 ```
 
 ## Fields
 
-| Key | Meaning |
-| --- | --- |
+| Key        | Meaning                                                                                     |
+| ---------- | ------------------------------------------------------------------------------------------- |
 | `triggers` | Hook events. Supported values are `pre_load`, `post_load`, `pre_unload`, and `post_unload`. |
-| `run` | Command argv. The first entry is the executable. |
-| `cwd` | Working directory, either `profile` or `home`. Defaults to `profile`. |
+| `run`      | Command argv. The first entry is the executable.                                            |
+| `cwd`      | Working directory, either `profile` or `home`. Defaults to `profile`.                       |
 
 `reload` is an unload followed by a load, so reload runs unload hooks and then
 load hooks. There is no separate reload hook event.

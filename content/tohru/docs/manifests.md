@@ -21,14 +21,14 @@ JSONC manifests may include `$schema` for editor support:
   "profile": {
     "slug": "my-dotfiles",
     "name": "my-dotfiles",
-    "description": "personal setup"
+    "description": "personal setup",
   },
   "roots": [
     {
       "source": "home",
       "dest": "~",
       "defaults": {
-        "type": "link"
+        "type": "link",
       },
       "tree": {
         ".zshrc": ["copy"],
@@ -36,27 +36,27 @@ JSONC manifests may include `$schema` for editor support:
           "kitty": {
             "kitty.conf": [],
             "theme.conf": ["l"],
-            "kitty.app.png": ["copy", "untracked"]
+            "kitty.app.png": ["copy", "untracked"],
           },
           "nvim": {
             "after": {
-              ".": ["untracked"]
-            }
-          }
-        }
-      }
-    }
-  ]
+              ".": ["untracked"],
+            },
+          },
+        },
+      },
+    },
+  ],
 }
 ```
 
 ## Profile
 
-| Key | Meaning |
-| --- | --- |
-| `slug` | Stable identifier used for cached profile lookup. |
-| `name` | Human-readable profile name. |
-| `description` | Optional profile description. |
+| Key           | Meaning                                           |
+| ------------- | ------------------------------------------------- |
+| `slug`        | Stable identifier used for cached profile lookup. |
+| `name`        | Human-readable profile name.                      |
+| `description` | Optional profile description.                     |
 
 When a loaded profile has `profile.slug`, Tohru caches `slug -> profile path`
 in state. Future commands can use the slug instead of the full manifest path.
@@ -66,18 +66,18 @@ in state. Future commands can use the slug instead of the full manifest path.
 Each root maps a source tree inside the profile to a destination tree on the
 machine.
 
-| Key | Meaning |
-| --- | --- |
-| `source` | Profile source directory. Relative paths are resolved from the profile directory. |
-| `dest` | Destination directory. `~` expands to the current user's home directory. |
-| `defaults.type` | Default file operation, either `link` or `copy`. |
-| `defaults.track` | Optional default tracking mode for copied files and directories. |
-| `tree` | Structural tree describing managed destinations. |
-| `platforms` | Optional list of `GOOS` platform names where the root is active. |
-| `profiles` | Optional list of profile slugs where the root is active. |
-| `env` | Optional environment variable matches required for the root to be active. |
-| `run` | Optional argv command that materializes the root source before plan or load. |
-| `temp` | Remove the dynamic root source after plan or load. Temporary roots are copy-only. |
+| Key              | Meaning                                                                           |
+| ---------------- | --------------------------------------------------------------------------------- |
+| `source`         | Profile source directory. Relative paths are resolved from the profile directory. |
+| `dest`           | Destination directory. `~` expands to the current user's home directory.          |
+| `defaults.type`  | Default file operation, either `link` or `copy`.                                  |
+| `defaults.track` | Optional default tracking mode for copied files and directories.                  |
+| `tree`           | Structural tree describing managed destinations.                                  |
+| `platforms`      | Optional list of `GOOS` platform names where the root is active.                  |
+| `profiles`       | Optional list of profile slugs where the root is active.                          |
+| `env`            | Optional environment variable matches required for the root to be active.         |
+| `run`            | Optional argv command that materializes the root source before plan or load.      |
+| `temp`           | Remove the dynamic root source after plan or load. Temporary roots are copy-only. |
 
 In the structural tree, arrays represent files and objects represent
 directories. Directory metadata uses the reserved `"."` key. An empty array
@@ -100,14 +100,14 @@ Roots can be scoped to platforms, profile slugs, and environment values:
   "platforms": ["darwin", "linux"],
   "profiles": ["work"],
   "env": {
-    "TOHRU_LAPTOP": "1"
+    "TOHRU_LAPTOP": "1",
   },
   "defaults": {
-    "type": "copy"
+    "type": "copy",
   },
   "tree": {
-    ".gitconfig": []
-  }
+    ".gitconfig": [],
+  },
 }
 ```
 
@@ -125,11 +125,11 @@ source files internally:
   "run": ["./scripts/build-kitty-profile"],
   "temp": true,
   "defaults": {
-    "type": "copy"
+    "type": "copy",
   },
   "tree": {
-    "kitty.conf": []
-  }
+    "kitty.conf": [],
+  },
 }
 ```
 
@@ -142,11 +142,11 @@ entries.
 
 ## File Flags
 
-| Flag | Meaning |
-| --- | --- |
-| `link` | Manage the destination as a symbolic link to the profile source. |
-| `copy` | Copy the profile source to the destination. |
-| `tracked` | Track destination state and restore conflicts when unloading. |
+| Flag        | Meaning                                                                                                                                                                   |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `link`      | Manage the destination as a symbolic link to the profile source.                                                                                                          |
+| `copy`      | Copy the profile source to the destination.                                                                                                                               |
+| `tracked`   | Track destination state and restore conflicts when unloading.                                                                                                             |
 | `untracked` | Manage without recording the destination for restore. Existing destinations are replaced when `clobber_untracked` is enabled. Only valid for copied files or directories. |
 
 Type flags are valid on files only. Directory metadata may set tracking flags.

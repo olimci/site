@@ -23,7 +23,7 @@ The syntax tree is the source of truth for serialisation. The decoded Go value i
 
 ## The Syntax Tree
 
-The underlying data structure is a small generic thing called an SST (syntax-spanning tree). It's functionally very similar to a [rope](https://en.wikipedia.org/wiki/Rope_(data_structure)), a doubly-linked list of tokens with a tree of nodes layered on top, each node holds pointers into the token list marking where it starts and ends:
+The underlying data structure is a small generic thing called an SST (syntax-spanning tree). It's functionally very similar to a [rope](<https://en.wikipedia.org/wiki/Rope_(data_structure)>), a doubly-linked list of tokens with a tree of nodes layered on top, each node holds pointers into the token list marking where it starts and ends:
 
 ```go
 type SST[TT, NT Enum] struct {

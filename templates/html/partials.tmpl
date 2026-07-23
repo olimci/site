@@ -22,15 +22,19 @@
 
 {{ define "topnav" }}
 {{ $active := . }}
-<header class="topnav">
-    <div class="glass-backdrop" aria-hidden="true"></div>
+<header class="topnav{{ if eq $active "home" }} topnav-home{{ end }}">
+    <div class="glass-backdrop" aria-hidden="true">
+        <span class="glass-backdrop-layer"></span>
+        <span class="glass-backdrop-layer"></span>
+        <span class="glass-backdrop-layer"></span>
+    </div>
     <div class="topnav-inner">
         <a class="brand" href="/">
             <span class="symbol symbol-olimci" aria-hidden="true"></span>
-            <span>olimci.com</span>
+            <span>olimci</span>
         </a>
         <nav class="topnav-links" aria-label="Primary">
-            <a href="/" {{ if eq $active "home" }}class="active"{{ end }}>home</a>
+            {{ if ne $active "home" }}<a href="/">home</a>{{ end }}
             <a href="/posts/" {{ if eq $active "posts" }}class="active"{{ end }}>posts</a>
             <a href="/photos/" {{ if eq $active "photos" }}class="active"{{ end }}>photos</a>
             <a href="/cv/" {{ if eq $active "cv" }}class="active"{{ end }}>cv</a>

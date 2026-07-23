@@ -1,6 +1,6 @@
 {{ define "index" }}
 <!DOCTYPE html>
-<html lang="en">
+<html class="home-page" lang="en">
 <head>
     <meta name="description" content="{{ .Site.Description }}">
     <meta name="keywords" content="Oliver McInnes, Oli McInnes, programming, physics, personal blog, cv">
@@ -20,6 +20,7 @@
 
     <title>{{ .Site.Title }}</title>
     {{ template "head_common" . }}
+    <script src="/assets/js/hero.js" defer></script>
 </head>
 <body>
 {{ template "topnav" "home" }}
@@ -32,15 +33,24 @@
 <main>
 
     <section class="hero">
-        <div class="hero-inner">
-            <div class="hero-text">
-                <h1><span class="symbol symbol-olimci" aria-hidden="true"></span>Oliver McInnes</h1>
-                <p>physics student; go evangelist; systems thinking enthusiast</p>
+        <div class="hero-frame">
+            <div class="hero-fallback" aria-hidden="true"></div>
+            <div class="hero-inner">
+                <div class="hero-text">
+                    <div class="hero-mark-shell">
+                        <h1 class="hero-mark" aria-label="olimci">
+                            <span class="symbol symbol-o" aria-hidden="true"></span>
+                            <span class="symbol symbol-l" aria-hidden="true"></span>
+                            <span class="symbol symbol-i" aria-hidden="true"></span>
+                        </h1>
+                    </div>
+                </div>
             </div>
+            <canvas class="hero-field" aria-hidden="true"></canvas>
         </div>
     </section>
 
-    <div class="shell">
+    <div class="shell" id="content">
 
         {{ range $section := $sections }}
             {{ $kind := index $section "kind" }}
@@ -55,7 +65,7 @@
                 {{ if $projects }}
                 <section class="section" id="{{ index $section "id" }}">
                     <div class="section-head"><h2>{{ index $section "title" }}</h2></div>
-                    <div class="cards cards-shelf">
+                    <div class="cards cards-shelf project-shelf">
                         {{ range $project := $projects }}
                             {{ $colour := or (index $project "colour") "paper" }}
                             {{ $meta := index $project "meta" }}
@@ -95,7 +105,7 @@
                         <h2>{{ index $section "title" }}</h2>
                         <a class="more" href="/photos/">all albums &rarr;</a>
                     </div>
-                    <div class="cards cards-shelf">
+                    <div class="cards cards-shelf photo-shelf">
                         {{ range $album := $albums }}
                             {{ $cover := index $album.Params "cover" }}
                             <a class="card" href="{{ $album.Path }}">
