@@ -24,19 +24,21 @@
     <link rel="stylesheet" href="/assets/css/content.css">
 </head>
 <body>
-{{ if eq .Page.Section "posts" }}{{ template "topnav" "posts" }}{{ else if eq .Page.Path "/cv/" }}{{ template "topnav" "cv" }}{{ else }}{{ template "topnav" "" }}{{ end }}
+{{ if eq .Page.Section "posts" }}{{ template "topnav" (dict "Data" . "Active" "posts") }}{{ else if eq .Page.Path "/cv/" }}{{ template "topnav" (dict "Data" . "Active" "cv") }}{{ else }}{{ template "topnav" (dict "Data" . "Active" "") }}{{ end }}
 
 <main>
 
-    <section class="page-header{{ if eq .Page.Section "posts" }} page-header-post{{ end }}">
+    <section class="page-header{{ if or (eq .Page.Section "posts") (eq .Page.Path "/cv/") }} page-header-post{{ end }}">
         <div class="page-header-inner">
-            {{ if not .Page.PubDate.IsZero }}
+            {{ if and (ne .Page.Section "posts") (not .Page.PubDate.IsZero) }}
             <div class="page-kicker">
-                <span class="date">{{ datefmt "2006-01-02" .Page.PubDate }}</span>
+                <span class="date">{{ datefmt "02 Jan 2006" .Page.PubDate }}</span>
             </div>
             {{ end }}
             <h1>{{ .Page.Title }}</h1>
-            {{ if .Page.Description }}<p class="deck">{{ .Page.Description }}</p>{{ end }}
+            {{ if eq .Page.Section "posts" }}
+            <p class="deck post-deck">{{ with .Page.Description }}<span>{{ . }}</span>{{ end }}<time datetime="{{ datefmt "2006-01-02" .Page.PubDate }}">Published: {{ datefmt "02 Jan 2006" .Page.PubDate }}</time></p>
+            {{ else if .Page.Description }}<p class="deck">{{ .Page.Description }}</p>{{ end }}
             {{ if .Page.Draft }}
             <div class="meta">
                 <span>draft</span>

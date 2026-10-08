@@ -6,18 +6,22 @@ section = "pages"
 [[params.exported_links]]
 label = "CV"
 url = "/cv"
+icon = "briefcase"
 
 [[params.exported_links]]
 label = "Email"
 url = "mailto:oli@mcinnes.cc"
+icon = "email"
 
 [[params.exported_links]]
 label = "GitHub"
 url = "https://github.com/olimci"
+icon = "script_code"
 
 [[params.unexported_links]]
 label = "Instagram"
 url = "https://www.instagram.com/mcinnesoliver/"
+icon = "camera"
 
 [sitemap]
 include = true

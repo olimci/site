@@ -47,7 +47,7 @@
         "attribute": true,
       },
       "highlighting": {
-        "style": "ashen",
+        "classes": true,
       },
       "components": true,
     },

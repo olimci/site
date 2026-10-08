@@ -37,8 +37,8 @@ caption = "Concrete"
 
 [[params.photos]]
 src = "/assets/photos/romania-2025/web/bird.jpg"
-alt = "A bird against the sky"
-caption = "Bird"
+alt = "A pigeon crossing a paved square"
+caption = "Pigeon"
 
 [[params.photos]]
 src = "/assets/photos/romania-2025/web/lost.jpg"

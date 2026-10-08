@@ -22,20 +22,15 @@
     {{ template "head_common" . }}
 </head>
 <body>
-{{ template "topnav" "photos" }}
+{{ template "topnav" (dict "Data" . "Active" "photos") }}
 
 {{ $photos := index .Page.Params "photos" }}
 
 <main>
     <section class="page-header">
         <div class="page-header-inner">
-            {{ if not .Page.PubDate.IsZero }}
-            <div class="page-kicker">
-                <span class="date">{{ datefmt "2006-01-02" .Page.PubDate }}</span>
-            </div>
-            {{ end }}
             <h1>{{ .Page.Title }}</h1>
-            {{ if .Page.Description }}<p class="deck">{{ .Page.Description }}</p>{{ end }}
+            <p class="deck post-deck">{{ with .Page.Description }}<span>{{ . }}</span>{{ end }}<time datetime="{{ datefmt "2006-01-02" .Page.PubDate }}">Published: {{ datefmt "02 Jan 2006" .Page.PubDate }}</time></p>
         </div>
     </section>
 
@@ -43,7 +38,7 @@
         <div class="gallery">
             {{ range $photo := $photos }}
                 <figure>
-                    <span class="gallery-frame" style="background-image:url('{{ index $photo "src" }}')" aria-label="{{ index $photo "alt" }}"></span>
+                    <a class="gallery-frame" href="{{ index $photo "src" }}" aria-label="Open {{ index $photo "alt" }}"><img src="{{ index $photo "src" }}" alt="{{ index $photo "alt" }}" loading="lazy"></a>
                     {{ with index $photo "caption" }}<figcaption>{{ . }}</figcaption>{{ end }}
                 </figure>
             {{ end }}

@@ -18,7 +18,7 @@
     {{ template "head_common" . }}
 </head>
 <body>
-{{ template "topnav" "links" }}
+{{ template "topnav" (dict "Data" . "Active" "links") }}
 
 {{ $exported := or (index .Page.Params "exported_links") (index .Page.Params "links") }}
 {{ $unexported := index .Page.Params "unexported_links" }}
@@ -34,13 +34,13 @@
     <div class="shell">
         <div class="linktree">
             <a class="link-card" href="/">
-                <span class="icon"><span class="symbol symbol-olimci" aria-hidden="true"></span></span>
+                <span class="icon"><img src="/assets/silk/house.png" width="16" height="16" alt=""></span>
                 <span class="label">Home</span>
                 <span class="host">olimci.com</span>
             </a>
             {{ range $link := $exported }}
                 <a class="link-card" href="{{ index $link "url" }}">
-                    <span class="icon"><span class="symbol symbol-olimci" aria-hidden="true"></span></span>
+                    <span class="icon"><img src="/assets/silk/{{ index $link "icon" }}.png" width="16" height="16" alt=""></span>
                     <span class="label">{{ index $link "label" }}</span>
                     <span class="host">{{ or (index $link "host") (index $link "url") }}</span>
                 </a>
@@ -52,7 +52,7 @@
         <div class="linktree">
             {{ range $link := $unexported }}
                 <a class="link-card" href="{{ index $link "url" }}">
-                    <span class="icon"><span class="symbol symbol-olimci" aria-hidden="true"></span></span>
+                    <span class="icon"><img src="/assets/silk/{{ index $link "icon" }}.png" width="16" height="16" alt=""></span>
                     <span class="label">{{ index $link "label" }}</span>
                     <span class="host">{{ or (index $link "host") (index $link "url") }}</span>
                 </a>

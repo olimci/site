@@ -11,7 +11,7 @@
     <meta property="og:description" content="{{ $pageDescription }}">
     <meta property="og:image" content="{{ .Site.URL }}/assets/favicon/favicon-white-on-black-512.png">
     <meta property="og:url" content="{{ .Page.Canon }}">
-    <meta property="og:type" content="profile">
+    <meta property="og:type" content="website">
     <meta property="og:site_name" content="{{ .Site.Title }}">
 
     <title>{{ $pageTitle }}</title>
@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="/assets/css/content.css">
 </head>
 <body>
-{{ template "topnav" "about" }}
+{{ template "topnav" (dict "Data" . "Active" "about") }}
 
 <main>
     <section class="page-header">

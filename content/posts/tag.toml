@@ -1,5 +1,5 @@
 title = "Tags"
-description = "Topics and collections across posts and project notes"
+description = "Browse posts by topic"
 template = "tags"
 section = "page"
 

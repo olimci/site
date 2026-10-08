@@ -20,34 +20,33 @@
 
     <title>{{ .Site.Title }}</title>
     {{ template "head_common" . }}
-    <link rel="stylesheet" href="/assets/css/home.css">
-    <script src="/assets/js/hero.js" defer></script>
 </head>
-<body class="hero-only">
-<main class="hero-page">
-    <section class="hero">
-        <div class="hero-frame">
-            <div class="hero-fallback" aria-hidden="true"></div>
-            <div class="hero-inner">
-                <div class="hero-text">
-                    <div class="hero-mark-shell">
-                        <h1 class="hero-mark" aria-label="olimci">
-                            <span class="symbol symbol-o" aria-hidden="true"></span>
-                            <span class="symbol symbol-l" aria-hidden="true"></span>
-                            <span class="symbol symbol-i" aria-hidden="true"></span>
-                        </h1>
-                    </div>
-                </div>
-            </div>
-            <canvas class="hero-field" aria-hidden="true"></canvas>
-            <nav class="hero-links" aria-label="Site sections">
-                <a href="/about/">about</a>
-                <a href="/photos/">photos</a>
-                <a href="/posts/">posts</a>
-            </nav>
-        </div>
+<body>
+{{ template "topnav" (dict "Data" . "Active" "home") }}
+<main class="home-main">
+    <p class="forum-welcome"><strong>Hi, I'm Oliver.</strong> I'm a master's student in physics at Durham. I write about things I'm building and trying to understand. Have a look around. :)</p>
+    <section class="home-primary">
+        <div class="forum-subhead"><span>Post</span><span>Published</span></div>
+        {{ $posts := queryPages "SELECT * FROM pages WHERE Section='posts' AND (? OR Draft=false) ORDER BY PubDate DESC" .Site.Dev }}
+        {{ range $post := $posts }}
+        <a class="home-post-row" href="{{ $post.Path }}">
+            <img src="/assets/silk/page_white_text.png" width="16" height="16" alt="">
+            <span><strong>{{ $post.Title }}</strong>{{ with $post.Description }}<small>{{ . }}</small>{{ end }}</span>
+            <time datetime="{{ datefmt "2006-01-02" $post.PubDate }}">{{ datefmt "02 Jan 2006" $post.PubDate }}</time>
+        </a>
+        {{ end }}
+        <div class="home-more"><a href="/posts/">View all posts &raquo;</a></div>
+    </section>
+    <section class="home-elsewhere" aria-label="Other">
+        <div class="forum-subhead">Other</div>
+        <a href="/about/"><img src="/assets/silk/user.png" width="16" height="16" alt=""><span><strong>About me</strong><small>Who is writing this?</small></span></a>
+        <a href="/about-site/"><img src="/assets/silk/information.png" width="16" height="16" alt=""><span><strong>About this site</strong><small>Design and credits</small></span></a>
+        <a href="/cv/"><img src="/assets/silk/briefcase.png" width="16" height="16" alt=""><span><strong>CV</strong><small>Experience and projects</small></span></a>
+        <a href="/photos/"><img src="/assets/silk/photos.png" width="16" height="16" alt=""><span><strong>Photographs</strong><small>Albums and travels</small></span></a>
+        <a href="/links/"><img src="/assets/silk/link.png" width="16" height="16" alt=""><span><strong>Links</strong><small>Other places on the web</small></span></a>
     </section>
 </main>
+{{ template "site_footer" . }}
 </body>
 </html>
 {{ end }}

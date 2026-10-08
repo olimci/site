@@ -58,7 +58,7 @@ _R&D Intern · Summer 2021_
 
 ### Shizuka, Custom Static Site Generator
 
-[Project page](/shizuka) · [GitHub](https://github.com/olimci/shizuka)
+[GitHub](https://github.com/olimci/shizuka)
 
 - Built an extensible static site generator and CLI, supporting multiple content types and automatic RSS and sitemap generation.
 - Added development tooling including live preview, project scaffolding, and support for remote template sources.
@@ -74,7 +74,7 @@ _R&D Intern · Summer 2021_
 
 ### Tohru, Dotfiles Manager
 
-[Project page](/tohru) · [GitHub](https://github.com/olimci/tohru)
+[GitHub](https://github.com/olimci/tohru)
 
 - Built a Go CLI for managing personal machine configuration.
 - Added backup and restore handling for conflicting files.

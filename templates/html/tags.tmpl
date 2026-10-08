@@ -40,7 +40,7 @@
     <link rel="stylesheet" href="/assets/css/posts.css">
 </head>
 <body>
-{{ template "topnav" "posts" }}
+{{ template "topnav" (dict "Data" $data "Active" "posts") }}
 
 {{ $posts := queryPages "SELECT * FROM pages WHERE Section='posts' AND (? OR Draft=false) ORDER BY PubDate DESC" $data.Site.Dev }}
 {{ $summary := query "select Tag, TagSlug, count(PageTitle) as PostCount from tags where Section = 'posts' and (? OR Draft=false) group by TagSlug, Tag order by PostCount desc, Tag asc" $data.Site.Dev }}
@@ -49,10 +49,9 @@
     <section class="page-header">
         <div class="page-header-inner">
             {{ if eq $mode "tag" }}
-                <h1>Posts.</h1>
+                <h1>Posts: {{ $tagName }}</h1>
             {{ else }}
-                <span class="crumb"><a href="/posts/">posts</a> &nbsp;/&nbsp; tags</span>
-                <h1>{{ $data.Page.Title }}.</h1>
+                <h1>{{ $data.Page.Title }}</h1>
                 {{ if $data.Page.Description }}<p class="deck">{{ $data.Page.Description }}</p>{{ end }}
             {{ end }}
         </div>
@@ -62,32 +61,32 @@
         {{ if eq $mode "tag" }}
             {{ $activeSlug := "" }}
             {{ with first $data.Pagination.Items }}{{ $activeSlug = index . "TagSlug" }}{{ end }}
-            <div class="chips">
-                <a class="chip" href="/posts/">all <span class="n">{{ len $posts }}</span></a>
+            <nav class="topic-nav" aria-label="Post topics">
+                <strong>Topics:</strong>
+                <a href="/posts/">All posts ({{ len $posts }})</a>
                 {{ range $t := $summary }}
                     {{ $slug := index $t "TagSlug" }}
-                    <a class="chip{{ if eq $slug $activeSlug }} is-active{{ end }}" href="/posts/tag/{{ $slug }}/">{{ index $t "Tag" }} <span class="n">{{ index $t "PostCount" }}</span></a>
+                    <a href="/posts/tag/{{ $slug }}/"{{ if eq $slug $activeSlug }} class="current" aria-current="page"{{ end }}>{{ index $t "Tag" }} ({{ index $t "PostCount" }})</a>
                 {{ end }}
-                <a class="chip chip-more" href="/posts/tag/">*</a>
-            </div>
+                <a href="/posts/tag/">Index</a>
+            </nav>
 
-            <div class="posts dither-surface">
-            <canvas class="dither-field" aria-hidden="true"></canvas>
+            <div class="posts">
             <div class="posts-heading" aria-hidden="true">
                 <span></span>
-                <span>post</span>
-                <span>date</span>
+                <span>Post</span>
+                <span>Published</span>
             </div>
             {{ range $row := $data.Pagination.Items }}
                 {{ $post := index $row "Page" }}
-                <a class="post dither-target" href="{{ $post.Path }}">
+                <a class="post" href="{{ $post.Path }}">
                     <span class="post-sigil" aria-hidden="true"></span>
                     <span class="post-copy">
                         <strong class="title">{{ $post.Title }}{{ if $post.Draft }} <small>(draft)</small>{{ end }}</strong>
                         {{ if $post.Description }}<small class="description">{{ $post.Description }}</small>{{ end }}
                         {{ with first $post.Tags }}<span class="tag">{{ . }}</span>{{ end }}
                     </span>
-                    <time class="date" datetime="{{ datefmt "2006-01-02" $post.PubDate }}">{{ datefmt "2006-01-02" $post.PubDate }}</time>
+                    <time class="date" datetime="{{ datefmt "2006-01-02" $post.PubDate }}">{{ datefmt "02 Jan 2006" $post.PubDate }}</time>
                 </a>
             {{ end }}
             </div>
@@ -102,12 +101,11 @@
                 {{ end }}
             {{ end }}
         {{ else }}
-            <div class="tag-list">
+            <div class="tag-directory">
+                <div class="forum-subhead"><span>Topic</span><span>Posts</span></div>
                 {{ range $row := $summary }}
                     {{ $n := index $row "PostCount" }}
-                    {{ $w := "1" }}
-                    {{ if ge $n 6 }}{{ $w = "4" }}{{ else if ge $n 3 }}{{ $w = "3" }}{{ else if ge $n 2 }}{{ $w = "2" }}{{ end }}
-                    <a href="/posts/tag/{{ index $row "TagSlug" }}/" data-w="{{ $w }}">{{ index $row "Tag" }} <span class="n">{{ $n }}</span></a>
+                    <a href="/posts/tag/{{ index $row "TagSlug" }}/"><span><img src="/assets/silk/folder.png" width="16" height="16" alt=""><strong>{{ index $row "Tag" }}</strong></span><span>{{ $n }}</span></a>
                 {{ end }}
             </div>
         {{ end }}

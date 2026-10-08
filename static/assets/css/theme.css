@@ -1,0 +1,149 @@
+/* City fog palette selected from the colour experiments. */
+:root {
+    --palette-hue: 211;
+    --palette-link-hue: 200;
+    --palette-accent-hue: 40;
+    --theme-canvas: #1d2229;
+    --theme-frame: #323846;
+    --theme-panel: #2d343b;
+    --theme-row: #384148;
+    --theme-row-alt: #3d474e;
+    --theme-row-hover: #4d595b;
+    --theme-code: #242831;
+    --theme-code-text: #e2e9e7;
+    --theme-nav-top: #5f7666;
+    --theme-nav-bottom: #354b42;
+    --theme-nav-active: #4d6757;
+    --theme-bar-top: #686961;
+    --theme-bar-bottom: #484d49;
+    --theme-frame-text: #e6e5dd;
+    --theme-text: #dce3dd;
+    --theme-strong: #f5f1e8;
+    --theme-muted: #b0bdbc;
+    --theme-link: #b8d6d0;
+    --theme-link-hover: #e5ca9e;
+    --theme-border: #677579;
+    --theme-border-strong: #869293;
+    --theme-accent: #b8a277;
+    --theme-bar-text: #f6f4ed;
+    --hero-dark-hue: 213;
+    --hero-dark-saturation: 0.18;
+    --hero-dark-lightness: 0.14;
+    --hero-light-hue: 122;
+    --hero-light-saturation: 0.17;
+    --hero-light-lightness: 0.68;
+}
+
+html {
+    --bg: var(--theme-frame);
+    --bg-elev: var(--theme-row-hover);
+    --bg-card: var(--theme-panel);
+    --bg-code: var(--theme-code);
+    --fg: var(--theme-text);
+    --fg-strong: var(--theme-strong);
+    --muted: var(--theme-muted);
+    --dim: var(--theme-muted);
+    --line: var(--theme-border);
+    --line-strong: var(--theme-border-strong);
+    --rule: var(--theme-border);
+    --paper: var(--theme-strong);
+    --accent: var(--theme-accent);
+    --accent-ink: var(--theme-frame);
+    background: var(--theme-canvas);
+    color: var(--theme-frame-text);
+}
+html body {
+    background: var(--theme-frame);
+    border-color: var(--theme-border);
+    outline-color: var(--theme-border-strong);
+    color: var(--theme-frame-text);
+}
+html a,
+html a:visited { color: var(--theme-link); }
+html a:hover,
+html a:focus-visible { color: var(--theme-link-hover); }
+html .forum-banner.hero {
+    background: var(--theme-frame);
+    border-color: var(--theme-border-strong);
+}
+html body .topnav-links {
+    border-color: var(--theme-border-strong);
+    background: linear-gradient(var(--theme-nav-top), var(--theme-nav-bottom) 48%, var(--theme-nav-bottom) 49%, var(--theme-nav-top));
+}
+html body .topnav-links a {
+    border-inline-color: var(--theme-border);
+    color: #fff;
+    text-shadow: 0 1px #0008;
+}
+html body .topnav-links a:hover {
+    background: var(--theme-nav-active);
+    color: #fff;
+}
+html body .topnav-links a.active {
+    background: linear-gradient(var(--theme-nav-bottom), var(--theme-nav-active));
+    box-shadow: inset 0 2px 2px #20352b, inset 0 -1px 0 #718773;
+    color: #fff;
+}
+html :is(body .page-header h1, .forum-subhead, body .posts-heading, body .section-rule, body .article-toc .label) {
+    border-color: var(--theme-border-strong);
+    background: linear-gradient(var(--theme-bar-top), var(--theme-bar-bottom) 48%, var(--theme-bar-bottom) 49%, var(--theme-bar-top));
+    color: var(--theme-bar-text);
+    text-shadow: none;
+}
+html :is(body .page-kicker, body .page-header .deck, body .page-header .meta, .topic-nav, body .article-toc) {
+    border-color: var(--theme-border);
+    background: var(--theme-panel);
+    color: var(--theme-text);
+}
+html :is(.home-primary, .home-elsewhere, .tag-directory, body .posts, body .article, .photo-albums, body .linktree, body .gallery figure) {
+    border-color: var(--theme-border);
+    background: var(--theme-panel);
+    color: var(--theme-text);
+}
+html :is(.home-post-row, .tag-directory a, body .post, .photo-album, body .link-card, .home-elsewhere a) {
+    border-color: var(--theme-border);
+    background: var(--theme-row);
+    color: var(--theme-text);
+}
+html :is(.home-post-row:nth-of-type(even), .home-elsewhere a:nth-of-type(even), .tag-directory a:nth-of-type(even), body .post:nth-of-type(even), .photo-album:nth-of-type(even), body .link-card:nth-of-type(even)) {
+    background: var(--theme-row-alt);
+}
+html :is(.home-post-row:hover, .tag-directory a:hover, body .post:hover, .photo-album:hover, body .link-card:hover, .home-elsewhere a:hover) {
+    background: var(--theme-row-hover);
+}
+html :is(.home-primary .forum-subhead, .home-elsewhere .forum-subhead, .tag-directory .forum-subhead, .photo-albums .forum-subhead) {
+    border-color: var(--theme-border);
+}
+html :is(.forum-welcome, body .site-footer) {
+    color: var(--theme-frame-text);
+}
+html .forum-welcome strong { color: #fff; }
+html :is(.home-elsewhere strong, .home-post-row strong, .tag-directory strong, body .post .title, .photo-album-copy strong, body .link-card .label, body .prose a, .topic-nav a) {
+    color: var(--theme-link);
+}
+html body .post:hover .title { color: var(--theme-link-hover); }
+html :is(.home-elsewhere small, .home-post-row small, .home-post-row time, .tag-directory a span:last-child, body .post .description, body .post .date, .photo-album-copy small, .photo-album time, body .link-card .host, body .gallery figcaption, .post-deck time) {
+    color: var(--theme-muted);
+}
+html :is(body .prose, body .page-header .deck, .topic-nav strong) {
+    color: var(--theme-text);
+}
+html body .prose pre code { color: var(--theme-code-text); }
+html :is(body .prose blockquote, body .prose pre) {
+    border-color: var(--theme-border);
+}
+html body .prose blockquote {
+    background: var(--theme-row-alt);
+    color: var(--theme-text);
+}
+html body .prose pre {
+    background: var(--theme-code) !important;
+    color: var(--theme-code-text) !important;
+}
+html body .prose :not(pre) > code {
+    background: var(--theme-code);
+    color: var(--theme-code-text);
+}
+html :is(body .gallery-frame, .photo-album img, body .site-footer) {
+    border-color: var(--theme-border);
+}

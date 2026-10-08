@@ -24,7 +24,7 @@
     <link rel="stylesheet" href="/assets/css/posts.css">
 </head>
 <body>
-{{ template "topnav" "posts" }}
+{{ template "topnav" (dict "Data" . "Active" "posts") }}
 
 {{ $posts := queryPages "SELECT * FROM pages WHERE Section='posts' AND (? OR Draft=false) ORDER BY PubDate DESC" .Site.Dev }}
 {{ $tags := query "select Tag, TagSlug, count(PageTitle) as PostCount from tags where Section = 'posts' and (? OR Draft=false) group by TagSlug, Tag order by PostCount desc, Tag asc" .Site.Dev }}
@@ -38,31 +38,31 @@
 
     <div class="shell">
         {{ if $tags }}
-        <div class="chips">
-            <a class="chip is-active" href="/posts/">all <span class="n">{{ len $posts }}</span></a>
+        <nav class="topic-nav" aria-label="Post topics">
+            <strong>Topics:</strong>
+            <a class="current" href="/posts/" aria-current="page">All posts ({{ len $posts }})</a>
             {{ range $t := $tags }}
-                <a class="chip" href="/posts/tag/{{ index $t "TagSlug" }}/">{{ index $t "Tag" }} <span class="n">{{ index $t "PostCount" }}</span></a>
+                <a href="/posts/tag/{{ index $t "TagSlug" }}/">{{ index $t "Tag" }} ({{ index $t "PostCount" }})</a>
             {{ end }}
-            <a class="chip chip-more" href="/posts/tag/">*</a>
-        </div>
+            <a href="/posts/tag/">Index</a>
+        </nav>
         {{ end }}
 
-        <div class="posts dither-surface">
-        <canvas class="dither-field" aria-hidden="true"></canvas>
+        <div class="posts">
         <div class="posts-heading" aria-hidden="true">
             <span></span>
-            <span>post</span>
-            <span>date</span>
+            <span>Post</span>
+            <span>Published</span>
         </div>
         {{ range $post := $posts }}
-            <a class="post dither-target" href="{{ $post.Path }}">
+            <a class="post" href="{{ $post.Path }}">
                 <span class="post-sigil" aria-hidden="true"></span>
                 <span class="post-copy">
                     <strong class="title">{{ $post.Title }}{{ if $post.Draft }} <small>(draft)</small>{{ end }}</strong>
                     {{ if $post.Description }}<small class="description">{{ $post.Description }}</small>{{ end }}
                     {{ with first $post.Tags }}<span class="tag">{{ . }}</span>{{ end }}
                 </span>
-                <time class="date" datetime="{{ datefmt "2006-01-02" $post.PubDate }}">{{ datefmt "2006-01-02" $post.PubDate }}</time>
+                <time class="date" datetime="{{ datefmt "2006-01-02" $post.PubDate }}">{{ datefmt "02 Jan 2006" $post.PubDate }}</time>
             </a>
         {{ end }}
         </div>

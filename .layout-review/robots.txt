@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://olimci.com/sitemap.xml

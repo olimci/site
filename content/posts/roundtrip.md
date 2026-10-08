@@ -12,7 +12,7 @@ featured = true
 
 The standard library's `encoding/json` is great for pushing data between Go structs and bytes, but it throws away everything it doesn't care about. Specifically if you unmarshal a config file, change some data, and then remarshal it back, you lose all formatting and comments.
 
-## Method
+# Method
 
 To do this we simultaneously handle two different representations of the document:
 
@@ -21,7 +21,7 @@ To do this we simultaneously handle two different representations of the documen
 
 The syntax tree is the source of truth for serialisation. The decoded Go value is just a convenience. When you want to change something, you go through the tree, and the tree only ever rewrites parts you actually touched. Everything else is preserved exactly.
 
-## The Syntax Tree
+# The Syntax Tree
 
 The underlying data structure is a small generic thing called an SST (syntax-spanning tree). It's functionally very similar to a [rope](<https://en.wikipedia.org/wiki/Rope_(data_structure)>), a doubly-linked list of tokens with a tree of nodes layered on top, each node holds pointers into the token list marking where it starts and ends:
 
@@ -41,13 +41,13 @@ type Node[TT, NT Enum] struct {
 
 Serialising back to bytes is then just walking the token list and concatenating literals.
 
-## Anchor Tokens
+# Anchor Tokens
 
 When you change a value in the tree, you must splice its token representation into the backing list. In the case where two nodes share the same span pointers, you would need to update both, otherwise one node would carry a stale reference to the list.
 
 The solution to this is introducing a zero-width anchor token, that acts as a sentinel for marking node boundaries without changing the output. This way, when you edit the tree, you do not need deal with the spans of any other nodes, meaning edit operations are effectively O(1).
 
-## Design
+# Design
 
 The high-level API surface mirrors `encoding/json` closely:
 
@@ -83,6 +83,6 @@ if c, ok := field.Comments().First(); ok {
 }
 ```
 
-## Future Work
+# Future Work
 
 The library is currently JSON-only, but the core is generic over token and node types, so the plan is to extend this to work on other data formats, like TOML, or YAML. The difficulty with these formats though, is that unlike JSON, they do not require that child objects fully syntactically enclosed by their parent, so a more complex model is needed to represent the tree.

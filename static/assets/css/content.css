@@ -13,14 +13,17 @@
     gap: clamp(2rem, 6vw, 5rem);
     align-items: start;
 }
+body .article-shell.has-toc {
+    grid-template-columns: minmax(0, 1fr) 220px;
+}
 .article-shell.has-toc .article {
     grid-column: 1;
 }
 .article-shell.has-toc .article-toc {
     grid-column: 2;
     grid-row: 1;
-    justify-self: start;
-    max-width: 12rem;
+    justify-self: stretch;
+    width: 100%;
 }
 .article {
     width: 100%;
@@ -48,7 +51,7 @@
 }
 .article-toc ol {
     list-style: none;
-    margin: 0;
+    margin: 1.1rem 0 0;
     padding: 0;
     display: flex;
     flex-direction: column;
@@ -81,16 +84,34 @@
 .shizuka-prose > * + * {
     margin-top: 1.1rem;
 }
-.prose h2,
-.prose h3,
-.prose h4,
+body .prose h2,
+body .prose h3,
+body .prose h4,
 .shizuka-prose h2,
 .shizuka-prose h3,
 .shizuka-prose h4 {
+    max-width: none;
+    padding: 0;
+    border: 0;
+    background: transparent;
     color: var(--fg-strong);
     line-height: 1.2;
     letter-spacing: -0.025em;
     font-weight: 500;
+}
+body .prose h1 {
+    margin: 2rem 0 0;
+    padding: 0.3rem 0.55rem;
+    border: 1px solid var(--theme-border-strong);
+    background: linear-gradient(var(--theme-bar-top), var(--theme-bar-bottom) 48%, var(--theme-bar-bottom) 49%, var(--theme-bar-top));
+    color: var(--theme-bar-text);
+    font-size: 1.15rem;
+    line-height: 1.25;
+    font-weight: 600;
+    letter-spacing: 0;
+}
+body .prose h1 + * {
+    margin-top: 1.35rem;
 }
 .prose h2,
 .shizuka-prose h2 {
@@ -116,7 +137,7 @@
 .prose p,
 .shizuka-prose p {
     margin: 0;
-    line-height: 1.7;
+    line-height: 1.75;
 }
 .prose ul,
 .prose ol,
@@ -260,24 +281,34 @@
     padding: 0.65rem 0.8rem;
     text-align: left;
     vertical-align: top;
-    border-bottom: 1px solid var(--line);
+    border-bottom: 1px solid #62646a;
     white-space: nowrap;
+}
+.prose th,
+.prose td,
+.shizuka-prose th,
+.shizuka-prose td {
+    border: 1px solid #62646a;
 }
 .prose tr:last-child th,
 .prose tr:last-child td,
 .shizuka-prose tr:last-child th,
 .shizuka-prose tr:last-child td {
-    border-bottom: 0;
+    border-bottom: 1px solid #62646a;
 }
 .prose th,
 .shizuka-prose th {
-    background: transparent;
-    color: var(--muted);
-    font-weight: 500;
-    font-size: 0.72rem;
-    letter-spacing: 0.08em;
-    font-family: var(--font-sans);
-    text-transform: uppercase;
+    background: linear-gradient(var(--theme-bar-top), var(--theme-bar-bottom) 48%, var(--theme-bar-bottom) 49%, var(--theme-bar-top));
+    color: var(--theme-bar-text);
+    font-weight: 600;
+    font-size: 0.82rem;
+    letter-spacing: 0;
+    font-family: inherit;
+    text-transform: none;
+}
+.prose td,
+.shizuka-prose td {
+    background: #303236;
 }
 .shizuka-prose th {
     font-size: 0.76rem;
@@ -304,7 +335,10 @@
     width: 100%;
     min-width: 36rem;
     table-layout: fixed;
-    border: 1px solid var(--line-strong);
+    border: 1px solid var(--theme-border);
+    border-radius: 0;
+    background: var(--theme-code);
+    color: var(--fg-strong);
     font-family: var(--font-mono);
 }
 .byte-offset-table col {
@@ -315,11 +349,12 @@
     width: 25%;
     text-align: center;
     vertical-align: middle;
-    border: 1px solid var(--line);
+    border: 1px solid var(--theme-border);
     white-space: normal;
+    background: var(--theme-code);
 }
 .byte-offset-table th {
-    background: var(--bg-elev);
+    background: #34373e;
     color: var(--fg-strong);
     font-family: var(--font-mono);
     font-size: 0.78rem;
@@ -328,7 +363,7 @@
 }
 .byte-offset-table tr:last-child th,
 .byte-offset-table tr:last-child td {
-    border-bottom: 1px solid var(--line);
+    border-bottom: 1px solid var(--theme-border);
 }
 .prose code,
 .prose pre,
@@ -339,10 +374,10 @@
 }
 .prose :not(pre) > code,
 .shizuka-prose :not(pre) > code {
-    background: var(--bg-elev);
+    background: var(--theme-code);
     color: var(--fg-strong);
-    padding: 0.12em 0.4em;
-    border-radius: 4px;
+    padding: 0.04em 0.2em;
+    border-radius: 0;
     border: 1px solid var(--line);
     font-size: 0.84em;
 }
@@ -359,6 +394,17 @@
     overflow-x: auto;
     line-height: 1.55;
 }
+.prose .chroma,
+.shizuka-prose .chroma {
+    background: transparent;
+    color: var(--fg);
+}
+.chroma .k, .chroma .kc, .chroma .kd, .chroma .kn, .chroma .kp, .chroma .kr, .chroma .kt { color: #d6b879; }
+.chroma .s, .chroma .sa, .chroma .sb, .chroma .sc, .chroma .dl, .chroma .sd, .chroma .s2, .chroma .sh, .chroma .si, .chroma .sx, .chroma .sr, .chroma .s1, .chroma .ss { color: #a9c49a; }
+.chroma .c, .chroma .ch, .chroma .cm, .chroma .c1, .chroma .cs, .chroma .cp, .chroma .cpf { color: #929b9a; font-style: italic; }
+.chroma .n, .chroma .na, .chroma .nb, .chroma .nc, .chroma .no, .chroma .nd, .chroma .ni, .chroma .ne, .chroma .nf, .chroma .fm, .chroma .nn, .chroma .nt, .chroma .nv, .chroma .vc, .chroma .vg, .chroma .vi, .chroma .vm { color: #b8d6d0; }
+.chroma .m, .chroma .mb, .chroma .mf, .chroma .mh, .chroma .mi, .chroma .il, .chroma .mo { color: #d59b72; }
+.chroma .o, .chroma .ow, .chroma .p { color: #c7ced0; }
 .shizuka-prose pre {
     position: relative;
 }

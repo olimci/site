@@ -10,7 +10,7 @@ featured = true
 
 [ARP fuckery](https://github.com/olimci/arpfuckery) is an experiment in using ARP to tunnel data between machines on the same LAN.
 
-## Concept
+# Concept
 
 The core of the protocol is embedding data in gratuitous ARP requests, using a custom protocol header. A normal ARP packet looks like this:
 
@@ -73,7 +73,7 @@ Given this, our ARP packets end up looking like this:
 </table>
 </div>
 
-## Sending Data With This
+# Sending Data With This
 
 For no particularly good reason, the protocol shape I arrived at was effectively a distributed object store.
 
@@ -138,10 +138,10 @@ Objects have an ID, full hash, size, fragment count, and a small metadata blob. 
 
 By default the client registers every announced object it receives. You can configure an admission policy to reject objects before downloading them, and you can configure whether owned or received objects should be pinned. For example, the chat demo application only admits chat messages.
 
-## Using the Protocol
+# Using the Protocol
 
 To test out the protocol, I made a couple of CLI demos: a simple chat application and a file-transfer demo inspired by Magic Wormhole. A neat property of the chat demo is that message history is replicated on each peer, so you can reconstruct the entire chat history even if none of the original peers are online.
 
-## Inspiration
+# Inspiration
 
 This project was heavily inspired by [kognise/arpchat](https://github.com/kognise/arpchat). Please check it out!

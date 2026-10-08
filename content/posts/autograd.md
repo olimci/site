@@ -10,7 +10,7 @@ featured = true
 
 For [this project](https://github.com/olimci/autograd), I set myself the challenge of writing a complete autograd and machine learning library from scratch in Go.
 
-## Design
+# Design
 
 To simplify the project, I broke it up into a few submodules: `autograd/tensor` for ndarray handling, and `autograd/module` for machine learning primitives. The core `autograd` library then provides a collection of autograd operations, as well as functions for backprop and SGD.
 
@@ -32,7 +32,7 @@ type Edge struct {
 
 Backpropagation is then handled by working backwards through the graph, accumulating gradients along the way.
 
-## Testing
+# Testing
 
 I figured MNIST is the obvious MVP machine learning model to implement, so the library includes 2D convolutions and pooling as default primitives. Here is an example of a LeNet-style model built in this library:
 
@@ -57,6 +57,6 @@ model := module.Sequential{
 
 (This model got up to 96% in testing on MNIST, after 10,000 iterations of training.) In practice it doesn't work particularly well, as we are just using the training data as-is.
 
-## Demo
+# Demo
 
 Since the project is pure Go, it can be compiled into WebAssembly, so you can run models in the browser. You can see a demo [here](/demos/wasm/run.html?path=mnist.wasm). (It probably won't work on mobile browsers.)

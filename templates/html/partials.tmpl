@@ -1,13 +1,6 @@
 {{ define "favicon_assets" }}
 {{ $light := "/assets/symbols/olimci-black.svg" }}
 {{ $dark := "/assets/symbols/olimci-white.svg" }}
-{{ if or (eq .Page.Section "shizuka") (eq .Page.Section "shizuka-docs") }}
-    {{ $light = "/assets/symbols/shizuka-black.svg" }}
-    {{ $dark = "/assets/symbols/shizuka-white.svg" }}
-{{ else if or (eq .Page.Section "tohru") (eq .Page.Section "tohru-docs") }}
-    {{ $light = "/assets/symbols/tohru-black.svg" }}
-    {{ $dark = "/assets/symbols/tohru-white.svg" }}
-{{ end }}
 <link rel="icon" type="image/svg+xml" href="{{ $light }}" media="(prefers-color-scheme: light)">
 <link rel="icon" type="image/svg+xml" href="{{ $dark }}" media="(prefers-color-scheme: dark)">
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-black-transparent-32.png">
@@ -15,39 +8,30 @@
 {{ end }}
 
 {{ define "fonts" }}
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 {{ end }}
 
 {{ define "topnav" }}
-{{ $active := . }}
+{{ $active := index . "Active" }}
 <header class="topnav{{ if eq $active "home" }} topnav-home{{ end }}">
-    <div class="glass-backdrop" aria-hidden="true">
-        <span class="glass-backdrop-layer"></span>
-        <span class="glass-backdrop-layer"></span>
-        <span class="glass-backdrop-layer"></span>
+    <div class="forum-banner hero">
+        <div class="hero-fallback" aria-hidden="true"></div>
+        <canvas class="hero-field" aria-hidden="true"></canvas>
+        <a class="forum-banner-link" href="/"><img src="/assets/forum/olimci-typewriter.svg" width="272" height="68" alt="olimci — home"></a>
     </div>
-    <div class="topnav-inner">
-        <a class="brand" href="/">
-            <span class="symbol symbol-olimci" aria-hidden="true"></span>
-            <span>olimci</span>
-        </a>
-        <nav class="topnav-links" aria-label="Primary">
-            {{ if ne $active "home" }}<a href="/">home</a>{{ end }}
-            <a href="/about/" {{ if eq $active "about" }}class="active"{{ end }}>about</a>
-            <a href="/posts/" {{ if eq $active "posts" }}class="active"{{ end }}>posts</a>
-            <a href="/photos/" {{ if eq $active "photos" }}class="active"{{ end }}>photos</a>
-        </nav>
-    </div>
+    <nav class="topnav-links" aria-label="Primary">
+        <a href="/" {{ if eq $active "home" }}class="active"{{ end }}>Home</a>
+        <a href="/posts/" {{ if eq $active "posts" }}class="active"{{ end }}>Posts</a>
+        <a href="/photos/" {{ if eq $active "photos" }}class="active"{{ end }}>Photos</a>
+        <a href="/links/" {{ if eq $active "links" }}class="active"{{ end }}>Links</a>
+    </nav>
 </header>
 {{ end }}
 
 {{ define "site_footer" }}
 <footer class="site-footer">
     <div class="site-footer-inner">
-        <span>&copy; 2026 oliver mcinnes</span>
-        <span><a href="http://olimci.com/_shizuka">c#{{ .Site.Git.ShortHash }}</a></span>
+        <span>&copy; 2026 Oliver McInnes</span>
+        <a class="footer-rss" href="/rss.xml" aria-label="RSS feed"><img src="/assets/silk/feed.png" width="10" height="10" alt=""></a>
     </div>
 </footer>
 {{ end }}
@@ -55,36 +39,15 @@
 {{ define "head_common" }}
 {{ $data := . }}
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="author" content="Oliver McInnes">
 <meta name="robots" content="index, follow">
 <link rel="alternate" type="application/rss+xml" title="olimci.com RSS" href="{{ $data.Site.URL }}/rss.xml">
 {{ template "fonts" . }}
 <link rel="stylesheet" href="/assets/css/site.css">
-<script src="/assets/js/dither.js" defer></script>
+<link rel="stylesheet" href="/assets/css/forum.css">
+<link rel="stylesheet" href="/assets/css/theme.css">
+<script src="/assets/js/hero.js" defer></script>
+<script src="/assets/js/smilies.js" defer></script>
 {{ template "favicon_assets" . }}
-{{ end }}
-
-{{ define "copy_code_script" }}
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-    for (const pre of document.querySelectorAll(".shizuka-prose pre")) {
-        const code = pre.querySelector("code");
-        const button = document.createElement("button");
-        button.type = "button";
-        button.className = "copy-code";
-        button.setAttribute("aria-label", "Copy code");
-        button.textContent = "Copy";
-        button.addEventListener("click", async () => {
-            await navigator.clipboard.writeText(code.innerText);
-            button.textContent = "Copied";
-            window.setTimeout(() => {
-                button.textContent = "Copy";
-            }, 1200);
-        });
-        pre.classList.add("has-copy-code");
-        pre.append(button);
-    }
-});
-</script>
 {{ end }}

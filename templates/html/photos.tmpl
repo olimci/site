@@ -18,7 +18,7 @@
     {{ template "head_common" . }}
 </head>
 <body>
-{{ template "topnav" "photos" }}
+{{ template "topnav" (dict "Data" . "Active" "photos") }}
 
 {{ $albums := queryPages "SELECT * FROM pages WHERE Section='photos' AND (? OR Draft=false) ORDER BY Weight ASC, Updated DESC" .Site.Dev }}
 
@@ -26,20 +26,19 @@
     <section class="page-header">
         <div class="page-header-inner">
             <h1>{{ .Page.Title }}</h1>
+            {{ if .Page.Description }}<p class="deck">{{ .Page.Description }}</p>{{ end }}
         </div>
     </section>
 
     <div class="shell">
-        <div class="cards cards-shelf">
+        <div class="photo-albums">
+            <div class="forum-subhead"><span>Album</span><span>Published</span></div>
             {{ range $album := $albums }}
                 {{ $cover := index $album.Params "cover" }}
-                <a class="card" href="{{ $album.Path }}">
-                    <div class="card-cover" {{ if $cover }}style="background:#000 center/cover no-repeat url('{{ $cover }}')"{{ end }}></div>
-                    <div class="card-body">
-                        <h3>{{ $album.Title }}</h3>
-                        <span class="meta">{{ datefmt "2006-01-02" $album.PubDate }}</span>
-                        {{ with $album.Description }}<p>{{ . }}</p>{{ end }}
-                    </div>
+                <a class="photo-album" href="{{ $album.Path }}">
+                    <img src="{{ $cover }}" alt="" loading="lazy">
+                    <span class="photo-album-copy"><strong>{{ $album.Title }}</strong>{{ with $album.Description }}<small>{{ . }}</small>{{ end }}<small>{{ len (index $album.Params "photos") }} photos</small></span>
+                    <time datetime="{{ datefmt "2006-01-02" $album.PubDate }}">{{ datefmt "02 Jan 2006" $album.PubDate }}</time>
                 </a>
             {{ end }}
         </div>
