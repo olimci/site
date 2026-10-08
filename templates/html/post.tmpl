@@ -21,13 +21,14 @@
 
     <title>{{ $pageTitle }}</title>
     {{ template "head_common" . }}
+    <link rel="stylesheet" href="/assets/css/content.css">
 </head>
 <body>
 {{ if eq .Page.Section "posts" }}{{ template "topnav" "posts" }}{{ else if eq .Page.Path "/cv/" }}{{ template "topnav" "cv" }}{{ else }}{{ template "topnav" "" }}{{ end }}
 
 <main>
 
-    <section class="page-header">
+    <section class="page-header{{ if eq .Page.Section "posts" }} page-header-post{{ end }}">
         <div class="page-header-inner">
             {{ if not .Page.PubDate.IsZero }}
             <div class="page-kicker">

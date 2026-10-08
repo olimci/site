@@ -37,16 +37,7 @@
 
     <title>{{ $pageTitle }}</title>
     {{ template "head_common" $data }}
-    <style>
-    .tag-list{display:flex;flex-wrap:wrap;gap:.6rem 1rem;align-items:baseline;max-width:var(--content-max)}
-    .tag-list a{display:inline-flex;align-items:baseline;gap:.35rem;color:var(--fg-strong);text-decoration:none;line-height:1}
-    .tag-list a:hover{text-decoration:underline;text-decoration-color:var(--fg-strong)}
-    .tag-list .n{font-family:var(--font-mono);font-size:.7rem;color:var(--dim);letter-spacing:.04em}
-    .tag-list a[data-w="1"]{font-size:.95rem}
-    .tag-list a[data-w="2"]{font-size:1.15rem}
-    .tag-list a[data-w="3"]{font-size:1.4rem;font-weight:500;letter-spacing:-.01em}
-    .tag-list a[data-w="4"]{font-size:1.75rem;font-weight:500;letter-spacing:-.015em}
-    </style>
+    <link rel="stylesheet" href="/assets/css/posts.css">
 </head>
 <body>
 {{ template "topnav" "posts" }}

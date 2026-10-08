@@ -134,7 +134,7 @@ void main() {
         let transitionFrom = 0;
         let animationFrame = 0;
         const targetInset = 0;
-        const targetBottomBorder = 3;
+        const targetBottomBorder = 0;
 
         const rectFor = (element) => {
             const rect = element.getBoundingClientRect();
