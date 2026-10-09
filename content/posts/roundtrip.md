@@ -48,6 +48,7 @@ The diagram shows how nodes span the original tokens, and how replacing `address
 
 <figure>
 <a href="/assets/images/roundtrip-principle.png"><img src="/assets/images/roundtrip-principle.png" alt="A JSON document is parsed into tree nodes spanning its tokens. Replacing address with an array swaps only the address subtree and tokens; the name tokens remain unchanged." width="2248" height="2148"></a>
+<figcaption>Replacing one JSON value changes only its subtree and token span.</figcaption>
 </figure>
 
 Serialising back to bytes is then just walking the token list and concatenating literals.

@@ -52,6 +52,7 @@ So the superlattice remains indirectly gapped, but lies close to the direct-gap 
 
 <figure>
 <img src="/assets/images/academic/superlattice-bands.png" alt="Electronic bands along Γ–X–M–Γ–Z–R–A–Z. Blue valence bands peak at Γ; orange conduction bands dip close to Γ along Γ–X, leaving an indirect gap.">
+<figcaption>Calculated electronic bands along Γ–X–M–Γ–Z–R–A–Z.</figcaption>
 </figure>
 
 That small separation is promising, but energetic proximity to a direct gap does not guarantee strong optical transitions. I didn't calculate optical matrix elements or oscillator strengths, and the pseudopotential and strain model simplify what happens at the interfaces. The result is best read as an example of how strain and zone folding can change a silicon-compatible material's electronic structure, not proof that it would make an efficient light emitter.

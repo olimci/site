@@ -27,12 +27,14 @@ The polar plots show the concentration series and fitted curves for glucose, fru
 
 <figure>
 <a href="/assets/images/academic/polar-plots.png"><img src="/assets/images/academic/polar-plots.png" alt="Polar intensity curves for glucose, fructose, and sucrose at different concentrations, with fitted curves and residuals below each plot."></a>
+<figcaption>Polar intensity and fitted curves for the three sugar solutions, with residuals below.</figcaption>
 </figure>
 
 We then plotted each fitted phase relative to the water control against concentration to extract the *specific rotation* \\( [\\alpha] = \\alpha / (lc) \\), where \\(\\alpha\\) is the observed rotation, \\(l\\) is the path length and \\(c\\) is the concentration. The 50 g/L sucrose measurement was excluded from this fit.
 
 <figure>
 <img src="/assets/images/academic/optical-rotation.png" alt="Rotation relative to water against sugar concentration. Sucrose and glucose rise approximately linearly; fructose falls. Points show measurements and lines show fits.">
+<figcaption>Optical rotation against concentration for sucrose, glucose, and fructose.</figcaption>
 </figure>
 
 At 520 nm, we measured specific rotations of +89.7 ± 1.0° for sucrose, +138.8 ± 1.6° for glucose, and −122.8 ± 1.4° for fructose. The direction of rotation matched expectations, but the magnitudes were quite different from literature values. Those values are usually reported at the sodium D-line (589 nm), though, and optical rotation depends on wavelength. We used Drude's dispersion model, \\( [\\alpha]_\\lambda = A/(\\lambda^2 - \\lambda_0^2) \\), to estimate the equivalent rotation at 589 nm:

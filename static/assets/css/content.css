@@ -178,7 +178,12 @@ body .prose h1 + * {
 
 .prose p:has(> img:only-child),
 .shizuka-prose p:has(> img:only-child) {
-    margin: 2rem 0;
+    width: fit-content;
+    max-width: 100%;
+    margin: 2rem auto;
+    padding: 5px;
+    border: 1px solid var(--theme-border);
+    background: var(--theme-panel);
 }
 
 .prose p:has(> img:only-child) + p,
@@ -188,12 +193,11 @@ body .prose h1 + * {
 
 .prose p > img:only-child,
 .shizuka-prose p > img:only-child {
-    width: 100%;
+    display: block;
+    width: auto;
     max-width: 100%;
     height: auto;
     border: 1px solid var(--line);
-    border-radius: var(--radius-card);
-    background: var(--bg-code);
 }
 
 .prose img,
@@ -212,19 +216,25 @@ body .prose h1 + * {
     width: auto;
 }
 .prose figure {
-    max-width: 700px;
+    width: fit-content;
+    max-width: 100%;
     margin: 2rem auto;
+    padding: 4px;
+    border: 1px solid var(--theme-border);
+    background: var(--theme-panel);
 }
 .prose figure img {
-    width: 100%;
-    border: 1px solid var(--line);
+    display: block;
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    border: 1px solid var(--theme-border);
 }
 .prose figcaption {
-    margin-top: 0.5rem;
-    color: var(--dim);
-    font-size: 0.86rem;
-    font-family: var(--font-mono);
-    letter-spacing: 0.02em;
+    margin: 4px 1px 0;
+    color: var(--fg);
+    font: 10px Tahoma, Verdana, sans-serif;
+    letter-spacing: 0;
 }
 .prose blockquote,
 .shizuka-prose blockquote {
@@ -445,7 +455,13 @@ body .prose h1 + * {
 .prose p { margin: 0; }
 .prose > p + p { margin-top: 1.5em; }
 .prose .katex-display { overflow-x: auto; overflow-y: hidden; }
-.prose figcaption { font-size: 0.68rem; letter-spacing: 0.06em; text-transform: uppercase; }
+.prose figcaption {
+    color: var(--fg);
+    font-size: 1rem;
+    letter-spacing: normal;
+    text-align: center;
+    text-transform: none;
+}
 .prose table, .prose pre { border-radius: 0; }
 @media (max-width: 960px) {
     .article-shell.has-sidebar { display: block; }
