@@ -1,10 +1,6 @@
 {{ define "favicon_assets" }}
-{{ $light := "/assets/symbols/olimci-black.svg" }}
-{{ $dark := "/assets/symbols/olimci-white.svg" }}
-<link rel="icon" type="image/svg+xml" href="{{ $light }}" media="(prefers-color-scheme: light)">
-<link rel="icon" type="image/svg+xml" href="{{ $dark }}" media="(prefers-color-scheme: dark)">
-<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-black-transparent-32.png">
-<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon-black-transparent-180.png">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/bird-touch-180.png">
 {{ end }}
 
 {{ define "fonts" }}
@@ -31,7 +27,10 @@
 <footer class="site-footer">
     <div class="site-footer-inner">
         <span>&copy; 2026 Oliver McInnes</span>
-        <a class="footer-rss" href="/rss.xml" aria-label="RSS feed"><img src="/assets/silk/feed.png" width="10" height="10" alt=""></a>
+        <span class="footer-links">
+            <a href="/_shizuka/" aria-label="Site debug page"><img src="/assets/forum/shizuka-icon.png" width="16" height="16" alt=""></a>
+            <a href="/rss.xml" aria-label="RSS feed"><img src="/assets/silk/feed.png" width="16" height="16" alt=""></a>
+        </span>
     </div>
 </footer>
 {{ end }}

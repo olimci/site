@@ -27,7 +27,7 @@
     font-weight: 400;
 }
 .post .date, .post .tag { white-space: nowrap; }
-.post .tag { display: inline-block; }
+.post .tag { display: inline-block; margin-inline-end: 0.65em; }
 
 @media (max-width: 540px) {
     .posts-heading span:first-child { display: none; }

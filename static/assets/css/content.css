@@ -7,22 +7,22 @@
     display: flex;
     justify-content: flex-start;
 }
-.article-shell.has-toc {
+.article-shell.has-sidebar {
     display: grid;
     grid-template-columns: minmax(0, var(--content-max)) minmax(0, 1fr);
     gap: clamp(2rem, 6vw, 5rem);
     align-items: start;
 }
-body .article-shell.has-toc {
+body .article-shell.has-sidebar {
     grid-template-columns: minmax(0, 1fr) 220px;
 }
-.article-shell.has-toc .article {
+.article-shell.has-sidebar .article {
     grid-column: 1;
 }
-.article-shell.has-toc .article-toc {
+.article-sidebar {
     grid-column: 2;
     grid-row: 1;
-    justify-self: stretch;
+    min-width: 0;
     width: 100%;
 }
 .article {
@@ -67,13 +67,18 @@ body .article-shell.has-toc {
     color: var(--fg-strong);
     text-decoration: none;
 }
-.article-toc .toc-level-3 {
-    padding-left: 0.75rem;
+.article-toc .toc-level-2 {
+    padding-inline-start: 0.75rem;
 }
-.article-toc .toc-level-4,
+.article-toc .toc-level-3 {
+    padding-inline-start: 1.5rem;
+}
+.article-toc .toc-level-4 {
+    padding-inline-start: 2.25rem;
+}
 .article-toc .toc-level-5,
 .article-toc .toc-level-6 {
-    padding-left: 1.5rem;
+    padding-inline-start: 3rem;
 }
 .prose,
 .shizuka-prose {
@@ -109,6 +114,9 @@ body .prose h1 {
     line-height: 1.25;
     font-weight: 600;
     letter-spacing: 0;
+}
+body .prose > :first-child {
+    margin-top: 0;
 }
 body .prose h1 + * {
     margin-top: 1.35rem;
@@ -196,8 +204,6 @@ body .prose h1 + * {
 }
 
 /* For genuinely inline images inside text, e.g. icons */
-.prose :not(p) > img,
-.shizuka-prose :not(p) > img,
 .prose p img:not(:only-child),
 .shizuka-prose p img:not(:only-child) {
     display: inline-block;
@@ -206,9 +212,11 @@ body .prose h1 + * {
     width: auto;
 }
 .prose figure {
-    margin: 2rem 0;
+    max-width: 700px;
+    margin: 2rem auto;
 }
 .prose figure img {
+    width: 100%;
     border: 1px solid var(--line);
 }
 .prose figcaption {
@@ -435,9 +443,12 @@ body .prose h1 + * {
 .prose { color: var(--fg); font-size: 1rem; line-height: 1.7; }
 .prose > * + * { margin-top: 1.5rem; }
 .prose p { margin: 0; }
+.prose > p + p { margin-top: 1.5em; }
+.prose .katex-display { overflow-x: auto; overflow-y: hidden; }
 .prose figcaption { font-size: 0.68rem; letter-spacing: 0.06em; text-transform: uppercase; }
 .prose table, .prose pre { border-radius: 0; }
 @media (max-width: 960px) {
-    .article-shell.has-toc { display: block; }
+    .article-shell.has-sidebar { display: block; }
     .article-toc { display: none; }
+    .article-sidebar { margin-top: 10px; }
 }

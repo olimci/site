@@ -1,11 +1,19 @@
 +++
 title = "ARP Fuckery"
 description = "Building a distributed object store on ARP"
-tags = ["programming"]
+tags = ["programming", "networks"]
 section = "posts"
 weight = 10
 
 featured = true
+
+[params]
+related = ["/posts/sandalphon/"]
+
+[[params.links]]
+text = "Source on GitHub"
+href = "https://github.com/olimci/arpfuckery"
+icon = "script_code"
 +++
 
 [ARP fuckery](https://github.com/olimci/arpfuckery) is an experiment in using ARP to tunnel data between machines on the same LAN.

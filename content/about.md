@@ -13,8 +13,8 @@ priority = 0.9
 include = false
 +++
 
-Hi, I'm Oliver. I'm a master's student in physics at Durham. I'm mostly interested in machine learning, statistical mechanics, and network protocols. I'm comfortable with Go, Python, and Rust, and I like building small, practical tools that help me understand things properly. A lot of my projects come from trying to understand something by rebuilding a simplified version of it myself.
+I'm Oli. I'm a physics master's student at Durham university, with an interest in statistics, network protocols, and machine learning. I like to work in Rust, Go and Python, but I will pick up any language that interests me. Currently I'm paticularly interested in using Nix.
 
-Besides that, I spend a lot of time mountain biking, tinkering with my [car](/posts/3000gt), snowboarding, taking [photos](/photos/), and learning Japanese.
+Besides stuff on the computer, I'm a huge adrenaline junkie, and you will often find me mountain biking, climbing or snowboarding. I also have [a funny Japanese car](/posts/3000gt) that I like to tinker with in my spare time. I also like to take [photos](/photos) occasionally.
 
 Have a look around. You can also check out my [CV](/cv/), find me on [GitHub](https://github.com/olimci), or email me at [oli@mcinnes.cc](mailto:oli@mcinnes.cc).

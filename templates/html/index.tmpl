@@ -8,7 +8,7 @@
 
     <meta property="og:title" content="{{ .Site.Title }}">
     <meta property="og:description" content="{{ .Site.Description }}">
-    <meta property="og:image" content="{{ .Site.URL }}/assets/favicon/favicon-white-on-black-512.png">
+    <meta property="og:image" content="{{ .Site.URL }}/assets/favicon/bird-512.png">
     <meta property="og:url" content="{{ .Site.URL }}">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="{{ .Site.Title }}">
@@ -16,7 +16,7 @@
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="{{ .Site.Title }}">
     <meta name="twitter:description" content="{{ .Site.Description }}">
-    <meta name="twitter:image" content="{{ .Site.URL }}/assets/favicon/favicon-white-on-black-512.png">
+    <meta name="twitter:image" content="{{ .Site.URL }}/assets/favicon/bird-512.png">
 
     <title>{{ .Site.Title }}</title>
     {{ template "head_common" . }}
@@ -24,10 +24,10 @@
 <body>
 {{ template "topnav" (dict "Data" . "Active" "home") }}
 <main class="home-main">
-    <p class="forum-welcome"><strong>Hi, I'm Oliver.</strong> I'm a master's student in physics at Durham. I write about things I'm building and trying to understand. Have a look around. :)</p>
+    <div class="forum-welcome">{{ .Page.Body }}</div>
     <section class="home-primary">
         <div class="forum-subhead"><span>Post</span><span>Published</span></div>
-        {{ $posts := queryPages "SELECT * FROM pages WHERE Section='posts' AND (? OR Draft=false) ORDER BY PubDate DESC" .Site.Dev }}
+        {{ $posts := queryPages "SELECT * FROM pages WHERE Section='posts' AND Featured=true AND (? OR Draft=false) ORDER BY PubDate DESC" .Site.Dev }}
         {{ range $post := $posts }}
         <a class="home-post-row" href="{{ $post.Path }}">
             <img src="/assets/silk/page_white_text.png" width="16" height="16" alt="">

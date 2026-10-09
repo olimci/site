@@ -9,7 +9,7 @@
 
     <meta property="og:title" content="{{ $pageTitle }}">
     <meta property="og:description" content="{{ $pageDescription }}">
-    <meta property="og:image" content="{{ .Site.URL }}/assets/favicon/favicon-white-on-black-512.png">
+    <meta property="og:image" content="{{ .Site.URL }}/assets/favicon/bird-512.png">
     <meta property="og:url" content="{{ .Page.Canon }}">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="{{ .Site.Title }}">
@@ -17,7 +17,7 @@
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="{{ $pageTitle }}">
     <meta name="twitter:description" content="{{ $pageDescription }}">
-    <meta name="twitter:image" content="{{ .Site.URL }}/assets/favicon/favicon-white-on-black-512.png">
+    <meta name="twitter:image" content="{{ .Site.URL }}/assets/favicon/bird-512.png">
 
     <title>{{ $pageTitle }}</title>
     {{ template "head_common" . }}
@@ -60,7 +60,7 @@
                 <span class="post-copy">
                     <strong class="title">{{ $post.Title }}{{ if $post.Draft }} <small>(draft)</small>{{ end }}</strong>
                     {{ if $post.Description }}<small class="description">{{ $post.Description }}</small>{{ end }}
-                    {{ with first $post.Tags }}<span class="tag">{{ . }}</span>{{ end }}
+                    {{ range $post.Tags }}<span class="tag">{{ . }}</span>{{ end }}
                 </span>
                 <time class="date" datetime="{{ datefmt "2006-01-02" $post.PubDate }}">{{ datefmt "02 Jan 2006" $post.PubDate }}</time>
             </a>

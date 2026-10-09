@@ -147,3 +147,7 @@ html body .prose :not(pre) > code {
 html :is(body .gallery-frame, .photo-album img, body .site-footer) {
     border-color: var(--theme-border);
 }
+
+@media (max-width: 600px) {
+    html body { background: transparent; }
+}

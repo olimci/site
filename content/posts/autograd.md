@@ -6,6 +6,16 @@ section = "posts"
 weight = 20
 
 featured = true
+
+[[params.links]]
+text = "Source on GitHub"
+href = "https://github.com/olimci/autograd"
+icon = "script_code"
+
+[[params.links]]
+text = "MNIST demo"
+href = "/demos/wasm/run.html?path=mnist.wasm"
+icon = "monitor"
 +++
 
 For [this project](https://github.com/olimci/autograd), I set myself the challenge of writing a complete autograd and machine learning library from scratch in Go.

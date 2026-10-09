@@ -6,6 +6,11 @@ section = "posts"
 weight = 30
 
 featured = true
+
+[[params.links]]
+text = "Source on GitHub"
+href = "https://github.com/olimci/roundtrip"
+icon = "script_code"
 +++
 
 [roundtrip](https://github.com/olimci/roundtrip) is a small Go library for parsing JSON (also JSONC, JSON5) in a way that lets you edit a document and write it back out without losing any of the original formatting, comments, or whitespace.
@@ -23,7 +28,7 @@ The syntax tree is the source of truth for serialisation. The decoded Go value i
 
 # The Syntax Tree
 
-The underlying data structure is a small generic thing called an SST (syntax-spanning tree). It's functionally very similar to a [rope](<https://en.wikipedia.org/wiki/Rope_(data_structure)>), a doubly-linked list of tokens with a tree of nodes layered on top, each node holds pointers into the token list marking where it starts and ends:
+The underlying data structure is a small generic thing I decided to call an SST (syntax-spanning tree). It's functionally very similar to a [rope](<https://en.wikipedia.org/wiki/Rope_(data_structure)>), a doubly-linked list of tokens with a tree of nodes layered on top, each node holds pointers into the token list marking where it starts and ends:
 
 ```go
 type SST[TT, NT Enum] struct {
@@ -38,6 +43,12 @@ type Node[TT, NT Enum] struct {
     Children []*Node[TT, NT]
 }
 ```
+
+The diagram shows how nodes span the original tokens, and how replacing `address` changes only that part of the tree and token list:
+
+<figure>
+<a href="/assets/images/roundtrip-principle.png"><img src="/assets/images/roundtrip-principle.png" alt="A JSON document is parsed into tree nodes spanning its tokens. Replacing address with an array swaps only the address subtree and tokens; the name tokens remain unchanged." width="2248" height="2148"></a>
+</figure>
 
 Serialising back to bytes is then just walking the token list and concatenating literals.
 
@@ -85,4 +96,4 @@ if c, ok := field.Comments().First(); ok {
 
 # Future Work
 
-The library is currently JSON-only, but the core is generic over token and node types, so the plan is to extend this to work on other data formats, like TOML, or YAML. The difficulty with these formats though, is that unlike JSON, they do not require that child objects fully syntactically enclosed by their parent, so a more complex model is needed to represent the tree.
+The library is currently JSON-only, but the core is generic over token and node types, so the plan is to extend this to work on other data formats, like TOML, or YAML. The difficulty with these formats though is that, unlike JSON, they do not require that child objects fully syntactically enclosed by their parent, so a more complex model is needed to represent the tree.

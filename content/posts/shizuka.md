@@ -6,6 +6,16 @@ section = "posts"
 weight = 40
 
 featured = true
+
+[[params.links]]
+text = "Shizuka on GitHub"
+href = "https://github.com/olimci/shizuka"
+icon = "script_code"
+
+[[params.links]]
+text = "Site source"
+href = "https://github.com/olimci/site"
+icon = "script_code"
 +++
 
 Shizuka is my static site generator. I built it because I wasn't particularly happy with existing static site generators, and I thought it would be an interesting project to make my own. The source is on [GitHub](https://github.com/olimci/shizuka).
