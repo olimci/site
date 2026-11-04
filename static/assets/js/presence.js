@@ -6,6 +6,7 @@
     const activityRow = document.getElementById("presence-activity-row");
     const desktopArt = document.getElementById("presence-desktop-art");
     const desktopFallback = desktopArt.querySelector("img");
+    const statusRow = document.getElementById("presence-status-row");
     const clock = document.getElementById("presence-time");
     const clockFace = document.getElementById("presence-clock-face");
     const londonTime = new Intl.DateTimeFormat("en-GB", {
@@ -66,7 +67,31 @@
                 musicRow.hidden = true;
             }
 
-            const activity = activities.find((item) => item.name !== "Spotify");
+            const customStatus = activities.find((item) => item.type === 4);
+            if (customStatus) {
+                statusRow.replaceChildren();
+                statusRow.title = customStatus.state ?? "";
+                if (customStatus.emoji) {
+                    const { id, name, animated } = customStatus.emoji;
+                    if (id) {
+                        const emoji = document.createElement("img");
+                        emoji.src = `https://cdn.discordapp.com/emojis/${id}.${animated ? "gif" : "png"}`;
+                        emoji.alt = name;
+                        statusRow.append(emoji);
+                    } else {
+                        statusRow.append(name);
+                    }
+                }
+                if (customStatus.state) {
+                    if (customStatus.emoji) statusRow.append(" ");
+                    statusRow.append(customStatus.state);
+                }
+                statusRow.hidden = false;
+            } else {
+                statusRow.hidden = true;
+            }
+
+            const activity = activities.find((item) => item.type !== 4 && item.name !== "Spotify");
             if (activity) {
                 desktop.replaceChildren();
                 desktopArt.replaceChildren(desktopFallback);
@@ -95,6 +120,7 @@
             }
         } catch (error) {
             musicRow.hidden = true;
+            statusRow.hidden = true;
             activityRow.hidden = true;
             console.error(error);
         }
