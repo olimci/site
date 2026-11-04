@@ -1,0 +1,124 @@
+{{ define "tags" }}
+{{ query "select Tag, TagSlug, _page as Page from tags where Section = 'posts' and (? OR Draft=false) order by TagSlug asc, PubDate desc" .Site.Dev | paginateOnRoot "TagSlug" "tag-page" "tag-root" }}
+{{ end }}
+
+{{ define "tag-root" }}
+{{ template "tags_document" (dict "Data" . "Mode" "root") }}
+{{ end }}
+
+{{ define "tag-page" }}
+{{ template "tags_document" (dict "Data" . "Mode" "tag") }}
+{{ end }}
+
+{{ define "tags_document" }}
+{{ $data := index . "Data" }}
+{{ $mode := index . "Mode" }}
+{{ $tagName := "" }}
+{{ if and (eq $mode "tag") $data.Pagination }}
+    {{ with first $data.Pagination.Items }}{{ $tagName = index . "Tag" }}{{ end }}
+{{ end }}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {{ $pageDescription := or (index $data.Page.Params "seo_description") $data.Page.Description $data.Site.Description }}
+    {{ $pageTitle := printf "%s | %s" $data.Page.Title $data.Site.Title }}
+    {{ if eq $mode "tag" }}
+        {{ $pageTitle = printf "%v | Posts | %s" $tagName $data.Site.Title }}
+        {{ $pageDescription = printf "Posts tagged %v" $tagName }}
+    {{ end }}
+    <meta name="description" content="{{ $pageDescription }}">
+    <link rel="canonical" href="{{ $data.Page.Canon }}">
+
+    <meta property="og:title" content="{{ $pageTitle }}">
+    <meta property="og:description" content="{{ $pageDescription }}">
+    <meta property="og:image" content="{{ $data.Site.URL }}/assets/favicon/bird-512.png">
+    <meta property="og:url" content="{{ $data.Page.Canon }}">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="{{ $data.Site.Title }}">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="{{ $pageTitle }}">
+    <meta name="twitter:description" content="{{ $pageDescription }}">
+    <meta name="twitter:image" content="{{ $data.Site.URL }}/assets/favicon/bird-512.png">
+
+    <title>{{ $pageTitle }}</title>
+    {{ template "head_common" $data }}
+    <link rel="stylesheet" href="/assets/css/posts.css">
+</head>
+<body>
+{{ template "topnav" (dict "Data" $data "Active" "posts") }}
+
+{{ $posts := queryPages "SELECT * FROM pages WHERE Section='posts' AND (? OR Draft=false) ORDER BY PubDate DESC" $data.Site.Dev }}
+{{ $summary := query "select Tag, TagSlug, count(PageTitle) as PostCount from tags where Section = 'posts' and (? OR Draft=false) group by TagSlug, Tag order by PostCount desc, Tag asc" $data.Site.Dev }}
+
+<main class="posts-page">
+    <section class="page-header">
+        <div class="page-header-inner">
+            {{ if eq $mode "tag" }}
+                <h1>Posts: {{ $tagName }}</h1>
+            {{ else }}
+                <h1>{{ $data.Page.Title }}</h1>
+                {{ if $data.Page.Description }}<p class="deck">{{ $data.Page.Description }}</p>{{ end }}
+            {{ end }}
+        </div>
+    </section>
+
+    <div class="shell">
+        {{ if eq $mode "tag" }}
+            {{ $activeSlug := "" }}
+            {{ with first $data.Pagination.Items }}{{ $activeSlug = index . "TagSlug" }}{{ end }}
+            <nav class="topic-nav" aria-label="Post topics">
+                <strong>Topics:</strong>
+                <a href="/posts/">All posts ({{ len $posts }})</a>
+                {{ range $t := $summary }}
+                    {{ $slug := index $t "TagSlug" }}
+                    <a href="/posts/tag/{{ $slug }}/"{{ if eq $slug $activeSlug }} class="current" aria-current="page"{{ end }}>{{ index $t "Tag" }} ({{ index $t "PostCount" }})</a>
+                {{ end }}
+                <a href="/posts/tag/">Index</a>
+            </nav>
+
+            <div class="posts">
+            <div class="posts-heading" aria-hidden="true">
+                <span></span>
+                <span>Post</span>
+                <span>Published</span>
+            </div>
+            {{ range $row := $data.Pagination.Items }}
+                {{ $post := index $row "Page" }}
+                <a class="post" href="{{ $post.Path }}">
+                    <span class="post-sigil" aria-hidden="true"></span>
+                    <span class="post-copy">
+                        <strong class="title">{{ $post.Title }}{{ if $post.Draft }} <small>(draft)</small>{{ end }}</strong>
+                        {{ if $post.Description }}<small class="description">{{ $post.Description }}</small>{{ end }}
+                        {{ range $post.Tags }}<span class="tag">{{ . }}</span>{{ end }}
+                    </span>
+                    <time class="date" datetime="{{ datefmt "2006-01-02" $post.PubDate }}">{{ datefmt "02 Jan 2006" $post.PubDate }}</time>
+                </a>
+            {{ end }}
+            </div>
+
+            {{ with $data.Pagination }}
+                {{ if gt .Pages 1 }}
+                    <nav class="pagination-nav" aria-label="pagination">
+                        {{ if .Prev }}<a href="{{ .Prev }}">← prev</a>{{ else }}<span class="is-disabled">← prev</span>{{ end }}
+                        <span>{{ printf "%02d / %02d" .Page .Pages }}</span>
+                        {{ if .Next }}<a href="{{ .Next }}">next →</a>{{ else }}<span class="is-disabled">next →</span>{{ end }}
+                    </nav>
+                {{ end }}
+            {{ end }}
+        {{ else }}
+            <div class="tag-directory">
+                <div class="forum-subhead"><span>Topic</span><span>Posts</span></div>
+                {{ range $row := $summary }}
+                    {{ $n := index $row "PostCount" }}
+                    <a href="/posts/tag/{{ index $row "TagSlug" }}/"><span><img src="/assets/silk/folder.png" width="16" height="16" alt=""><strong>{{ index $row "Tag" }}</strong></span><span>{{ $n }}</span></a>
+                {{ end }}
+            </div>
+        {{ end }}
+    </div>
+</main>
+
+{{ template "site_footer" $data }}
+</body>
+</html>
+{{ end }}

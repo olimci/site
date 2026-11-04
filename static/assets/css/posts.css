@@ -1,0 +1,34 @@
+.pagination-nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--muted);
+}
+.pagination-nav a, .pagination-nav span { color: var(--muted); text-decoration: none; }
+.pagination-nav a:hover { color: var(--fg-strong); }
+.pagination-nav .is-disabled { color: var(--dim); }
+
+.posts { position: relative; display: flex; flex-direction: column; margin-inline: 0; }
+.posts-heading, .post { display: grid; align-items: center; }
+.post { text-decoration: none; transition: background-color 100ms ease; }
+.post:hover { text-decoration: none; }
+.post:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+.post-sigil { display: block; image-rendering: pixelated; }
+.post-copy, .post .title { min-width: 0; }
+.post .title, .post .description { display: block; }
+.post .title small {
+    color: var(--dim);
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 400;
+}
+.post .date, .post .tag { white-space: nowrap; }
+.post .tag { display: inline-block; margin-inline-end: 0.65em; }
+
+@media (max-width: 540px) {
+    .posts-heading span:first-child { display: none; }
+}

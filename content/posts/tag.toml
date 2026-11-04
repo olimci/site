@@ -1,0 +1,15 @@
+title = "Tags"
+description = "Browse posts by topic"
+template = "tags"
+section = "page"
+
+[params]
+seo_description = "Browse Oli's posts by topic, from programming and networks to physics and cars."
+
+[sitemap]
+include = true
+changefreq = "weekly"
+priority = 0.7
+
+[rss]
+include = false

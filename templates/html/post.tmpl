@@ -1,0 +1,132 @@
+{{ define "post" }}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {{ $pageDescription := or (index .Page.Params "seo_description") .Page.Description .Site.Description }}
+    {{ $pageTitle := printf "%s | %s" .Page.Title .Site.Title }}
+    <meta name="description" content="{{ $pageDescription }}">
+    <link rel="canonical" href="{{ .Page.Canon }}">
+
+    <meta property="og:title" content="{{ $pageTitle }}">
+    <meta property="og:description" content="{{ $pageDescription }}">
+    <meta property="og:image" content="{{ .Site.URL }}/assets/favicon/bird-512.png">
+    <meta property="og:url" content="{{ .Page.Canon }}">
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="{{ .Site.Title }}">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="{{ $pageTitle }}">
+    <meta name="twitter:description" content="{{ $pageDescription }}">
+    <meta name="twitter:image" content="{{ .Site.URL }}/assets/favicon/bird-512.png">
+
+    <title>{{ $pageTitle }}</title>
+    {{ template "head_common" . }}
+    <link rel="stylesheet" href="/assets/css/content.css">
+    <script defer src="/assets/js/footnotes.js"></script>
+    {{ if index .Page.Params "has_mermaid" }}
+    <script type="module" src="/assets/js/mermaid.js"></script>
+    {{ end }}
+    {{ if index .Page.Params "has_latex" }}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.25/katex.min.css">
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.25/katex.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.25/contrib/auto-render.min.js"></script>
+    <script defer src="/assets/js/math.js"></script>
+    {{ end }}
+</head>
+<body>
+{{ if eq .Page.Section "posts" }}{{ template "topnav" (dict "Data" . "Active" "posts") }}{{ else if eq .Page.Path "/cv/" }}{{ template "topnav" (dict "Data" . "Active" "cv") }}{{ else }}{{ template "topnav" (dict "Data" . "Active" "") }}{{ end }}
+
+<main>
+
+    <section class="page-header{{ if or (eq .Page.Section "posts") (eq .Page.Path "/cv/") }} page-header-post{{ end }}">
+        <div class="page-header-inner">
+            {{ if and (ne .Page.Section "posts") (ne .Page.Path "/cv/") (not .Page.PubDate.IsZero) }}
+            <div class="page-kicker">
+                <span class="date">{{ datefmt "02 Jan 2006" .Page.PubDate }}</span>
+            </div>
+            {{ end }}
+            <h1>{{ .Page.Title }}</h1>
+            {{ if eq .Page.Section "posts" }}
+            <p class="deck post-deck">{{ with .Page.Description }}<span>{{ . }}</span>{{ end }}<time datetime="{{ datefmt "2006-01-02" .Page.PubDate }}">{{ datefmt "02 Jan 2006" .Page.PubDate }}</time></p>
+            {{ else if .Page.Description }}<p class="deck">{{ .Page.Description }}</p>{{ end }}
+            {{ if .Page.Draft }}
+            <div class="meta">
+                <span>draft</span>
+            </div>
+            {{ end }}
+        </div>
+    </section>
+
+    {{ $links := index .Page.Params "links" }}
+    <div class="article-shell{{ if or .Page.ToC (eq .Page.Section "posts") $links }} has-sidebar{{ end }}">
+        <article class="article{{ if eq .Page.Section "posts" }} post-article{{ end }}">
+            <div class="prose">{{ .Page.Body }}</div>
+        </article>
+        {{ if or .Page.ToC (eq .Page.Section "posts") $links }}
+        <div class="article-sidebar">
+            {{ if .Page.ToC }}
+            <aside class="article-toc" aria-label="On this page">
+                <span class="label">On this page</span>
+                <ol>
+                    {{ range .Page.ToC }}
+                        {{ if .ID }}<li class="toc-level-{{ .Level }}"><a href="#{{ .ID }}">{{ .Text }}</a></li>{{ end }}
+                    {{ end }}
+                </ol>
+            </aside>
+            {{ end }}
+            {{ with $links }}
+            <nav class="sidebar-links" aria-labelledby="sidebar-links-heading">
+                <h2 id="sidebar-links-heading" class="forum-subhead">Links</h2>
+                <ul>
+                    {{ range . }}
+                    <li><a href="{{ index . "href" }}"><img src="/assets/silk/{{ or (index . "icon") "link" }}.png" width="16" height="16" alt=""><span>{{ index . "text" }}</span></a></li>
+                    {{ end }}
+                </ul>
+            </nav>
+            {{ end }}
+            {{ if eq .Page.Section "posts" }}
+                {{ $current := .Page }}
+                {{ $posts := queryPages "SELECT * FROM pages WHERE Section='posts' AND (? OR Draft=false) ORDER BY PubDate DESC" .Site.Dev }}
+                {{ $picks := index $current.Params "related" }}
+                {{/* Shizuka templates have no integer increment helper; each dot counts one displayed link. */}}
+                {{ $shown := "" }}
+                <section class="related-posts" aria-labelledby="related-posts-heading">
+                    <h2 id="related-posts-heading" class="forum-subhead">You might also like...</h2>
+                    <ul>
+                        {{ range $path := $picks }}
+                            {{ range $post := $posts }}
+                                {{ if and (lt (len $shown) 3) (eq $post.Path $path) (ne $post.Path $current.Path) }}
+                                    <li><a href="{{ $post.Path }}"><img src="/assets/silk/page_white_text.png" width="16" height="16" alt=""><span><strong>{{ $post.Title }}</strong>{{ with $post.Description }}<small>{{ . }}</small>{{ end }}</span></a></li>
+                                    {{ $shown = printf "%s." $shown }}
+                                {{ end }}
+                            {{ end }}
+                        {{ end }}
+                        {{ range $post := $posts }}
+                            {{ if and (lt (len $shown) 3) (ne $post.Path $current.Path) }}
+                                {{ $picked := false }}
+                                {{ range $path := $picks }}{{ if eq $post.Path $path }}{{ $picked = true }}{{ end }}{{ end }}
+                                {{ $sharesTopic := false }}
+                                {{ range $tag := $post.Tags }}
+                                    {{ range $ownTag := $current.Tags }}
+                                        {{ if eq $tag $ownTag }}{{ $sharesTopic = true }}{{ end }}
+                                    {{ end }}
+                                {{ end }}
+                                {{ if and (not $picked) $sharesTopic }}
+                                    <li><a href="{{ $post.Path }}"><img src="/assets/silk/page_white_text.png" width="16" height="16" alt=""><span><strong>{{ $post.Title }}</strong>{{ with $post.Description }}<small>{{ . }}</small>{{ end }}</span></a></li>
+                                    {{ $shown = printf "%s." $shown }}
+                                {{ end }}
+                            {{ end }}
+                        {{ end }}
+                    </ul>
+                    {{ if not $shown }}<p class="related-empty">Nothing else in this category yet. <a href="/posts/">Browse all posts »</a></p>{{ end }}
+                </section>
+            {{ end }}
+        </div>
+        {{ end }}
+    </div>
+</main>
+
+{{ template "site_footer" . }}
+</body>
+</html>
+{{ end }}

@@ -1,0 +1,207 @@
+/* City fog palette selected from the colour experiments. */
+:root {
+    --palette-hue: 211;
+    --palette-link-hue: 200;
+    --palette-accent-hue: 40;
+    --theme-canvas: #1d2229;
+    --theme-frame: #323846;
+    --theme-panel: #2d343b;
+    --theme-row: #384148;
+    --theme-row-alt: #3d474e;
+    --theme-row-hover: #4d595b;
+    --theme-code: #242831;
+    --theme-code-text: #e2e9e7;
+    --theme-nav-top: #718078;
+    --theme-nav-shoulder: #4c5e57;
+    --theme-nav-bottom: #2e403a;
+    --theme-nav-reflection: #53665c;
+    --theme-nav-active: #43564e;
+    /* Warm pewter rails contrast with the cold casing and green navigation. */
+    --theme-bar-top: #79786c;
+    --theme-bar-shoulder: #5e5d53;
+    --theme-bar-bottom: #41433e;
+    --theme-bar-reflection: #626257;
+    /* A sharp reflection break gives the rails a folded-metal finish.
+       Keep this on the chrome, not on the flat content panels. */
+    --theme-nav-finish: linear-gradient(var(--theme-nav-top), var(--theme-nav-shoulder) 46%, var(--theme-nav-bottom) 50%, var(--theme-nav-reflection));
+    --theme-bar-finish: linear-gradient(var(--theme-bar-top), var(--theme-bar-shoulder) 46%, var(--theme-bar-bottom) 50%, var(--theme-bar-reflection));
+    --theme-frame-text: #e6e5dd;
+    --theme-text: #dce3dd;
+    --theme-strong: #f5f1e8;
+    --theme-muted: #b0bdbc;
+    --theme-link: #b8d6d0;
+    --theme-link-hover: #e5ca9e;
+    --theme-border: #505c60;
+    --theme-border-strong: #869293;
+    --theme-frame-highlight: #737d79;
+    --theme-bevel-dark: #20262c;
+    --theme-bar-highlight: inset 0 1px 0 #ffffff12;
+    --theme-tab-raised: inset 0 1px 0 #ffffff24, inset 1px 0 0 #ffffff12, inset 0 -1px 0 #00000040;
+    --theme-accent: #b8a277;
+    --theme-bar-text: #f6f4ed;
+    --hero-dark-hue: 213;
+    --hero-dark-saturation: 0.18;
+    --hero-dark-lightness: 0.14;
+    --hero-light-hue: 122;
+    --hero-light-saturation: 0.17;
+    --hero-light-lightness: 0.68;
+}
+
+html {
+    --bg: var(--theme-frame);
+    --bg-elev: var(--theme-row-hover);
+    --bg-card: var(--theme-panel);
+    --bg-code: var(--theme-code);
+    --fg: var(--theme-text);
+    --fg-strong: var(--theme-strong);
+    --muted: var(--theme-muted);
+    --dim: var(--theme-muted);
+    --line: var(--theme-border);
+    --line-strong: var(--theme-border-strong);
+    --rule: var(--theme-border);
+    --paper: var(--theme-strong);
+    --accent: var(--theme-accent);
+    --accent-ink: var(--theme-frame);
+    background: var(--theme-canvas);
+    color: var(--theme-frame-text);
+}
+html body {
+    background: var(--theme-frame);
+    border-color: var(--theme-frame-highlight) var(--theme-bevel-dark) var(--theme-bevel-dark) var(--theme-frame-highlight);
+    outline: 0;
+    color: var(--theme-frame-text);
+}
+html a,
+html a:visited { color: var(--theme-link); }
+html a:hover,
+html a:focus-visible { color: var(--theme-link-hover); }
+html .forum-banner.hero {
+    background: var(--theme-frame);
+    border-color: var(--theme-bevel-dark) var(--theme-frame-highlight) var(--theme-frame-highlight) var(--theme-bevel-dark);
+}
+html body .topnav-links {
+    border-color: var(--theme-border);
+    background: var(--theme-nav-finish);
+    box-shadow: var(--theme-bar-highlight);
+}
+html body .topnav-links a {
+    border-left-color: #718373;
+    border-right-color: #263c32;
+    background: var(--theme-nav-finish);
+    box-shadow: var(--theme-tab-raised);
+    color: #fff;
+    text-shadow: 0 1px #0008;
+}
+html body .topnav-links a:hover {
+    background: linear-gradient(#ffffff0c, #ffffff0c), var(--theme-nav-finish);
+    color: #fff;
+}
+html body .topnav-links a.active {
+    background: linear-gradient(var(--theme-nav-bottom), var(--theme-nav-active));
+    border-left-color: #263c32;
+    border-right-color: #718373;
+    box-shadow: inset 0 2px 2px #20352b, inset 0 -1px 0 #718773;
+    color: #fff;
+}
+html :is(body .page-header h1, .forum-subhead, body .posts-heading, body .section-rule, body .article-toc .label) {
+    border-color: var(--theme-border);
+    background: var(--theme-bar-finish);
+    box-shadow: var(--theme-bar-highlight);
+    color: var(--theme-bar-text);
+    text-shadow: none;
+}
+html :is(body .page-kicker, body .page-header .deck, body .page-header .meta, .topic-nav, body .article-toc) {
+    border-color: var(--theme-border);
+    background: var(--theme-panel);
+    color: var(--theme-text);
+}
+html :is(.home-primary, .home-elsewhere, .tag-directory, body .posts, body .article, .photo-albums, body .linktree, body .gallery figure) {
+    border-color: var(--theme-border);
+    background: var(--theme-panel);
+    color: var(--theme-text);
+}
+html :is(.home-post-row, .tag-directory a, body .post, .photo-album, body .link-card, .home-elsewhere a) {
+    border-color: var(--theme-border);
+    background: var(--theme-row);
+    color: var(--theme-text);
+}
+html :is(.home-post-row:nth-of-type(even), .home-elsewhere a:nth-of-type(even), .tag-directory a:nth-of-type(even), body .post:nth-of-type(even), .photo-album:nth-of-type(even), body .link-card:nth-of-type(even)) {
+    background: var(--theme-row-alt);
+}
+html :is(.home-post-row:hover, .tag-directory a:hover, body .post:hover, .photo-album:hover, body .link-card:hover, .home-elsewhere a:hover) {
+    background: var(--theme-row-hover);
+}
+html :is(.home-primary .forum-subhead, .home-elsewhere .forum-subhead, .tag-directory .forum-subhead, .photo-albums .forum-subhead) {
+    border-color: var(--theme-border);
+}
+html :is(.forum-welcome, body .site-footer) {
+    color: var(--theme-frame-text);
+}
+html .forum-welcome strong { color: #fff; }
+html :is(.home-elsewhere strong, .home-post-row strong, .tag-directory strong, body .post .title, .photo-album-copy strong, body .link-card .label, body .prose a, .topic-nav a) {
+    color: var(--theme-link);
+}
+html body .post:hover .title { color: var(--theme-link-hover); }
+html :is(.home-elsewhere small, .home-post-row small, .home-post-row time, .tag-directory a span:last-child, body .post .description, body .post .date, .photo-album-copy small, .photo-album time, body .link-card .host, body .gallery figcaption, .post-deck time) {
+    color: var(--theme-muted);
+}
+html :is(body .prose, body .page-header .deck, .topic-nav strong) {
+    color: var(--theme-text);
+}
+html body .prose pre code { color: var(--theme-code-text); }
+html :is(body .prose blockquote, body .prose pre) {
+    border-color: var(--theme-border);
+}
+html body .prose blockquote {
+    background: var(--theme-row-alt);
+    color: var(--theme-text);
+}
+html body .prose pre {
+    background: var(--theme-code) !important;
+    color: var(--theme-code-text) !important;
+}
+html body .prose :not(pre) > code {
+    background: var(--theme-code);
+    color: var(--theme-code-text);
+}
+html :is(body .gallery-frame, .photo-album img, body .site-footer) {
+    border-color: var(--theme-border);
+}
+
+/* The banner is recessed, unlike the raised frame and navigation tabs.
+   The overlay keeps the inset edge visible above both the fallback image
+   and animated canvas. */
+html .forum-banner.hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    box-shadow: inset 1px 2px 2px #0008, inset -1px -1px 0 #ffffff18;
+}
+
+/* Centre only the landing page, with breathing room and natural overflow.
+   Auto margins collapse to zero when the page is taller than the viewport. */
+@media (min-width: 601px) {
+    /* One dark keyline around a single bevel; no nested bright outline. */
+    html body {
+        box-shadow: 0 0 0 1px #11171c;
+    }
+    html.home-page {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        min-height: 100svh;
+        padding-block: 25px;
+    }
+    html.home-page body {
+        flex-shrink: 0;
+        margin-block: auto;
+    }
+}
+
+@media (max-width: 600px) {
+    html { background: var(--theme-panel); }
+    html body { background: transparent; }
+    html body .article.post-article { border: 0; background: transparent; }
+}

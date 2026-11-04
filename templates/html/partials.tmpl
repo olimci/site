@@ -1,0 +1,52 @@
+{{ define "favicon_assets" }}
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/bird-touch-180.png">
+{{ end }}
+
+{{ define "fonts" }}
+{{ end }}
+
+{{ define "topnav" }}
+{{ $active := index . "Active" }}
+<header class="topnav{{ if eq $active "home" }} topnav-home{{ end }}">
+    <div class="forum-banner hero">
+        <div class="hero-fallback" aria-hidden="true"></div>
+        <canvas class="hero-field" aria-hidden="true"></canvas>
+        <a class="forum-banner-link" href="/"><img src="/assets/forum/olimci-typewriter.svg" width="272" height="68" alt="olimci — home"></a>
+    </div>
+    <nav class="topnav-links" aria-label="Primary">
+        <a href="/" {{ if eq $active "home" }}class="active"{{ end }}>Home</a>
+        <a href="/posts/" {{ if eq $active "posts" }}class="active"{{ end }}>Posts</a>
+        <a href="/photos/" {{ if eq $active "photos" }}class="active"{{ end }}>Photos</a>
+        <a href="/links/" {{ if eq $active "links" }}class="active"{{ end }}>Links</a>
+    </nav>
+</header>
+{{ end }}
+
+{{ define "site_footer" }}
+<footer class="site-footer">
+    <div class="site-footer-inner">
+        <span>&copy; 2026 Oli</span>
+        <span class="footer-links">
+            <a href="/_shizuka/" aria-label="Site debug page"><img src="/assets/forum/shizuka-icon.png" width="16" height="16" alt=""></a>
+            <a href="/rss.xml" aria-label="RSS feed"><img src="/assets/silk/feed.png" width="16" height="16" alt=""></a>
+        </span>
+    </div>
+</footer>
+{{ end }}
+
+{{ define "head_common" }}
+{{ $data := . }}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="Oli">
+<meta name="robots" content="index, follow">
+<link rel="alternate" type="application/rss+xml" title="olimci.com RSS" href="{{ $data.Site.URL }}/rss.xml">
+{{ template "fonts" . }}
+<link rel="stylesheet" href="/assets/css/site.css">
+<link rel="stylesheet" href="/assets/css/forum.css">
+<link rel="stylesheet" href="/assets/css/theme.css">
+<script src="/assets/js/hero.js" defer></script>
+<script src="/assets/js/smilies.js" defer></script>
+{{ template "favicon_assets" . }}
+{{ end }}

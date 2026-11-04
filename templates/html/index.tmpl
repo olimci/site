@@ -1,0 +1,79 @@
+{{ define "index" }}
+<!DOCTYPE html>
+<html class="home-page" lang="en">
+<head>
+    {{ $pageDescription := or (index .Page.Params "seo_description") .Page.Description .Site.Description }}
+    <meta name="description" content="{{ $pageDescription }}">
+    <link rel="canonical" href="{{ .Site.URL }}/">
+
+    <meta property="og:title" content="{{ .Site.Title }}">
+    <meta property="og:description" content="{{ $pageDescription }}">
+    <meta property="og:image" content="{{ .Site.URL }}/assets/favicon/bird-512.png">
+    <meta property="og:url" content="{{ .Site.URL }}/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="{{ .Site.Title }}">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="{{ .Site.Title }}">
+    <meta name="twitter:description" content="{{ $pageDescription }}">
+    <meta name="twitter:image" content="{{ .Site.URL }}/assets/favicon/bird-512.png">
+
+    <title>{{ .Site.Title }}</title>
+    {{ template "head_common" . }}
+</head>
+<body>
+{{ template "topnav" (dict "Data" . "Active" "home") }}
+<main class="home-main">
+    <div class="home-grid">
+        <div class="home-main-column">
+            <section class="home-hello" aria-labelledby="home-hello-heading">
+                <h2 class="forum-subhead" id="home-hello-heading"><img src="/assets/silk/information.png" width="16" height="16" alt="">Hello</h2>
+                <div class="forum-welcome">{{ .Page.Body }}</div>
+            </section>
+            <section class="home-primary" aria-labelledby="home-post-heading">
+                <h2 class="forum-subhead" id="home-post-heading"><img src="/assets/silk/page_white_text.png" width="16" height="16" alt="">Post</h2>
+                {{ $posts := queryPages "SELECT * FROM pages WHERE Section='posts' AND Featured=true AND (? OR Draft=false) ORDER BY PubDate DESC" .Site.Dev }}
+                {{ range $post := $posts }}
+                <a class="home-post-row" href="{{ $post.Path }}">
+                    <img src="/assets/silk/page_white_text.png" width="16" height="16" alt="">
+                    <span><strong>{{ $post.Title }}</strong>{{ with $post.Description }}<small>{{ . }}</small>{{ end }}</span>
+                    <time datetime="{{ datefmt "2006-01-02" $post.PubDate }}">{{ datefmt "02 Jan 2006" $post.PubDate }}</time>
+                </a>
+                {{ end }}
+                <div class="home-more"><a href="/posts/">View all posts &raquo;</a></div>
+            </section>
+        </div>
+        <aside class="home-sidebar">
+            <section class="home-now" aria-labelledby="home-now-heading">
+                <h2 class="forum-subhead" id="home-now-heading"><img src="/assets/silk/status_online.png" width="16" height="16" alt="">Now</h2>
+                <div class="home-now-body">
+                    <div class="home-clock-block">
+                        <div class="home-clock" id="presence-clock-face" role="img" aria-label="Analogue clock showing the time in London"><i class="clock-hand clock-hour"></i><i class="clock-hand clock-minute"></i><i class="clock-hand clock-second"></i></div>
+                        <div class="home-clock-caption"><time id="presence-time">--:--</time><span>London</span></div>
+                    </div>
+                    <div class="home-status-row" id="presence-music-row" hidden>
+                        <div class="presence-art" id="presence-art" aria-hidden="true"></div>
+                        <div class="presence-copy"><div class="presence-label"><img src="/assets/silk/music.png" width="16" height="16" alt="">Listening</div><div id="presence-music"></div></div>
+                    </div>
+                    <div class="home-status-row" id="presence-activity-row" hidden>
+                        <div class="presence-art" id="presence-desktop-art" aria-hidden="true"><img class="presence-desktop-icon" src="/assets/silk/computer.png" width="32" height="32" alt=""></div>
+                        <div class="presence-copy"><div class="presence-label"><img src="/assets/silk/computer.png" width="16" height="16" alt="">Activity</div><div id="presence-desktop"></div></div>
+                    </div>
+                </div>
+            </section>
+            <section class="home-elsewhere" aria-labelledby="home-other-heading">
+                <h2 class="forum-subhead" id="home-other-heading">Other</h2>
+                <a href="/about/"><img src="/assets/silk/user.png" width="16" height="16" alt=""><span><strong>About me</strong><small>Who is writing this?</small></span></a>
+                <a href="/about-site/"><img src="/assets/silk/information.png" width="16" height="16" alt=""><span><strong>About this site</strong><small>Design and credits</small></span></a>
+                <a href="/cv/"><img src="/assets/silk/briefcase.png" width="16" height="16" alt=""><span><strong>CV</strong><small>Experience and projects</small></span></a>
+                <a href="/photos/"><img src="/assets/silk/photos.png" width="16" height="16" alt=""><span><strong>Photographs</strong><small>Albums and travels</small></span></a>
+                <a href="/links/"><img src="/assets/silk/link.png" width="16" height="16" alt=""><span><strong>Links</strong><small>Other places on the web</small></span></a>
+            </section>
+        </aside>
+    </div>
+    <script src="/assets/js/presence.js" defer></script>
+</main>
+{{ template "site_footer" . }}
+</body>
+</html>
+{{ end }}

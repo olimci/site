@@ -1,0 +1,71 @@
+:root {
+    color-scheme: dark;
+    --radius: 6px;
+    --radius-card: 8px;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+html {
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+body { min-height: 100vh; display: flex; flex-direction: column; }
+main { flex: 1 0 auto; }
+a {
+    text-decoration: none;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+    text-decoration-color: var(--line-strong);
+    transition: text-decoration-color 120ms ease, color 120ms ease;
+}
+a:hover, a:focus-visible { text-decoration: underline; text-decoration-color: var(--fg-strong); }
+::selection { background: var(--accent); color: var(--accent-ink); }
+
+.topnav-links { display: flex; }
+.page-header-inner, .shell, .album-shell {
+    width: 100%;
+    max-width: var(--shell-max);
+    margin-inline: auto;
+}
+.page-kicker { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; }
+.page-kicker .date {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--muted);
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+}
+.page-header .meta { display: flex; flex-wrap: wrap; gap: 1.25rem; }
+.page-header .crumb a { text-decoration: none; }
+.page-header .crumb a:hover { color: var(--fg-strong); }
+
+.linktree { display: flex; flex-direction: column; }
+.link-card {
+    display: grid;
+    grid-template-columns: 2.5rem minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 1rem;
+    text-decoration: none;
+    transition: border-color 140ms ease, background 140ms ease;
+}
+.link-card:hover { text-decoration: none; }
+.link-card .icon { display: inline-flex; align-items: center; justify-content: center; width: 1.4rem; height: 1.4rem; }
+.link-card .label { letter-spacing: -0.005em; }
+.link-card .host { letter-spacing: 0.02em; }
+.section-rule { margin: 1.5rem auto 0.5rem; }
+
+.gallery { display: grid; }
+.gallery figure { margin: 0; }
+.gallery-frame {
+    overflow: hidden;
+    background: var(--bg) center/cover no-repeat;
+    transition: filter 200ms ease, border-color 140ms ease;
+}
+.gallery-frame:hover { border-color: var(--line-strong); filter: grayscale(0); }
+.site-footer-inner { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; }
+.site-footer a { text-decoration: none; }

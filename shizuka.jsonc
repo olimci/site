@@ -1,0 +1,82 @@
+{
+  "$schema": "https://raw.githubusercontent.com/olimci/shizuka/refs/heads/main/_assets/config.schema.json",
+  "version": "1.0.0",
+
+  "site": {
+    "title": "Oli's site",
+    "description": "Personal website of Oli",
+    "url": "https://olimci.com",
+
+  },
+
+  "build": {
+    "minifier": {},
+  },
+
+  "content": {
+    "defaults": {
+      "section": "page",
+
+      "sections": {
+        "posts": {
+          "template": "post",
+
+          "sitemap": {
+            "include": true,
+            "changefreq": "never",
+            "priority": 0.6,
+          },
+
+          "rss": {
+            "include": true,
+          },
+        },
+      },
+    },
+
+    "markdown": {
+      "tables": true,
+      "strikethrough": true,
+      "task_list": true,
+      "definition_list": true,
+      "footnotes": true,
+      "linkify": true,
+      "typographer": true,
+      "parser": {
+        "auto_heading_id": true,
+        "attribute": true,
+      },
+      "highlighting": {
+        "classes": true,
+      },
+      "components": true,
+    },
+
+    "git": {
+      "backfill": true,
+    },
+  },
+
+  "artefacts": {
+    "rss": {
+      "sections": ["posts"],
+      "limit": 50,
+    },
+
+    "sitemap": {},
+
+    "robots": {
+      "include_sitemap": true,
+      "groups": [
+        {
+          "user_agents": ["*"],
+          "allow": ["/"],
+        },
+      ],
+    },
+
+    "not_found": {},
+
+    "meta": {},
+  },
+}

@@ -1,0 +1,14 @@
+title = "Posts"
+description = "All Posts"
+template = "posts"
+
+[params]
+seo_description = "Posts by Oli on software projects, network protocols, physics, and other experiments."
+
+[sitemap]
+include = true
+changefreq = "weekly"
+priority = 0.8
+
+[rss]
+include = false

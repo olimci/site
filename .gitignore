@@ -1,0 +1,14 @@
+# Ignore OS-generated files
+.DS_Store
+
+*~
+
+# shizuka build output
+dist/
+dist-*/
+shizuka.lock
+
+TODO.md
+
+temp/
+.delta/

@@ -1,0 +1,14 @@
+title = "Photos"
+description = "Photos I took"
+template = "photos"
+
+[params]
+seo_description = "Photo albums by Oli, including trips to Japan, Romania, and Denmark."
+
+[sitemap]
+include = true
+changefreq = "monthly"
+priority = 0.7
+
+[rss]
+include = false

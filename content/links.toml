@@ -1,0 +1,30 @@
+title = "Links"
+description = "Personal links and contact details"
+template = "links"
+section = "pages"
+
+[params]
+seo_description = "Find Oli on GitHub and elsewhere, or get in touch by email."
+
+[[params.exported_links]]
+label = "CV"
+url = "/cv"
+icon = "briefcase"
+
+[[params.exported_links]]
+label = "Email"
+url = "mailto:oli@mcinnes.cc"
+icon = "email"
+
+[[params.exported_links]]
+label = "GitHub"
+url = "https://github.com/olimci"
+icon = "script_code"
+
+[sitemap]
+include = true
+changefreq = "monthly"
+priority = 0.8
+
+[rss]
+include = false

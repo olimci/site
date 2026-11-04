@@ -1,0 +1,53 @@
+{{ define "album" }}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {{ $pageDescription := or (index .Page.Params "seo_description") .Page.Description .Site.Description }}
+    {{ $pageTitle := printf "%s | %s" .Page.Title .Site.Title }}
+    <meta name="description" content="{{ $pageDescription }}">
+    <link rel="canonical" href="{{ .Page.Canon }}">
+
+    <meta property="og:title" content="{{ $pageTitle }}">
+    <meta property="og:description" content="{{ $pageDescription }}">
+    <meta property="og:image" content="{{ .Site.URL }}/assets/favicon/bird-512.png">
+    <meta property="og:url" content="{{ .Page.Canon }}">
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="{{ .Site.Title }}">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="{{ $pageTitle }}">
+    <meta name="twitter:description" content="{{ $pageDescription }}">
+    <meta name="twitter:image" content="{{ .Site.URL }}/assets/favicon/bird-512.png">
+
+    <title>{{ $pageTitle }}</title>
+    {{ template "head_common" . }}
+</head>
+<body>
+{{ template "topnav" (dict "Data" . "Active" "photos") }}
+
+{{ $photos := index .Page.Params "photos" }}
+
+<main>
+    <section class="page-header">
+        <div class="page-header-inner">
+            <h1>{{ .Page.Title }}</h1>
+            <p class="deck post-deck">{{ with .Page.Description }}<span>{{ . }}</span>{{ end }}<time datetime="{{ datefmt "2006-01-02" .Page.PubDate }}">{{ datefmt "02 Jan 2006" .Page.PubDate }}</time></p>
+        </div>
+    </section>
+
+    <div class="album-shell">
+        <div class="gallery">
+            {{ range $photo := $photos }}
+                <figure>
+                    <a class="gallery-frame" href="{{ index $photo "src" }}" aria-label="Open {{ index $photo "alt" }}"><img src="{{ index $photo "src" }}" alt="{{ index $photo "alt" }}" loading="lazy"></a>
+                    {{ with index $photo "caption" }}<figcaption>{{ . }}</figcaption>{{ end }}
+                </figure>
+            {{ end }}
+        </div>
+    </div>
+</main>
+
+{{ template "site_footer" . }}
+</body>
+</html>
+{{ end }}
